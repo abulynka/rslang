@@ -1,0 +1,29 @@
+.from-section {
+  width: 500px;
+  border: 1px solid #d4d4d4;
+  padding: 10px;
+  border-radius: 15px;
+  box-shadow: 0 0 6px 2px#d4d4d4;
+}
+
+.load-section {
+  display: flex;
+  align-items: center;
+
+  button {
+    margin-right: 10px;
+  }
+}
+
+.badge {
+  width: 100%;
+  font-weight: 500;
+  font-size: 1em;
+  margin: 2px;
+  margin: 0 0 15px 0;
+  white-space: normal;
+}
+
+.form-label{
+  color: #00b7ff;
+}

@@ -1,0 +1,87 @@
+<form class="from-section">
+  <div class="form-floating mb-3">
+    <input
+      type="text"
+      name="userName"
+      class="form-control"
+      [(ngModel)]="userName"
+      #signUpName="ngModel"
+      pattern="^[A-Za-z]{3,}$"
+      autocomplete="off"
+      required
+    />
+    <label for="userName" class="form-label">Имя</label>
+    <div
+      [hidden]="signUpName.valid || signUpName.pristine"
+      class="alert alert-danger"
+    >
+      Имя состоит минимум из 3-х символов и содержит только латиницу
+    </div>
+  </div>
+  <div class="form-floating mb-3">
+    <input
+      type="email"
+      name="email"
+      class="form-control"
+      placeholder="name@example.com"
+      aria-describedby="emailHelp"
+      [(ngModel)]="email"
+      #signUpEmail="ngModel"
+      [class.is-invalid]="signUpEmail.invalid && signUpEmail.dirty"
+      pattern="^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$"
+      required
+      email
+    />
+    <label for="email" class="form-label">Email</label>
+    <div
+      [hidden]="signUpEmail.valid || signUpEmail.pristine"
+      class="alert alert-danger"
+    >
+      Неправильный Email!
+    </div>
+  </div>
+  <div class="form-floating mb-3">
+    <input
+      type="password"
+      name="password"
+      class="form-control"
+      [(ngModel)]="password"
+      #psw="ngModel"
+      autocomplete="off"
+      pattern="[a-zA-Z\d].{8,}$"
+      [class.is-invalid]="psw.invalid && psw.dirty"
+      placeholder="Password"
+      required
+    />
+    <label for="password" class="form-label">Пароль</label>
+    <div [hidden]="psw.valid || psw.pristine" class="alert alert-danger">
+      Минимум 8 знаков, 1 буква и 1 цифра!
+    </div>
+  </div>
+  <p [hidden]="!isUserExist" class="badge bg-danger">
+    Ошибка: Пользователь с таким аккаунтом уже существует!
+  </p>
+  <div>
+    <p>
+      Уже есть аккаунта?
+      <a routerLink="/signin" class="button" class="button link-primary"
+        >Войти</a
+      >.
+    </p>
+  </div>
+  <div class="load-section">
+    <button
+      [disabled]="psw.invalid || signUpEmail.invalid || signUpName.invalid"
+      type="submit"
+      class="btn btn-primary"
+      (click)="send()"
+    >
+      Зарегистрироваться
+    </button>
+    <div
+      [hidden]="!isSent"
+      class="spinner-border text-primary"
+      role="status"
+    ></div>
+  </div>
+</form>
