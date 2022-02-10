@@ -5,6 +5,7 @@ import { Env } from 'src/app/interfaces/interfaces';
 
 export const environment: Env = {
   production: false,
+  apiUrl: 'http://localhost:4300',
 };
 
 /*
