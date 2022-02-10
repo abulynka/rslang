@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError } from 'rxjs';
 import { User } from 'src/app/interfaces/interfaces';
-import { HttpService } from 'src/app/services/http.service';
+import { SignUpService } from '../../services/sign-up.service';
 
 @Component({
   selector: 'app-sign-up',
@@ -18,7 +18,7 @@ export class SignUpComponent {
   public isUserExist: boolean = false;
 
   public constructor(
-    private httpService: HttpService,
+    private signUpService: SignUpService,
     private router: Router
   ) {}
 
@@ -29,7 +29,7 @@ export class SignUpComponent {
       password: this.password,
     };
     this.isSent = true;
-    this.httpService
+    this.signUpService
       .createUser(user)
       .pipe(
         catchError((err: HttpErrorResponse) => {

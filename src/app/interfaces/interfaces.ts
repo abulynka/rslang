@@ -35,6 +35,8 @@ export interface Word {
   wordTranslate: string;
   textMeaningTranslate: string;
   textExampleTranslate: string;
+
+  difficult: boolean;
 }
 
 export interface Answer {

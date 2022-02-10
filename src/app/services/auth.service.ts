@@ -5,7 +5,6 @@ import { Auth } from '../interfaces/interfaces';
   providedIn: 'root',
 })
 export class AuthService {
-
   public setUserData(data: Auth): void {
     localStorage.setItem('user', JSON.stringify(data));
   }
@@ -20,6 +19,6 @@ export class AuthService {
   }
 
   public checkAuth(): boolean {
-    return !!this.getUserData();
+    return Boolean(this.getUserData());
   }
 }

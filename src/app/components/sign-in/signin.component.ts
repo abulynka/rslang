@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpService } from 'src/app/services/http.service';
 import { catchError } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { SignInService } from '../../services/sign-in.service';
 
 @Component({
   selector: 'app-signin',
@@ -18,7 +18,7 @@ export class SigninComponent {
   public isError: boolean = false;
 
   public constructor(
-    private httpService: HttpService,
+    private signInService: SignInService,
     private router: Router,
     private authService: AuthService
   ) {}
@@ -30,7 +30,7 @@ export class SigninComponent {
 
   public send(): void {
     this.isSent = true;
-    this.httpService
+    this.signInService
       .singIn(this.email, this.password)
       .pipe(
         catchError((err: HttpErrorResponse) => {
@@ -48,7 +48,7 @@ export class SigninComponent {
         this.change(false);
         if (data.token) {
           this.authService.setUserData(data);
-          this.router.navigate(['/'])
+          this.router.navigate(['/']);
         }
       });
   }

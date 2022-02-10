@@ -1,0 +1,18 @@
+<section class="word" data-id="{{ word.id }}">
+  <div class="word__image">
+    <img src="{{ url + '/' + word.image }}" alt="{{ word.word }}" />
+  </div>
+  <div class="word__content">
+    <div>
+      <div>
+        {{ word.word }}({{ word.transcription }}) - {{ word.wordTranslate }}
+      </div>
+      <app-audio class="word__play" [word]="word"></app-audio>
+    </div>
+    <div>{{ word.wordTranslate }}</div>
+    <div [innerHTML]="word.textMeaning"></div>
+    <div [innerHTML]="word.textMeaningTranslate"></div>
+    <div [innerHTML]="word.textExample"></div>
+    <div [innerHTML]="word.textExampleTranslate"></div>
+  </div>
+</section>
