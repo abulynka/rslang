@@ -8,7 +8,7 @@
       aria-describedby="emailHelp"
       [(ngModel)]="email"
       #signInEmail="ngModel"
-      [class.is-invalid]="signInEmail.invalid && signInEmail.dirty"
+      [class.is-invalid]="(signInEmail.invalid && signInEmail.dirty) || isError"
       pattern="^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$"
       required
       email
@@ -30,7 +30,7 @@
       #signInpsw="ngModel"
       autocomplete="off"
       pattern="[a-zA-Z\d].{8,}$"
-      [class.is-invalid]="signInpsw.invalid && signInpsw.dirty"
+      [class.is-invalid]="(signInpsw.invalid && signInpsw.dirty) || isError"
       placeholder="Password"
       required
     />
@@ -42,6 +42,7 @@
       Минимум 8 знаков, 1 буква и 1 цифра!
     </div>
   </div>
+  <span [hidden]="!isError" class="badge bg-danger">Ошибка: {{ error }}</span>
   <div>
     <p>
       Нет аккаунта?
@@ -50,12 +51,19 @@
       >.
     </p>
   </div>
-  <button
-    [disabled]="signInpsw.invalid || signInEmail.invalid"
-    type="submit"
-    class="btn btn-primary"
-    (click)="send()"
-  >
-    Войти
-  </button>
+  <div class="load-section">
+    <button
+      [disabled]="signInpsw.invalid || signInEmail.invalid"
+      type="submit"
+      class="btn btn-primary"
+      (click)="send()"
+    >
+      Войти
+    </button>
+    <div
+      [hidden]="!isSent"
+      class="spinner-border text-primary"
+      role="status"
+    ></div>
+  </div>
 </form>

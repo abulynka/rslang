@@ -1,34 +1,51 @@
-import { Component, OnInit } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { catchError } from 'rxjs';
 import { User } from 'src/app/interfaces/interfaces';
 import { HttpService } from 'src/app/services/http.service';
 
 @Component({
   selector: 'app-sign-up',
   templateUrl: './sign-up.component.html',
-  styleUrls: ['./sign-up.component.scss']
+  styleUrls: ['./sign-up.component.scss'],
 })
-export class SignUpComponent implements OnInit {
-  email: string = '';
-  password: string = '';
-  rPassword: string = '';
-  isSent: boolean = false;
+export class SignUpComponent {
+  public email: string = '';
+  public password: string = '';
+  public rPassword: string = '';
+  public isSent: boolean = false;
+  public isUserExist: boolean = false;
 
-  constructor(private httpService: HttpService, private router: Router ) { }
+  public constructor(
+    private httpService: HttpService,
+    private router: Router
+  ) {}
 
-  ngOnInit(): void {
-  }
-
-  send() {
+  public send(): void {
     const user: User = {
       name: 'To-Do',
       email: this.email,
       password: this.password,
-    }
+    };
     this.isSent = true;
-    this.httpService.createUser(user).subscribe(() => {
-      this.isSent = false;
-      this.router.navigate(['/signin']);
-    });
+    this.httpService
+      .createUser(user)
+      .pipe(
+        catchError((err: HttpErrorResponse) => {
+          console.log(err);
+          this.setBoolean(true);
+          return [];
+        })
+      )
+      .subscribe(() => {
+        this.setBoolean(false);
+        this.router.navigate(['/signin']);
+      });
+  }
+
+  private setBoolean(isUserExist: boolean): void {
+    this.isUserExist = isUserExist;
+    this.isSent = false;
   }
 }
