@@ -1,28 +1,16 @@
-<header>
-  <nav class="navbar navbar-dark bg-primary">
-    <div class="btn-group" role="group" aria-label="Basic example">
-      <button type="button" class="btn btn-primary btn-lg" routerLink="/">
-        главная
-      </button>
-      <button type="button" class="btn btn-primary btn-lg">
-        учебник
-      </button>
-      <button type="button" class="btn btn-primary btn-lg">
-        мини-игры
-      </button>
-      <button type="button" class="btn btn-primary btn-lg">
-        статистика
-      </button>
-    </div>
-
-    <div class="btn-group" role="group" aria-label="Basic example">
-      <button type="button" class="btn btn-primary btn-lg" routerLink="/signin">
-        войти
-      </button>
-      <button type="button" class="btn btn-primary btn-lg" routerLink="/about-us">
-        o команде
-      </button>
-    </div>
+<header class="header">
+  <img class="logo" src="https://leon-center.by/sub/images/language.svg" alt="icon">
+  <nav class="navbar">
+    <ul class="navbar-list">
+      <li class="navbar-item"> <a href="">главная</a></li>
+      <li class="navbar-item"> <a href="">учебник</a></li>
+      <li class="navbar-item"> <a href="">мини-игры</a></li>
+      <li class="navbar-item"> <a href="">статистика</a></li>
+    </ul>
+    <ul class="navbar-list">
+      <li class="navbar-item"> <a href="">Войти</a></li>
+      <li class="navbar-item"> <a href="">О команде</a></li>
+    </ul>
   </nav>
 </header>
 
@@ -30,7 +18,8 @@
   <router-outlet #outlet="outlet"></router-outlet>
 </main>
 
-<footer>
-  <nav class="navbar navbar-dark bg-primary">
-  </nav>
+<footer class="footer">
+  <p>© Jet Squad</p>
+  <p>2021</p>
+  <a href="https://rs.school/js/"><img class="footer__svg" src="https://raw.githubusercontent.com/YuliyaBondar/christmas-data/main/assets/svg/rss.svg" alt="rs_school_js"></a>
 </footer>
