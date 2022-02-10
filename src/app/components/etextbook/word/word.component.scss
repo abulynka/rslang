@@ -12,4 +12,18 @@
     padding: 30px;
     line-height: 30px;
   }
+
+  &__controls {
+    width: 5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-content: center;
+    background-color: white;
+
+    &-button {
+      background-color: transparent;
+      border: none;
+    }
+  }
 }

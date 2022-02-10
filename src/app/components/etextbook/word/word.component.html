@@ -1,18 +1,28 @@
 <section class="word" data-id="{{ word.id }}">
-  <div class="word__image">
-    <img src="{{ url + '/' + word.image }}" alt="{{ word.word }}" />
-  </div>
+  <img
+    class="word__image"
+    src="{{ this.httpService.getUrl(word.image) }}"
+    alt="{{ word.word }}"
+  />
   <div class="word__content">
     <div>
       <div>
         {{ word.word }}({{ word.transcription }}) - {{ word.wordTranslate }}
+        <app-audio class="word__play" [word]="word"></app-audio>
       </div>
-      <app-audio class="word__play" [word]="word"></app-audio>
     </div>
     <div>{{ word.wordTranslate }}</div>
     <div [innerHTML]="word.textMeaning"></div>
     <div [innerHTML]="word.textMeaningTranslate"></div>
     <div [innerHTML]="word.textExample"></div>
     <div [innerHTML]="word.textExampleTranslate"></div>
+  </div>
+  <div class="word__controls">
+    <button class="word__controls-button" title="Отметить как сложное">
+      <i class="fa fa-graduation-cap" aria-hidden="true"></i>
+    </button>
+    <button class="word__controls-button" title="Отметить как изученное">
+      <i class="fa fa-check-circle" aria-hidden="true"></i>
+    </button>
   </div>
 </section>
