@@ -16,6 +16,7 @@ export const routeChangeAnimation: AnimationTriggerMetadata[] = [
       query(':enter, :leave', [
         style({
           position: 'absolute',
+          top: 0,
           opacity: 1,
         }),
       ]),

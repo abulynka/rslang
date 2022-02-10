@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { User, UserInfo } from '../interfaces/interfaces';
 import { Observable } from 'rxjs';
 
@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 })
 export class HttpService {
   private url: string = 'https://rs-lang-angular.herokuapp.com';
-  protected constructor(private http: HttpClient) {}
+  public constructor(private http: HttpClient) {}
 
   public createUser(user: User): Observable<unknown> {
     return this.http.post(`${this.url}/users`, user);
@@ -19,6 +19,11 @@ export class HttpService {
       email,
       password,
     };
-    return this.http.post(`https://rs-lang-angular.herokuapp.com/signin`, data);
+    return this.http.post(`${this.url}/signin`, data);
+  }
+
+  public getWords(group: string, page: string) {
+    const params = new HttpParams().set('group', group).set('page', page);
+    return this.http.get(`${this.url}/words`, { params });
   }
 }

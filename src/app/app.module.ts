@@ -10,6 +10,9 @@ import { MainPageComponent } from './components/main-page/main-page.component';
 import { SigninComponent } from './components/sign-in/signin.component';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { AboutUsComponent } from './components/about-us/about-us.component';
+import { CheckAuthGuard } from './guards/check-auth.guard';
+import { HttpService } from './services/http.service';
+import { AuthService } from './services/auth.service';
 
 const appRoutes: Routes = [
   { path: '', component: MainPageComponent },
@@ -17,17 +20,20 @@ const appRoutes: Routes = [
     path: 'signin',
     component: SigninComponent,
     data: { animation: 'signin' },
+    canActivate: [CheckAuthGuard]
   },
   {
     path: 'signup',
     component: SignUpComponent,
     data: { animation: 'signup' },
+    canActivate: [CheckAuthGuard]
   },
   {
     path: 'about-us',
     component: AboutUsComponent,
-    data: { animation: 'about' },
+    data: { animation: 'about' }
   },
+  { path: '**', component: MainPageComponent },
 ];
 
 @NgModule({
@@ -45,7 +51,7 @@ const appRoutes: Routes = [
     RouterModule.forRoot(appRoutes),
     BrowserAnimationsModule,
   ],
-  providers: [],
+  providers: [HttpService, AuthService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

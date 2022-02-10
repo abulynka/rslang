@@ -48,6 +48,7 @@ export class SigninComponent {
         this.change(false);
         if (data.token) {
           this.authService.setUserData(data);
+          this.router.navigate(['/'])
         }
       });
   }
