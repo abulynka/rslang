@@ -9,11 +9,23 @@
     <ul class="navbar-list">
       <li class="navbar-item"><a routerLink="/">главная</a></li>
       <li class="navbar-item"><a routerLink="">учебник</a></li>
-      <li class="navbar-item"><a routerLink="">мини-игры</a></li>
+      <li class="navbar-item games-btn">
+        <button class="btn">мини-игры</button>
+        <div class="dropdown">
+          <button class="btn">
+            <i class="fa fa-caret-down"></i>
+          </button>
+          <div class="dropdown-content">
+            <a routerLink="">аудиовызов</a>
+            <a routerLink="">спринт</a>
+          </div>
+        </div>
+      </li>
       <li class="navbar-item" *ngIf="isAuthUser">
         <a routerLink="">статистика</a>
       </li>
     </ul>
+
     <ul class="navbar-list">
       <li class="navbar-item user-info" *ngIf="isAuthUser">
         <p class="user-info__name">{{ userName }}</p>
@@ -26,7 +38,7 @@
           выйти
         </button>
       </li>
-      <li class="navbar-item" *ngIf="!isAuthUser">
+      <li class="navbar-item enter" *ngIf="!isAuthUser">
         <a routerLink="signin">Войти</a>
       </li>
       <li class="navbar-item"><a routerLink="about-us">О команде</a></li>

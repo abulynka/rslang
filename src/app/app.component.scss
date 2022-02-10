@@ -15,6 +15,11 @@ main.main {
 .logo {
   width: 70px;
   cursor: pointer;
+  transition: 0.3s;
+}
+
+.logo:hover {
+  transform: scale(1.1);
 }
 
 .navbar {
@@ -57,6 +62,18 @@ main.main {
   color: #9c83f3;
 }
 
+.enter {
+  padding: 15px;
+  border: 3px solid #ffffff;
+  border-radius: 10px;
+  transition: 0.3s;
+}
+
+.enter:hover {
+  color: #2d56c7;
+  border: 3px solid #2d56c7;
+}
+
 .footer__svg {
   height: 60px;
   cursor: pointer;
@@ -71,4 +88,50 @@ main.main {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.games-btn {
+  background-color: transparent;
+  border: 3px solid #ffffff;
+  border-radius: 10px;
+}
+
+.games-btn:hover {
+  transform: scale(1);
+}
+
+.btn {
+  color: white;
+  padding: 10px;
+  font-size: 20px;
+  font-weight: 600;
+  border: none;
+  outline: none;
+}
+
+.dropdown {
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: rgb(34, 27, 122);
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {
+  background-color: rgb(202, 203, 241);
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
 }
