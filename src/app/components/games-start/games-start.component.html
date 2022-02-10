@@ -1,0 +1,15 @@
+<article class="start-game">
+  <article class="start-game__window">
+    <h2>{{ gameName }}</h2>
+    <h3>
+      Тренирует навык быстрого перевода с английского языка на русский. Вам
+      нужно выбрать соответствует ли перевод предложенному слову. Ниже выберите
+      уровень сложности.
+    </h3>
+    <div class="start-game__buttons">
+      <button *ngFor="let i of [1, 2, 3, 4, 5, 6]" (click)="startGame(i-1)">
+        <span>{{ i }}</span>
+      </button>
+    </div>
+  </article>
+</article>

@@ -1,0 +1,33 @@
+<nav class="navbar navbar-dark bg-primary">
+  <div class="btn-group" role="group" aria-label="Basic example">
+    <button type="button" class="btn btn-primary btn-lg" routerLink="/">
+      главная
+    </button>
+    <button type="button" class="btn btn-primary btn-lg">учебник</button>
+    <button type="button" class="btn btn-primary btn-lg">мини-игры</button>
+    <button type="button" class="btn btn-primary btn-lg" *ngIf="isAuthUser">
+      статистика
+    </button>
+  </div>
+
+  <div class="btn-group" role="group" aria-label="Basic example">
+    <article class="user-info" *ngIf="isAuthUser">
+      <p class="user-info__name">{{ name }}</p>
+      <img class="user-info__img" src="../../../assets/user.png" alt="user" />
+      <button type="button" class="btn btn-outline-warning" (click)="logOut()">
+        выйти
+      </button>
+    </article>
+    <button
+      type="button"
+      class="btn btn-primary btn-lg"
+      routerLink="/signin"
+      *ngIf="!isAuthUser"
+    >
+      войти
+    </button>
+    <button type="button" class="btn btn-primary btn-lg" routerLink="/about-us">
+      o команде
+    </button>
+  </div>
+</nav>

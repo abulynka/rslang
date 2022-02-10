@@ -1,8 +1,5 @@
 main.main {
   position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .header {
@@ -13,8 +10,8 @@ main.main {
 }
 
 .logo {
-  width: 70px;
   cursor: pointer;
+  width: 70px;
   transition: 0.3s;
 }
 

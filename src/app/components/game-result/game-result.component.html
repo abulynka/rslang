@@ -1,0 +1,22 @@
+<article class="sprint-result">
+<button (click)="reastartGame()">Играть заново</button>
+  <article class="sprint-result__window">
+    <h2>Результаты <span class="score">{{ score }}</span></h2>
+    <div class="sprint-result__frame">
+      <div class="sprint-result__line" *ngFor="let answer of answers">
+        <button
+          class="sprint-result__sound-btn"
+          (click)="playSound(answer.audio)"
+        >
+          <img src="../../../assets/svg/sound.svg" alt="" />
+        </button>
+        <p>{{ answer.word }}</p>
+        <p>{{ answer.transcription }}</p>
+        <p>{{ answer.wordTranslate }}</p>
+        <p class="sprint-result__mark" [ngClass]="{ 'right-answer': answer.answer }">
+          {{ answer.answer ? '+' : '-' }}
+        </p>
+      </div>
+    </div>
+  </article>
+</article>
