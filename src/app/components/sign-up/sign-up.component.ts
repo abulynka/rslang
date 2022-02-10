@@ -11,9 +11,9 @@ import { HttpService } from 'src/app/services/http.service';
   styleUrls: ['./sign-up.component.scss'],
 })
 export class SignUpComponent {
+  public userName: string = '';
   public email: string = '';
   public password: string = '';
-  public rPassword: string = '';
   public isSent: boolean = false;
   public isUserExist: boolean = false;
 
@@ -24,7 +24,7 @@ export class SignUpComponent {
 
   public send(): void {
     const user: User = {
-      name: 'To-Do',
+      name: this.userName,
       email: this.email,
       password: this.password,
     };
@@ -33,7 +33,6 @@ export class SignUpComponent {
       .createUser(user)
       .pipe(
         catchError((err: HttpErrorResponse) => {
-          console.log(err);
           this.setBoolean(true);
           return [];
         })
