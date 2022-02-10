@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpService } from 'src/app/services/http.service';
 import { map, catchError } from 'rxjs/operators';
@@ -8,25 +8,26 @@ import { map, catchError } from 'rxjs/operators';
   templateUrl: './signin.component.html',
   styleUrls: ['./signin.component.scss'],
 })
-export class SigninComponent implements OnInit {
-  email: string = '';
-  password: string = '';
+export class SigninComponent {
+  public email: string = '';
+  public password: string = '';
 
-  constructor(private httpService: HttpService, private router: Router) {}
+  public constructor(
+    private httpService: HttpService,
+    private router: Router
+  ) {}
 
-  ngOnInit(): void {}
-
-  send() {
+  public send(): void {
     this.httpService
       .singIn(this.email, this.password)
       .pipe(
-        map((data) => data),
-        catchError((err) => {
+        map((data: any) => data),
+        catchError((err: any) => {
           console.log(err);
           return [];
         })
       )
-      .subscribe((data) => {
+      .subscribe((data: any) => {
         console.log(data);
       });
   }

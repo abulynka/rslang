@@ -9,13 +9,13 @@ import { routeChangeAnimation } from './components/change-route-animation';
   animations: [routeChangeAnimation],
 })
 export class AppComponent {
-  title = 'rslang';
+  public title: string = 'rslang';
 
-  getRouteAnimationState(outlet: RouterOutlet) {
+  public getRouteAnimationState(outlet: RouterOutlet): RouterOutlet {
     return (
       outlet &&
       outlet.activatedRouteData &&
       outlet.activatedRouteData['animation']
-    )
+    );
   }
 }
