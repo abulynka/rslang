@@ -1,0 +1,15 @@
+.word {
+  display: flex;
+
+  &__image {
+    width: 30%;
+  }
+
+  &__content {
+    width: 70%;
+    background-color: white;
+    color: black;
+    padding: 30px;
+    line-height: 30px;
+  }
+}

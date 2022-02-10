@@ -13,25 +13,34 @@ import { AboutUsComponent } from './components/about-us/about-us.component';
 import { CheckAuthGuard } from './guards/check-auth.guard';
 import { HttpService } from './services/http.service';
 import { AuthService } from './services/auth.service';
+import { WordComponent } from './components/etextbook/word/word.component';
+import { PageComponent } from './components/etextbook/page/page.component';
+import { ChapterComponent } from './components/etextbook/chapter/chapter.component';
+import { EtextbookComponent } from './components/etextbook/etextbook/etextbook.component';
+import { AudioComponent } from './components/etextbook/audio/audio.component';
 
 const appRoutes: Routes = [
   { path: '', component: MainPageComponent },
   {
+    path: 'etextbook',
+    component: EtextbookComponent,
+  },
+  {
     path: 'signin',
     component: SigninComponent,
     data: { animation: 'signin' },
-    canActivate: [CheckAuthGuard]
+    canActivate: [CheckAuthGuard],
   },
   {
     path: 'signup',
     component: SignUpComponent,
     data: { animation: 'signup' },
-    canActivate: [CheckAuthGuard]
+    canActivate: [CheckAuthGuard],
   },
   {
     path: 'about-us',
     component: AboutUsComponent,
-    data: { animation: 'about' }
+    data: { animation: 'about' },
   },
   { path: '**', component: MainPageComponent },
 ];
@@ -43,6 +52,11 @@ const appRoutes: Routes = [
     SigninComponent,
     SignUpComponent,
     AboutUsComponent,
+    WordComponent,
+    PageComponent,
+    ChapterComponent,
+    EtextbookComponent,
+    AudioComponent,
   ],
   imports: [
     BrowserModule,
