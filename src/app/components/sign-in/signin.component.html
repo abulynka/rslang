@@ -1,0 +1,69 @@
+<form class="from-section">
+  <div class="form-floating mb-3">
+    <input
+      type="email"
+      name="email"
+      class="form-control"
+      placeholder="name@example.com"
+      aria-describedby="emailHelp"
+      [(ngModel)]="email"
+      #signInEmail="ngModel"
+      [class.is-invalid]="(signInEmail.invalid && signInEmail.dirty) || isError"
+      pattern="^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$"
+      required
+      email
+    />
+    <label for="email">Email</label>
+    <div
+      [hidden]="signInEmail.valid || signInEmail.pristine"
+      class="alert alert-danger"
+    >
+      Неправильный Email!
+    </div>
+  </div>
+  <div class="form-floating mb-3">
+    <input
+      type="password"
+      name="password"
+      class="form-control"
+      [(ngModel)]="password"
+      #signInpsw="ngModel"
+      autocomplete="off"
+      pattern="[a-zA-Z\d].{8,}$"
+      [class.is-invalid]="(signInpsw.invalid && signInpsw.dirty) || isError"
+      placeholder="Password"
+      required
+    />
+    <label for="password" class="form-label">Пароль</label>
+    <div
+      [hidden]="signInpsw.valid || signInpsw.pristine"
+      class="alert alert-danger"
+    >
+      Минимум 8 знаков, 1 буква и 1 цифра!
+    </div>
+  </div>
+  <span [hidden]="!isError" class="badge bg-danger">Ошибка: {{ error }}</span>
+  <div>
+    <p>
+      Нет аккаунта?
+      <a routerLink="/signup" class="button" class="button link-primary"
+        >Регистрация</a
+      >.
+    </p>
+  </div>
+  <div class="load-section">
+    <button
+      [disabled]="signInpsw.invalid || signInEmail.invalid"
+      type="submit"
+      class="btn btn-primary"
+      (click)="send()"
+    >
+      Войти
+    </button>
+    <div
+      [hidden]="!isSent"
+      class="spinner-border text-primary"
+      role="status"
+    ></div>
+  </div>
+</form>

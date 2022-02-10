@@ -1,1 +1,9 @@
-<app-main-page></app-main-page>
+<header>
+  <button type="button" class="btn btn-primary btn-lg">О команде</button>
+  <button type="button" class="btn btn-primary btn-lg" routerLink="/signin">
+    войти
+  </button>
+</header>
+<main class="main" [@routeChangeAnimation]="getRouteAnimationState(outlet)">
+  <router-outlet #outlet="outlet"></router-outlet>
+</main>
