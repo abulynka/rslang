@@ -1,0 +1,41 @@
+<!-- <section class="audio-call-section">
+  <div class="rules-container">
+    <h2>Аудиовызов</h2>
+    <p>Выберите из предложенных вариантов ответа правильный перевод слова, который услышите</p>
+    <button type="button" class="btn btn-primary start-audio-call-btn" (click)="renderQuestion()">Начать</button>
+  </div>
+
+  <div class="question-container">
+    <div class="circle-container">
+      <span class="circle" *ngFor="let num of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]"></span>
+    </div>
+    <img class="sound" src="../../../assets/svg/1486564396-audio_81506.svg" alt="sound" *ngIf="questions[0]" (click)="playSound(questions[answeredAmount].answer)">
+
+    <div class="answer-container" *ngIf="questions[0]">
+      <img class="correct-img" src="{{ url + '/' + questions[answeredAmount].answer.image }}" alt="image">
+      <div class="answer-right-column">
+        <div class="correct-word">
+          <img class="small-svg" src="../../../assets/svg/volume-audio-svgrepo-com.svg" alt="image" (click)="playSound(questions[answeredAmount].answer)">
+          <p class="answer-word">{{ questions[answeredAmount].answer.word }}</p>
+          <p>{{ questions[answeredAmount].answer.transcription }}</p>
+        </div>
+        <div class="english-exaple">
+          <p>{{ questions[answeredAmount].answer.textExample }}</p>
+        </div>
+        <div class="russian-example">
+          <p>{{ questions[answeredAmount].answer.textExampleTranslate }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="audio-call-btn-container">
+      <button type="button" class="btn btn-primary btn-lg answer-btn">{{ randomWordsArr[0].word }}</button>
+      <button type="button" class="btn btn-primary btn-lg answer-btn">{{ randomWordsArr[1].word }}</button>
+      <button type="button" class="btn btn-primary btn-lg answer-btn">{{ randomWordsArr[2].word }}</button>
+      <button type="button" class="btn btn-primary btn-lg answer-btn">{{ randomWordsArr[3].word }}</button>
+      <button type="button" class="btn btn-primary btn-lg answer-btn">{{ randomWordsArr[4].word }}</button>
+    </div>
+    <button type="button" class="btn btn-warning btn-unknown">Не знаю</button>
+    <button type="button" class="btn btn-warning btn-next" (click)="nextQuestion()">→</button>
+  </div>
+</section> -->

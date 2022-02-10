@@ -13,6 +13,7 @@ import { AboutUsComponent } from './components/about-us/about-us.component';
 import { CheckAuthGuard } from './guards/check-auth.guard';
 import { HttpService } from './services/http.service';
 import { AuthService } from './services/auth.service';
+import { AudiocallGameComponent } from './components/audiocall-game/audiocall-game.component';
 import { WordComponent } from './components/etextbook/word/word.component';
 import { PageComponent } from './components/etextbook/page/page.component';
 import { ChapterComponent } from './components/etextbook/chapter/chapter.component';
@@ -51,6 +52,10 @@ const appRoutes: Routes = [
     path: 'sprint-game',
     component: SprintGameComponent,
   },
+  {
+    path: 'audiocall',
+    component: AudiocallGameComponent,
+  },
   { path: '**', component: MainPageComponent },
 ];
 
@@ -61,6 +66,7 @@ const appRoutes: Routes = [
     SigninComponent,
     SignUpComponent,
     AboutUsComponent,
+    AudiocallGameComponent,
     WordComponent,
     PageComponent,
     ChapterComponent,
