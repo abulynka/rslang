@@ -1,9 +1,36 @@
 <header>
-  <button type="button" class="btn btn-primary btn-lg">О команде</button>
-  <button type="button" class="btn btn-primary btn-lg" routerLink="/signin">
-    войти
-  </button>
+  <nav class="navbar navbar-dark bg-primary">
+    <div class="btn-group" role="group" aria-label="Basic example">
+      <button type="button" class="btn btn-primary btn-lg" routerLink="/">
+        главная
+      </button>
+      <button type="button" class="btn btn-primary btn-lg">
+        учебник
+      </button>
+      <button type="button" class="btn btn-primary btn-lg">
+        мини-игры
+      </button>
+      <button type="button" class="btn btn-primary btn-lg">
+        статистика
+      </button>
+    </div>
+
+    <div class="btn-group" role="group" aria-label="Basic example">
+      <button type="button" class="btn btn-primary btn-lg" routerLink="/signin">
+        войти
+      </button>
+      <button type="button" class="btn btn-primary btn-lg" routerLink="/about-us">
+        o команде
+      </button>
+    </div>
+  </nav>
 </header>
+
 <main class="main" [@routeChangeAnimation]="getRouteAnimationState(outlet)">
   <router-outlet #outlet="outlet"></router-outlet>
 </main>
+
+<footer>
+  <nav class="navbar navbar-dark bg-primary">
+  </nav>
+</footer>

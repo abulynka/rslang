@@ -9,6 +9,7 @@ import { AppComponent } from './app.component';
 import { MainPageComponent } from './components/main-page/main-page.component';
 import { SigninComponent } from './components/sign-in/signin.component';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
+import { AboutUsComponent } from './components/about-us/about-us.component';
 
 const appRoutes: Routes = [
   { path: '', component: MainPageComponent },
@@ -22,6 +23,11 @@ const appRoutes: Routes = [
     component: SignUpComponent,
     data: { animation: 'signup' },
   },
+  {
+    path: 'about-us',
+    component: AboutUsComponent,
+    data: { animation: 'about' },
+  },
 ];
 
 @NgModule({
@@ -30,6 +36,7 @@ const appRoutes: Routes = [
     MainPageComponent,
     SigninComponent,
     SignUpComponent,
+    AboutUsComponent,
   ],
   imports: [
     BrowserModule,
