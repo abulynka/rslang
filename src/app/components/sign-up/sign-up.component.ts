@@ -1,4 +1,3 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError } from 'rxjs';
@@ -32,7 +31,7 @@ export class SignUpComponent {
     this.signUpService
       .createUser(user)
       .pipe(
-        catchError((err: HttpErrorResponse) => {
+        catchError(() => {
           this.setBoolean(true);
           return [];
         })

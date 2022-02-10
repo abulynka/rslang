@@ -1,0 +1,57 @@
+<section class="sprint-game">
+  <app-games-start
+    gameName="Спринт"
+    (clicked)="startGame()"
+    *ngIf="state === 'start'"
+  ></app-games-start>
+  <app-game-result
+    (clicked)="restartGame()"
+    [answers]="answers"
+    [score]="score"
+    *ngIf="state === 'end'"
+  ></app-game-result>
+  <article class="sprint-game__info" *ngIf="state === 'process'">
+    <div class="sprint-game__timer">
+      <span>{{ timer }}</span>
+    </div>
+  </article>
+  <article
+    class="sprint-game__window"
+    *ngIf="questions[wordNumber] && state === 'process'"
+  >
+    <div class="sprint-game__score">
+      <span>{{ score }}</span>
+    </div>
+    <div class="sprint-game__circles">
+      <span
+        *ngFor="let num of [1, 2, 3]"
+        [ngClass]="{ active: rightNumbers >= num }"
+      ></span>
+    </div>
+    <img
+      class="sprint-game__image"
+      src="../../../assets/svg/monky.svg"
+      alt=""
+    />
+    <div class="sprint-game__words">
+      <button
+        class="sprint-game__sound-btn"
+        (click)="playSound(questions[wordNumber].wordData)"
+      >
+        <img src="../../../assets/svg/sound.svg" alt="" />
+      </button>
+      <p class="sprint-game__word">{{ questions[wordNumber].wordData.word }}</p>
+      <p class="sprint-game__translate">
+        {{ questions[wordNumber].wrongTranslate }}
+      </p>
+    </div>
+    <div class="sprint-game__buttons">
+      <button type="button" class="btn btn-danger" (click)="checkWord(false)">
+        <span>←</span> не верно
+      </button>
+      <button type="button" class="btn btn-success" (click)="checkWord(true)">
+        верно <span>→</span>
+      </button>
+    </div>
+  </article>
+</section>

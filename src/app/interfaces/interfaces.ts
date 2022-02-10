@@ -35,11 +35,38 @@ export interface Word {
   wordTranslate: string;
   textMeaningTranslate: string;
   textExampleTranslate: string;
-
   difficult: boolean;
 }
 
-export interface Answer {
-  wordId: string;
+export interface Question {
+  wrongTranslate: string;
   isTrue: boolean;
+  wordData: Word;
+}
+
+export interface Answer extends Word {
+  answer: boolean;
+}
+
+export interface UserWordResult extends UserWord {
+  id: string;
+  wordId: string;
+}
+
+export interface UserWord {
+  difficulty: string;
+  optional: UserWordOptional;
+}
+
+export interface WordHistoryUnit {
+  [key: string]: {
+    isRight: boolean;
+    gameName: string;
+  };
+}
+
+export interface UserWordOptional {
+  countOfAnswersInRow: number;
+  isLearned: boolean;
+  wordHistory: WordHistoryUnit;
 }
