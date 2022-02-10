@@ -1,5 +1,6 @@
 export interface Env {
   production: boolean;
+  apiUrl: string;
 }
 
 export interface UserInfo {
