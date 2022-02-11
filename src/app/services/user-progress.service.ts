@@ -54,8 +54,26 @@ export class UserProgressService {
 
   public makeTheWordLearned(wordId: string): void {
     if (!this.auth.checkAuth()) return;
+
     this.userWordsService
       .get(this.auth.getCurrentUserId(), wordId)
+      .pipe(
+        catchError((err: HttpErrorResponse) => {
+          if (!err.ok) {
+            this.userWordsService
+              .insert(this.auth.getCurrentUserId(), wordId, {
+                difficulty: 'easy',
+                optional: {
+                  countOfAnswersInRow: 0,
+                  isLearned: true,
+                  wordHistory: {},
+                },
+              })
+              .subscribe();
+          }
+          return [];
+        })
+      )
       .subscribe((word: UserWordResult) => {
         word.difficulty = 'easy';
         word.optional.isLearned = true;
