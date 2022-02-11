@@ -13,23 +13,34 @@
         <button class="btn">мини-игры</button>
         <div class="dropdown">
           <button class="btn">
-            <i class="fa fa-caret-down"></i>
+            <em class="fa fa-caret-down"></em>
           </button>
           <div class="dropdown-content">
-            <a (click)="setGameState()" routerLink="">аудиовызов</a>
+            <a (click)="setGameState()" routerLink="/audiocall">аудиовызов</a>
             <a (click)="setGameState()" routerLink="/sprint-game">спринт</a>
           </div>
         </div>
       </li>
-      <li class="navbar-item" *ngIf="isAuthUser">
-        <a routerLink="">статистика</a>
+
+      <li class="navbar-item games-btn" *ngIf="isAuthUser">
+        <button class="btn">статистика</button>
+        <div class="dropdown">
+          <button class="btn">
+            <em class="fa fa-caret-down"></em>
+          </button>
+          <div class="dropdown-content">
+            <a routerLink="/short-statistic">краткосрочная</a>
+            <a routerLink="/long-statistic">долгосрочная</a>
+          </div>
+        </div>
       </li>
+
     </ul>
 
     <ul class="navbar-list">
       <li class="navbar-item user-info" *ngIf="isAuthUser">
         <p class="user-info__name">{{ userName }}</p>
-        <img class="user-info__img" src="../../../assets/user.png" alt="user" />
+        <img class="user-info__img" src="../assets/user.png" alt="user" />
         <button
           type="button"
           class="btn btn-outline-warning"

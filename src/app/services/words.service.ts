@@ -14,6 +14,12 @@ export class WordsService {
     private auth: AuthService
   ) {}
 
+  public getWord(id: string): Observable<Word> {
+    return this.httpService.http.get(
+      this.httpService.getUrl(`/words/${id}`)
+    ) as Observable<Word>;
+  }
+
   public getWords(
     group: string,
     page: string,
@@ -33,7 +39,7 @@ export class WordsService {
       );
     }
 
-    return this.httpService.http.get(`${this.httpService.url}/words`, {
+    return this.httpService.http.get(this.httpService.getUrl('/words'), {
       params,
     }) as Observable<Word[]>;
   }
