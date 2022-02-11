@@ -18,6 +18,7 @@ import { PageComponent } from './components/etextbook/page/page.component';
 import { ChapterComponent } from './components/etextbook/chapter/chapter.component';
 import { EtextbookComponent } from './components/etextbook/etextbook/etextbook.component';
 import { AudioComponent } from './components/etextbook/audio/audio.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { SprintGameComponent } from './components/sprint-game/sprint-game.component';
 import { GameResultComponent } from './components/game-result/game-result.component';
 import { GamesStartComponent } from './components/games-start/games-start.component';
@@ -89,6 +90,7 @@ const appRoutes: Routes = [
     HttpClientModule,
     RouterModule.forRoot(appRoutes),
     BrowserAnimationsModule,
+    MatPaginatorModule,
     NgxChartsModule,
   ],
   providers: [

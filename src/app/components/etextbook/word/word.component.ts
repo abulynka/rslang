@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { Word } from '../../../interfaces/interfaces';
 import { environment } from '../../../../environments/environment';
 import { AuthService } from '../../../services/auth.service';
+import { HttpService } from '../../../services/http.service';
 
 @Component({
   selector: 'app-word',
@@ -11,9 +12,9 @@ import { AuthService } from '../../../services/auth.service';
 export class WordComponent {
   @Input() public word: Word = {} as Word;
   public url: string = environment.apiUrl;
-  public authorized: boolean = false;
 
-  public constructor(private auth: AuthService) {
-    this.authorized = auth.checkAuth();
-  }
+  public constructor(
+    private auth: AuthService,
+    public httpService: HttpService
+  ) {}
 }
