@@ -13,6 +13,7 @@ import { AboutUsComponent } from './components/about-us/about-us.component';
 import { CheckAuthGuard } from './guards/check-auth.guard';
 import { HttpService } from './services/http.service';
 import { AuthService } from './services/auth.service';
+import { AudiocallGameComponent } from './components/audiocall-game/audiocall-game.component';
 import { WordComponent } from './components/etextbook/word/word.component';
 import { PageComponent } from './components/etextbook/page/page.component';
 import { ChapterComponent } from './components/etextbook/chapter/chapter.component';
@@ -26,7 +27,7 @@ import { GamesStatesService } from './services/games-states.service';
 import { UserProgressService } from './services/user-progress.service';
 import { ShortStatisticComponent } from './components/short-statistic/short-statistic.component';
 import { LongStatisticComponent } from './components/long-statistic/long-statistic.component';
-import {NgxChartsModule} from "@swimlane/ngx-charts";
+import { NgxChartsModule } from "@swimlane/ngx-charts";
 
 const appRoutes: Routes = [
   { path: '', component: MainPageComponent },
@@ -56,6 +57,10 @@ const appRoutes: Routes = [
     component: SprintGameComponent,
   },
   {
+    path: 'audiocall',
+    component: AudiocallGameComponent,
+  },
+  {
     path: 'short-statistic',
     component: ShortStatisticComponent,
   },
@@ -73,6 +78,7 @@ const appRoutes: Routes = [
     SigninComponent,
     SignUpComponent,
     AboutUsComponent,
+    AudiocallGameComponent,
     WordComponent,
     PageComponent,
     ChapterComponent,
