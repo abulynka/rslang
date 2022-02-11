@@ -70,3 +70,8 @@ export interface UserWordOptional {
   isLearned: boolean;
   wordHistory: WordHistoryUnit;
 }
+
+export interface QuestionAudioCall {
+  answer: Word;
+  other: Word[];
+}
