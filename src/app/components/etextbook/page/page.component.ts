@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Word } from '../../../interfaces/interfaces';
 import { WordsService } from '../../../services/words.service';
 
@@ -8,9 +8,9 @@ import { WordsService } from '../../../services/words.service';
   styleUrls: ['./page.component.scss'],
 })
 export class PageComponent implements OnInit {
+  @Input() public groupNumber: number = 0;
+  @Input() public pageNumber: number = 0;
   public words: Word[] = [];
-  private groupNumber: number = 0;
-  private pageNumber: number = 0;
 
   public constructor(private wordsService: WordsService) {}
 

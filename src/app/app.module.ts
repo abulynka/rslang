@@ -19,11 +19,15 @@ import { PageComponent } from './components/etextbook/page/page.component';
 import { ChapterComponent } from './components/etextbook/chapter/chapter.component';
 import { EtextbookComponent } from './components/etextbook/etextbook/etextbook.component';
 import { AudioComponent } from './components/etextbook/audio/audio.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { SprintGameComponent } from './components/sprint-game/sprint-game.component';
 import { GameResultComponent } from './components/game-result/game-result.component';
 import { GamesStartComponent } from './components/games-start/games-start.component';
 import { GamesStatesService } from './services/games-states.service';
 import { UserProgressService } from './services/user-progress.service';
+import { ShortStatisticComponent } from './components/short-statistic/short-statistic.component';
+import { LongStatisticComponent } from './components/long-statistic/long-statistic.component';
+import { NgxChartsModule } from "@swimlane/ngx-charts";
 
 const appRoutes: Routes = [
   { path: '', component: MainPageComponent },
@@ -56,6 +60,14 @@ const appRoutes: Routes = [
     path: 'audiocall',
     component: AudiocallGameComponent,
   },
+  {
+    path: 'short-statistic',
+    component: ShortStatisticComponent,
+  },
+  {
+    path: 'long-statistic',
+    component: LongStatisticComponent,
+  },
   { path: '**', component: MainPageComponent },
 ];
 
@@ -75,6 +87,8 @@ const appRoutes: Routes = [
     AudioComponent,
     GameResultComponent,
     GamesStartComponent,
+    ShortStatisticComponent,
+    LongStatisticComponent,
   ],
   imports: [
     BrowserModule,
@@ -82,6 +96,8 @@ const appRoutes: Routes = [
     HttpClientModule,
     RouterModule.forRoot(appRoutes),
     BrowserAnimationsModule,
+    MatPaginatorModule,
+    NgxChartsModule,
   ],
   providers: [
     HttpService,
