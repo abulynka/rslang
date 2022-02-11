@@ -25,6 +25,7 @@ import { GameResultComponent } from './components/game-result/game-result.compon
 import { GamesStartComponent } from './components/games-start/games-start.component';
 import { GamesStatesService } from './services/games-states.service';
 import { UserProgressService } from './services/user-progress.service';
+import { UsersWordsService } from './services/users-words.service';
 import { ShortStatisticComponent } from './components/short-statistic/short-statistic.component';
 import { LongStatisticComponent } from './components/long-statistic/long-statistic.component';
 import { NgxChartsModule } from "@swimlane/ngx-charts";
@@ -104,6 +105,7 @@ const appRoutes: Routes = [
     AuthService,
     GamesStatesService,
     UserProgressService,
+    UsersWordsService,
   ],
   bootstrap: [AppComponent],
 })

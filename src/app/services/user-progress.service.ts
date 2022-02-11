@@ -9,8 +9,8 @@ const checkLearnedWord = (
   userWord: UserWordResult,
   answersInRow: number
 ): boolean => {
-  const easyLimit: number = 2;
-  const hardLimit: number = 4;
+  const easyLimit: number = 3;
+  const hardLimit: number = 5;
 
   if (userWord.difficulty === 'easy' && answersInRow >= easyLimit) {
     return true;
@@ -34,9 +34,11 @@ export class UserProgressService {
 
   public checkWord(answer: Answer, gameName: string): void {
     if (!this.auth.checkAuth()) return;
+    const wordId: string = answer.id || <string>answer['_id'];
+
     this.gameName = gameName;
     this.userWordsService
-      .get(this.auth.getCurrentUserId(), answer.id)
+      .get(this.auth.getCurrentUserId(), wordId)
       .pipe(
         catchError((err: HttpErrorResponse) => {
           if (!err.ok) {
@@ -52,8 +54,26 @@ export class UserProgressService {
 
   public makeTheWordLearned(wordId: string): void {
     if (!this.auth.checkAuth()) return;
+
     this.userWordsService
       .get(this.auth.getCurrentUserId(), wordId)
+      .pipe(
+        catchError((err: HttpErrorResponse) => {
+          if (!err.ok) {
+            this.userWordsService
+              .insert(this.auth.getCurrentUserId(), wordId, {
+                difficulty: 'easy',
+                optional: {
+                  countOfAnswersInRow: 0,
+                  isLearned: true,
+                  wordHistory: {},
+                },
+              })
+              .subscribe();
+          }
+          return [];
+        })
+      )
       .subscribe((word: UserWordResult) => {
         word.difficulty = 'easy';
         word.optional.isLearned = true;
@@ -64,6 +84,7 @@ export class UserProgressService {
   }
 
   private updateUserWord(answer: Answer, userWord: UserWordResult): void {
+    const wordId: string = answer.id || <string>answer['_id'];
     const answersInRow: number = answer.answer
       ? userWord.optional.countOfAnswersInRow + 1
       : 0;
@@ -82,13 +103,15 @@ export class UserProgressService {
       },
     };
     this.userWordsService
-      .update(this.auth.getCurrentUserId(), answer.id, newUserWord)
+      .update(this.auth.getCurrentUserId(), wordId, newUserWord)
       .subscribe();
   }
 
   private insertUserWord(answer: Answer): void {
+    const wordId: string = answer.id || <string>answer['_id'];
+
     this.userWordsService
-      .insert(this.auth.getCurrentUserId(), answer.id, {
+      .insert(this.auth.getCurrentUserId(), wordId, {
         difficulty: 'easy',
         optional: {
           countOfAnswersInRow: answer.answer ? 1 : 0,
