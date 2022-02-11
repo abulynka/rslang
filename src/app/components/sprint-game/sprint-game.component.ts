@@ -1,5 +1,4 @@
 import { Component, HostListener, OnInit } from '@angular/core';
-import { map } from 'rxjs';
 import { Word, Question, Answer } from 'src/app/interfaces/interfaces';
 import { GamesStatesService } from 'src/app/services/games-states.service';
 import { UserProgressService } from 'src/app/services/user-progress.service';
@@ -11,6 +10,7 @@ function getQuestions(words: Word[]): Question[] {
 
   function getIndex(size: number, i: number): number {
     const number: number = Math.round(Math.random() * size);
+    if (size === 0) return 0;
     return number === i ? getIndex(size, i) : number;
   }
 
@@ -126,13 +126,9 @@ export class SprintGameComponent implements OnInit {
 
   private getWords(): void {
     this.wordsService
-      .getWords(this.group, this.page)
-      .pipe(
-        map((data: any) => {
-          return data as Word[];
-        })
-      )
+      .getWords(this.group, this.page, this.gameStateService.isOpenedFormMenu)
       .subscribe((words: Word[]) => {
+        console.log(words);
         this.questions = this.questions.concat(getQuestions(words));
         if (this.timer.toString() === '60') {
           this.setTimer();
@@ -141,16 +137,20 @@ export class SprintGameComponent implements OnInit {
   }
 
   private nextWord(): void {
-    const preAmountOfWords: number = 5;
     this.wordNumber += 1;
 
     if (this.wordNumber === this.questions.length) {
       this.state = 'end';
       return;
     }
+    this.checkWordNumber();
+  }
+
+  private checkWordNumber(): void {
+    const preAmountOfWords: number = 5;
     // Если остается 4 слова и, то дополняем вопросами
     if (
-      this.wordNumber === this.questions.length - preAmountOfWords &&
+      this.wordNumber >= this.questions.length - preAmountOfWords &&
       this.page !== '0'
     ) {
       this.page = (parseInt(this.page) - 1).toString();

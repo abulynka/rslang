@@ -23,6 +23,7 @@ import { GameResultComponent } from './components/game-result/game-result.compon
 import { GamesStartComponent } from './components/games-start/games-start.component';
 import { GamesStatesService } from './services/games-states.service';
 import { UserProgressService } from './services/user-progress.service';
+import { UsersWordsService } from './services/users-words.service';
 
 const appRoutes: Routes = [
   { path: '', component: MainPageComponent },
@@ -82,6 +83,7 @@ const appRoutes: Routes = [
     AuthService,
     GamesStatesService,
     UserProgressService,
+    UsersWordsService,
   ],
   bootstrap: [AppComponent],
 })

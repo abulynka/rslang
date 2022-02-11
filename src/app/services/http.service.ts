@@ -35,7 +35,7 @@ export class HttpService {
     return `${this.url}${addPath}`;
   }
 
-  private getBearerHeader(): {
+  public getBearerHeader(): {
     headers: HttpHeaders;
   } {
     return {
