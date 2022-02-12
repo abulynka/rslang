@@ -1,129 +1,208 @@
 @mixin flex {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.full-screen {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  z-index: 20;
+  width: 100%;
+  height: 100%;
 }
 
 .sprint-game {
-    @include flex;
-    position: relative;
-    flex-direction: column;
-    height: 100vh;
-    background-image: url(../../../assets/mountains.png);
-    background-attachment: fixed;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
+  @include flex;
+  position: relative;
+  flex-direction: column;
+  height: 100vh;
+  background-image: url(../../../assets/mountains.png);
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
-
+@keyframes clock {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(180deg);
+  }
+}
 .sprint-game__info {
+  @include flex();
+  font-size: 1.8em;
+  .sprint-game__timer {
     @include flex();
-    font-size: 1.8em;
-    .sprint-game__timer {
-        @include flex();
-        width: 60px;
-        height: 60px;
-        border-radius: 100%;
+    width: 100px;
+    height: 60px;
+    border-radius: 100%;
+    span {
+      display: inline-block;
+      width: 40px;
+      text-align: center;
+
+      .clock {
+        animation: clock 1s infinite;
+      }
     }
+  }
 }
 
-
-@keyframes trueAnswer {
+@mixin keyFrames($color) {
+  @keyframes answer {
     from {
-        box-shadow: 0 0 0px 0px #15ff00;
+      box-shadow: 0 0 0px 0px $color;
     }
     to {
-        box-shadow: 0 0 1px 4px #15ff00;
+      box-shadow: 0 0 1px 4px $color;
     }
+  }
+  animation: answer 0.5s;
 }
 
 .right {
-    animation: trueAnswer 0.5s;
+  @keyframes rightAnswer {
+    from {
+      box-shadow: 0 0 0px 0px rgb(81, 255, 0);
+    }
+    to {
+      box-shadow: 0 0 1px 4px rgb(81, 255, 0);
+    }
+  }
+  animation: rightAnswer 0.3s;
 }
 
+.wrong {
+  @keyframes wrongAnswer {
+    from {
+      box-shadow: 0 0 0px 0px rgb(255, 17, 0);
+    }
+    to {
+      box-shadow: 0 0 1px 4px rgb(255, 17, 0);
+    }
+  }
+  animation: wrongAnswer 0.3s;
+}
+
+.none {
+}
+
+.button-container {
+  position: absolute;
+  top: 20px;
+  left: 40px;
+  z-index: 20;
+  .mat-icon-button {
+    width: 60px;
+    height: 60px;
+
+    .icon-display {
+      transform: scale(2);
+    }
+  }
+}
 .sprint-game__window {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    height: 500px;
-    width: 500px;
-    border: 2px solid gray;
-    background: white;
-    border-radius: 10px;
-.sprint-game__image {
+  $border: 2px solid #c0c0c0;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 500px;
+  width: 500px;
+  border: $border;
+  background: white;
+  border-radius: 10px;
+
+  .sprint-game__image {
+    @keyframes animal {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
     margin-top: 50px;
-    height: 100px;
+    height: 70px;
+    animation: animal 0.5s;
+  }
+  .sprint-game__sound-btn {
+    display: block;
+    margin: 10px auto 15px auto;
+    background: none;
+    outline: none;
+    padding: 0;
+    border: 0;
+    cursor: pointer;
+
+    img {
+      width: 30px;
+      height: 30px;
+      transition: 0.2s;
+      &:hover {
+        transform: scale(0.9);
+      }
+    }
+  }
+
+  .sprint-game__score {
+    color: #ddff1e;
+    text-align: center;
+    font-size: 1.5em;
+    margin: 10px 0 5px 0;
+  }
+
+  .sprint-game__animals {
+    @include flex;
+  }
+
+  .sprint-game__circles {
+    @include flex;
+    height: 40px;
+    border-bottom: $border;
+
+    span {
+      display: block;
+      margin: 10px;
+      width: 20px;
+      height: 20px;
+      border-radius: 100%;
+      background: gray;
+    }
+
+    span.active:after {
+      content: '💡';
+    }
+  }
+  .sprint-game__words {
+    margin: 50px auto;
+
+    p {
+      font-size: 1.5em;
+      text-align: center;
+      color: gray;
+    }
+
+    .sprint-game__word {
+      font-size: 2em;
+      color: black;
+      margin: 10px 0 30px 0;
+    }
+  }
+
+  .sprint-game__buttons {
+    @include flex;
+    justify-content: space-around;
+    position: absolute;
+    width: 100%;
+    bottom: 10px;
+    button {
+      font-size: 0.8em;
+      color: white;
+      width: 120px;
+    }
+  }
 }
-    .sprint-game__sound-btn {
-        display: block;
-        margin: 10px auto 15px auto;
-        background: none;
-        outline: none;
-        padding: 0;
-        border: 0;
-        cursor: pointer;
-
-        img {
-            width: 30px;
-            height: 30px;
-            transition: 0.2s;
-            &:hover {   
-                transform: scale(0.9);
-            }
-        }
-
-    }
-
-    .sprint-game__score {
-        color: #ddff1e;
-        text-align: center;
-        font-size: 1.5em;
-        margin: 10px 0 5px 0;
-    }
-
-    .sprint-game__circles {
-        @include flex;
-        height: 40px;
-        border-bottom: 2px solid gray;
-
-        span {
-            display: block;
-            margin: 10px;
-            width: 20px;
-            height: 20px;
-            border-radius: 100%;
-            background: gray;
-        }
-
-        span.active:after {
-            content: "💡";
-        }
-    }
-    .sprint-game__words {
-        margin: 50px auto;
-
-        p {
-            font-size: 1.5em;
-            text-align: center;
-            color: gray;
-        }
-
-        .sprint-game__word {
-            font-size: 2em;
-            color: black;
-            margin: 10px 0 30px 0;
-        }
-    }
-
-    .sprint-game__buttons {
-        @include flex;
-        justify-content: space-around;
-        position: absolute;
-        width: 100%;
-        bottom: 10px;
-        button {
-            width: 120px;
-        }
-    }
-}
-
