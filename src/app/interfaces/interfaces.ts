@@ -21,6 +21,7 @@ export interface Auth {
 }
 
 export interface Word {
+  audioSrc: any;
   id: string;
   group: number;
   page: number;
