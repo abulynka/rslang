@@ -1,8 +1,10 @@
 <section class="audio-call-section">
   <div class="rules-container">
     <h2>Аудиовызов</h2>
-    <p>Выберите из предложенных вариантов ответа правильный перевод слова, который услышите</p>
-    <button type="button" class="btn btn-primary start-audio-call-btn" (click)="renderQuestion()">Начать</button>
+    <p>Ниже выберите уровень сложности. Затем выберите из предложенных вариантов ответа правильный перевод слова, который услышите</p>
+    <div class="group-btn-container">
+      <button type="button" class="btn btn-primary btn-group-num" *ngFor="let num of [0, 1, 2, 3, 4, 5]" (click)="renderQuestion(num)">{{num + 1}}</button>
+    </div>
   </div>
 
   <div class="question-container">
@@ -28,14 +30,23 @@
       </div>
     </div>
 
-    <div class="audio-call-btn-container">
-      <button type="button" class="btn btn-primary btn-lg answer-btn">{{ randomWordsArr[0].word }}</button>
-      <button type="button" class="btn btn-primary btn-lg answer-btn">{{ randomWordsArr[1].word }}</button>
-      <button type="button" class="btn btn-primary btn-lg answer-btn">{{ randomWordsArr[2].word }}</button>
-      <button type="button" class="btn btn-primary btn-lg answer-btn">{{ randomWordsArr[3].word }}</button>
-      <button type="button" class="btn btn-primary btn-lg answer-btn">{{ randomWordsArr[4].word }}</button>
+    <div class="audio-call-btn-container" *ngIf="randomWordsArr[0]">
+      <button type="button" class="btn btn-primary btn-lg answer-btn" *ngFor="let num of [0, 1, 2, 3, 4]" #button1 (click)="chooseWord(button1)">{{ randomWordsArr[num].word }}</button>
     </div>
     <button type="button" class="btn btn-warning btn-unknown">Не знаю</button>
     <button type="button" class="btn btn-warning btn-next" (click)="nextQuestion()">→</button>
+  </div>
+
+  <div class="result-popup">
+    <div class="result-container" *ngIf="questions[0]">
+      <p (click)="closeResult()"> X</p>
+      <h2>Результаты</h2>
+      <div class="result-row" *ngFor="let num of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]">
+        <img class="small-svg" src="../../../assets/svg/volume-audio-svgrepo-com.svg" alt="image" (click)="playSound(questions[answeredAmount].answer)">
+        <p>{{ questions[num].answer.word }}</p>
+        <p>{{ questions[num].answer.transcription }}</p>
+        <p>{{ questions[num].answer.wordTranslate }}</p>
+      </div>
+    </div>
   </div>
 </section>
