@@ -1,9 +1,19 @@
 <section class="audio-call-section">
   <div class="rules-container">
     <h2>Аудиовызов</h2>
-    <p>Ниже выберите уровень сложности. Затем выберите из предложенных вариантов ответа правильный перевод слова, который услышите</p>
+    <p>
+      Ниже выберите уровень сложности. Затем выберите из предложенных вариантов
+      ответа правильный перевод слова, который услышите
+    </p>
     <div class="group-btn-container">
-      <button type="button" class="btn btn-primary btn-group-num" *ngFor="let num of [0, 1, 2, 3, 4, 5]" (click)="renderQuestion(num)">{{num + 1}}</button>
+      <button
+        type="button"
+        class="btn btn-primary btn-group-num"
+        *ngFor="let num of [0, 1, 2, 3, 4, 5]"
+        (click)="startGame(num)"
+      >
+        {{ num + 1 }}
+      </button>
     </div>
   </div>
 
@@ -11,18 +21,38 @@
     <div class="circle-container">
       <span class="circle" *ngFor="let num of questions"></span>
     </div>
-    <img class="sound" src="../../../assets/svg/1486564396-audio_81506.svg" alt="sound" *ngIf="questions[0]" (click)="playSound(questions[wordNumber].answer.audio)">
+    <img
+      class="sound"
+      src="../../../assets/svg/1486564396-audio_81506.svg"
+      alt="sound"
+      *ngIf="questions[0]"
+      (click)="playSound(questions[wordNumber].answer.audio)"
+    />
 
     <div class="answer-container" *ngIf="questions[0] && questions[wordNumber]">
-      <img class="correct-img" src="{{ url + '/' + questions[wordNumber].answer.image }}" alt="image">
+      <img
+        class="correct-img"
+        src="{{ url + '/' + questions[wordNumber].answer.image }}"
+        alt="image"
+      />
       <div class="answer-right-column">
         <div class="correct-word">
-          <img class="small-svg" src="../../../assets/svg/volume-audio-svgrepo-com.svg" alt="image" (click)="playSound(questions[wordNumber].answer.audio)">
+          <img
+            class="small-svg"
+            src="../../../assets/svg/volume-audio-svgrepo-com.svg"
+            alt="image"
+            (click)="playSound(questions[wordNumber].answer.audio)"
+          />
           <p class="answer-word">{{ questions[wordNumber].answer.word }}</p>
           <p>{{ questions[wordNumber].answer.transcription }}</p>
         </div>
         <div class="english-exaple">
-          <img class="small-svg" src="../../../assets/svg/volume-audio-svgrepo-com.svg" alt="image" (click)="playSound(questions[wordNumber].answer.audioExample)">
+          <img
+            class="small-svg"
+            src="../../../assets/svg/volume-audio-svgrepo-com.svg"
+            alt="image"
+            (click)="playSound(questions[wordNumber].answer.audioExample)"
+          />
           <p class="text-example"></p>
         </div>
         <div class="russian-example">
@@ -32,10 +62,30 @@
     </div>
 
     <div class="audio-call-btn-container" *ngIf="randomWordsArr[0]">
-      <button type="button" class="btn btn-primary btn-lg answer-btn" *ngFor="let randomWord of randomWordsArr" #button1 (click)="chooseWord(button1)">{{ randomWord.wordTranslate }}</button>
+      <button
+        type="button"
+        class="btn btn-primary btn-lg answer-btn"
+        *ngFor="let randomWord of randomWordsArr"
+        #button1
+        (click)="chooseWord(button1)"
+      >
+        {{ randomWord.wordTranslate }}
+      </button>
     </div>
-    <button type="button" class="btn btn-warning btn-unknown" (click)="nextQuestion()">Не знаю</button>
-    <button type="button" class="btn btn-warning btn-next" (click)="nextQuestion()">→</button>
+    <button
+      type="button"
+      class="btn btn-warning btn-unknown"
+      (click)="skipQuestion()"
+    >
+      Не знаю
+    </button>
+    <button
+      type="button"
+      class="btn btn-warning btn-next"
+      (click)="nextQuestion()"
+    >
+      →
+    </button>
   </div>
 
   <div class="result-popup">
@@ -43,18 +93,34 @@
       <p class="close-btn" (click)="reastartGame()">X</p>
       <h2>Результаты</h2>
       <div class="wrong-answers">
-        <h3>Ошибок <span class="red-count">{{ wrongCount }}</span></h3>
+        <h3>
+          Ошибок <span class="red-count">{{ wrongCount }}</span>
+        </h3>
         <div class="result-row" *ngFor="let answer of wrongAnswers">
-          <img class="small-svg" src="../../../assets/svg/volume-audio-svgrepo-com.svg" alt="image"  *ngIf="answer" (click)="playSound(answer.audio)">
+          <img
+            class="small-svg"
+            src="../../../assets/svg/volume-audio-svgrepo-com.svg"
+            alt="image"
+            *ngIf="answer"
+            (click)="playSound(answer.audio)"
+          />
           <p *ngIf="answer">{{ answer.word }}</p>
           <p *ngIf="answer">{{ answer.transcription }}</p>
           <p *ngIf="answer">{{ answer.wordTranslate }}</p>
         </div>
       </div>
       <div class="correct-answers">
-        <h3>Знаю <span class="green-count">{{ correctCount }}</span></h3>
+        <h3>
+          Знаю <span class="green-count">{{ correctCount }}</span>
+        </h3>
         <div class="result-row" *ngFor="let answer of correctAnswers">
-          <img class="small-svg" src="../../../assets/svg/volume-audio-svgrepo-com.svg" alt="image"  *ngIf="answer" (click)="playSound(answer.audio)">
+          <img
+            class="small-svg"
+            src="../../../assets/svg/volume-audio-svgrepo-com.svg"
+            alt="image"
+            *ngIf="answer"
+            (click)="playSound(answer.audio)"
+          />
           <p *ngIf="answer">{{ answer.word }}</p>
           <p *ngIf="answer">{{ answer.transcription }}</p>
           <p *ngIf="answer">{{ answer.wordTranslate }}</p>

@@ -1,4 +1,10 @@
-import { Component, EventEmitter, HostListener, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  HostListener,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { Answer, QuestionAudioCall, Word } from 'src/app/interfaces/interfaces';
 import { GamesStatesService } from 'src/app/services/games-states.service';
 import { UserProgressService } from 'src/app/services/user-progress.service';
@@ -8,29 +14,54 @@ import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-audiocall-game',
   templateUrl: './audiocall-game.component.html',
-  styleUrls: ['./audiocall-game.component.scss']
+  styleUrls: ['./audiocall-game.component.scss'],
 })
 export class AudiocallGameComponent implements OnInit {
+  @Output() public clicked: EventEmitter<string> = new EventEmitter();
   public words: Word[] = [];
-  private group: string = '0';
-  private page: string = '0';
   public wordNumber: number = 0;
   public state: string = '';
-  private audioObj: HTMLAudioElement = new Audio();
-  public questions: Array<QuestionAudioCall> = [];
+  public questions: QuestionAudioCall[] = [];
   public correctAnswers: Word[] = [];
   public wrongAnswers: Word[] = [];
-  public randomWordsArr: Array<Word> = [];
+  public randomWordsArr: Word[] = [];
   public url: string = environment.apiUrl;
   public isCorrect: boolean = false;
   public totalAmount: number = this.questions.length;
-  public answerBullets = new Array(this.totalAmount).fill('');
   public correctCount: number = 0;
   public wrongCount: number = 0;
-  @Output() public clicked: EventEmitter<string> = new EventEmitter();
+  private group: string = '0';
+  private page: string = '0';
+  private audioObj: HTMLAudioElement = new Audio();
+  private answerBullets: string[] = new Array(this.totalAmount).fill('');
 
-  public constructor(private wordsService: WordsService, private gamesService: GamesStatesService, private userProgressService: UserProgressService) { }
+  public constructor(
+    private wordsService: WordsService,
+    private gamesService: GamesStatesService,
+    private userProgressService: UserProgressService
+  ) {}
 
+  @HostListener('document:keyup', ['$event'])
+  public handleKeyboardEvent(event: KeyboardEvent): void {
+    const answerBuns: NodeListOf<HTMLElement> = document.querySelectorAll(
+      '.answer-btn'
+    ) as NodeListOf<HTMLElement>;
+    const threeIndex: number = 3;
+    const fourIndex: number = 4;
+    if (event.key === '1') {
+      this.chooseWord(answerBuns[0]);
+    } else if (event.key === '2') {
+      this.chooseWord(answerBuns[1]);
+    } else if (event.key === '3') {
+      this.chooseWord(answerBuns[2]);
+    } else if (event.key === '4') {
+      this.chooseWord(answerBuns[threeIndex]);
+    } else if (event.key === '5') {
+      this.chooseWord(answerBuns[fourIndex]);
+    } else if (event.key === 'Enter') {
+      this.skipQuestion();
+    }
+  }
   public ngOnInit(): void {
     if (!this.gamesService.isOpenedFormMenu) {
       this.startGame();
@@ -43,58 +74,50 @@ export class AudiocallGameComponent implements OnInit {
     this.audioObj.play();
   }
 
-  public getRandomWord(question: QuestionAudioCall): Array<Word> {
-    const shuffle = (array: Array<Word>): Array<Word> => {
-      let currentIndex: number = array.length,
-        temporaryValue,
-        randomIndex;
-      while (0 !== currentIndex) {
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex -= 1;
-        temporaryValue = array[currentIndex];
-        array[currentIndex] = array[randomIndex];
-        array[randomIndex] = temporaryValue;
-      }
-      return array;
-    };
-    return shuffle([question.answer, ...question.other]);
-  }
-
-  private getWords(): void {
-    this.wordsService
-      .getWords(this.group, this.gamesService.page)
-      .subscribe((words: Word[]) => {
-        this.words = words;
-        this.totalAmount = this.words.length;
-        this.questions = new Array(20).fill(0).map((_, index) => {
-          return {
-            answer: this.words[index],
-            other: new Array(4).fill(0).map(() => {
-              return this.words[Math.floor(Math.random() * this.words.length)];
-            }),
-          };
-        });
-        this.randomWordsArr = this.getRandomWord(this.questions[this.wordNumber]);
-        this.playSound(this.questions[this.wordNumber].answer.audio);
-      });
-  }
-
   public chooseWord(item: HTMLElement): void {
-    const answerContainer = document.querySelector('.answer-container') as HTMLElement;
-    const sound = document.querySelector('.sound') as HTMLElement;
-    const btnNext = document.querySelector('.btn-next') as HTMLElement;
-    const btnUnknown = document.querySelector('.btn-unknown') as HTMLElement;
-    const circles = document.querySelectorAll('.circle') as NodeListOf<HTMLElement>;
-    const textExample = document.querySelector('.text-example') as HTMLElement;
+    const answerContainer: HTMLElement = document.querySelector(
+      '.answer-container'
+    ) as HTMLElement;
+    const sound: HTMLElement = document.querySelector('.sound') as HTMLElement;
+    const btnNext: HTMLElement = document.querySelector(
+      '.btn-next'
+    ) as HTMLElement;
+    const btnUnknown: HTMLElement = document.querySelector(
+      '.btn-unknown'
+    ) as HTMLElement;
+    const circles: NodeListOf<HTMLElement> = document.querySelectorAll(
+      '.circle'
+    ) as NodeListOf<HTMLElement>;
+    const textExample: HTMLElement = document.querySelector(
+      '.text-example'
+    ) as HTMLElement;
+    const answerBtn: NodeListOf<HTMLElement> = document.querySelectorAll(
+      '.answer-btn'
+    ) as NodeListOf<HTMLElement>;
     if (!answerContainer) return;
     answerContainer.style.display = 'flex';
     sound.style.display = 'none';
     btnNext.style.display = 'flex';
     btnUnknown.style.display = 'none';
+    answerBtn.forEach((btn: HTMLElement) => btn.classList.add('disabled'));
     textExample.innerHTML = this.questions[this.wordNumber].answer.textExample;
-    if (item.textContent !== this.questions[this.wordNumber].answer.wordTranslate) {
+    if (
+      (<string>item.textContent).trim() !==
+      this.questions[this.wordNumber].answer.wordTranslate
+    ) {
       item.style.background = 'red';
       this.answerBullets[this.wordNumber] = 'red';
+      const answerBuns: NodeListOf<HTMLElement> = document.querySelectorAll(
+        '.answer-btn'
+      ) as NodeListOf<HTMLElement>;
+      answerBuns.forEach((btn: HTMLElement) => {
+        if (
+          (<string>btn.textContent).trim() ===
+          this.questions[this.wordNumber].answer.wordTranslate
+        ) {
+          btn.style.background = 'green';
+        }
+      });
       this.wrongCount++;
       this.wrongAnswers.push(this.questions[this.wordNumber].answer);
     } else {
@@ -104,47 +127,51 @@ export class AudiocallGameComponent implements OnInit {
       this.correctCount++;
       this.correctAnswers.push(this.questions[this.wordNumber].answer);
     }
-    this.userProgressService.checkWord({answer: this.isCorrect, ...this.words[this.wordNumber]} as Answer, 'audiocall');
+    this.userProgressService.checkWord(
+      { answer: this.isCorrect, ...this.words[this.wordNumber] } as Answer,
+      'audiocall'
+    );
     circles.forEach((circle: Element, index: number) => {
-      const classCircle = this.answerBullets[index];
+      const classCircle: string = this.answerBullets[index];
       if (classCircle) circle.classList.add(classCircle);
-    });
-  };
-
-  public renderQuestion(num?: number): void {
-    if (num) this.group = String(num);
-    this.page = this.gamesService.setRandomPage();
-    this.getWords();
-    const rulesContainer = document.querySelector('.rules-container') as HTMLElement;
-    const questionContainer = document.querySelector('.question-container') as HTMLElement;
-    const circles = document.querySelectorAll('.circle') as NodeListOf<HTMLElement>;
-    rulesContainer.style.display = 'none';
-    questionContainer.style.display = 'flex';
-    circles.forEach((item: Element, index: number) => {
-      item.classList.add(`${this.answerBullets[index]}`);
     });
   }
 
-  public startGame(): void {
+  public startGame(num?: number): void {
+    if (num !== undefined) {
+      this.gamesService.group = String(num);
+      this.page = this.gamesService.setRandomPage();
+    }
     this.state = 'process';
     this.group = this.gamesService.group;
     this.page = this.gamesService.page;
-    this.getWords();
+    this.initWords();
   }
 
   public nextQuestion(): void {
     this.wordNumber += 1;
-    const answerBtns = document.querySelectorAll('.answer-btn') as NodeListOf<HTMLElement>;
-    const answerContainer = document.querySelector('.answer-container') as HTMLElement;
-    const sound = document.querySelector('.sound') as HTMLElement;
-    const btnNext = document.querySelector('.btn-next') as HTMLElement;
-    const btnUnknown = document.querySelector('.btn-unknown') as HTMLElement;
-    const resultPopup = document.querySelector('.result-popup') as HTMLElement;
+    const answerBtns: NodeListOf<HTMLElement> = document.querySelectorAll(
+      '.answer-btn'
+    ) as NodeListOf<HTMLElement>;
+    const answerContainer: HTMLElement = document.querySelector(
+      '.answer-container'
+    ) as HTMLElement;
+    const sound: HTMLElement = document.querySelector('.sound') as HTMLElement;
+    const btnNext: HTMLElement = document.querySelector(
+      '.btn-next'
+    ) as HTMLElement;
+    const btnUnknown: HTMLElement = document.querySelector(
+      '.btn-unknown'
+    ) as HTMLElement;
+    const resultPopup: HTMLElement = document.querySelector(
+      '.result-popup'
+    ) as HTMLElement;
     if (this.wordNumber < this.totalAmount) {
       this.renderQuestion();
       answerBtns.forEach((item: HTMLElement) => {
         item.style.background = '#0d6efd';
-      })
+        item.classList.remove('disabled');
+      });
       answerContainer.style.display = 'none';
       sound.style.display = 'block';
       btnNext.style.display = 'none';
@@ -152,12 +179,62 @@ export class AudiocallGameComponent implements OnInit {
     } else {
       resultPopup.style.display = 'block';
     }
-  };
+  }
+
+  public skipQuestion(): void {
+    const answerContainer: HTMLElement = document.querySelector(
+      '.answer-container'
+    ) as HTMLElement;
+    const sound: HTMLElement = document.querySelector('.sound') as HTMLElement;
+    const btnNext: HTMLElement = document.querySelector(
+      '.btn-next'
+    ) as HTMLElement;
+    const btnUnknown: HTMLElement = document.querySelector(
+      '.btn-unknown'
+    ) as HTMLElement;
+    const circles: NodeListOf<HTMLElement> = document.querySelectorAll(
+      '.circle'
+    ) as NodeListOf<HTMLElement>;
+    const textExample: HTMLElement = document.querySelector(
+      '.text-example'
+    ) as HTMLElement;
+    const answerBuns: NodeListOf<HTMLElement> = document.querySelectorAll(
+      '.answer-btn'
+    ) as NodeListOf<HTMLElement>;
+    if (!answerContainer) return;
+    answerContainer.style.display = 'flex';
+    sound.style.display = 'none';
+    btnNext.style.display = 'flex';
+    btnUnknown.style.display = 'none';
+    textExample.innerHTML = this.questions[this.wordNumber].answer.textExample;
+    this.answerBullets[this.wordNumber] = 'yellow';
+    answerBuns.forEach((btn: HTMLElement) => {
+      if (
+        (<string>btn.textContent).trim() ===
+        this.questions[this.wordNumber].answer.wordTranslate
+      ) {
+        btn.style.background = 'green';
+      }
+      btn.classList.add('disabled');
+    });
+    this.wrongCount++;
+    this.wrongAnswers.push(this.questions[this.wordNumber].answer);
+    circles.forEach((circle: Element, index: number) => {
+      const classCircle: string = this.answerBullets[index];
+      if (classCircle) circle.classList.add(classCircle);
+    });
+  }
 
   public reastartGame(): void {
-    const resultPopup = document.querySelector('.result-popup') as HTMLElement;
-    const questionContainer = document.querySelector('.question-container') as HTMLElement;
-    const rulesContainer = document.querySelector('.rules-container') as HTMLElement;
+    const resultPopup: HTMLElement = document.querySelector(
+      '.result-popup'
+    ) as HTMLElement;
+    const questionContainer: HTMLElement = document.querySelector(
+      '.question-container'
+    ) as HTMLElement;
+    const rulesContainer: HTMLElement = document.querySelector(
+      '.rules-container'
+    ) as HTMLElement;
     resultPopup.style.display = 'none';
     questionContainer.style.display = 'none';
     rulesContainer.style.display = 'flex';
@@ -170,21 +247,62 @@ export class AudiocallGameComponent implements OnInit {
     this.clicked.emit();
   }
 
-  @HostListener('document:keyup', ['$event'])
-  public handleKeyboardEvent(event: KeyboardEvent): void {
-    const answerBtns = document.querySelectorAll('.answer-btn') as NodeListOf<HTMLElement>;
-    if (event.key === '1') {
-      this.chooseWord(answerBtns[0]);
-    } else if (event.key === '2') {
-      this.chooseWord(answerBtns[1]);
-    } else if (event.key === '3') {
-      this.chooseWord(answerBtns[2]);
-    } else if (event.key === '4') {
-      this.chooseWord(answerBtns[3]);
-    } else if (event.key === '5') {
-      this.chooseWord(answerBtns[4]);
-    } else if (event.key === 'Enter') {
-      this.nextQuestion();
-    }
+  private getRandomWord(question: QuestionAudioCall): Word[] {
+    const shuffle = (array: Word[]): Word[] => {
+      let currentIndex: number = array.length;
+      let temporaryValue: Word;
+      let randomIndex: number;
+      while (0 !== currentIndex) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+      }
+      return array;
+    };
+    return shuffle([question.answer, ...question.other]);
+  }
+
+  private renderQuestion(): void {
+    this.randomWordsArr = this.getRandomWord(this.questions[this.wordNumber]);
+    this.playSound(this.questions[this.wordNumber].answer.audio);
+    const rulesContainer: HTMLElement = document.querySelector(
+      '.rules-container'
+    ) as HTMLElement;
+    const questionContainer: HTMLElement = document.querySelector(
+      '.question-container'
+    ) as HTMLElement;
+    const circles: NodeListOf<HTMLElement> = document.querySelectorAll(
+      '.circle'
+    ) as NodeListOf<HTMLElement>;
+    rulesContainer.style.display = 'none';
+    questionContainer.style.display = 'flex';
+    circles.forEach((item: Element, index: number) => {
+      item.classList.add(`${this.answerBullets[index]}`);
+    });
+  }
+
+  private initWords(): void {
+    const otherAmount: number = 4;
+    this.wordsService
+      .getWords(this.group, this.gamesService.page)
+      .subscribe((words: Word[]) => {
+        this.words = words;
+        this.totalAmount = this.words.length;
+        this.questions = new Array(this.totalAmount)
+          .fill(0)
+          .map((_: number, index: number) => {
+            return {
+              answer: this.words[index],
+              other: new Array(otherAmount).fill(0).map(() => {
+                return this.words[
+                  Math.floor(Math.random() * this.words.length)
+                ];
+              }),
+            };
+          });
+        this.renderQuestion();
+      });
   }
 }
