@@ -34,3 +34,11 @@ body {
   background-blend-mode: multiply;
   background-attachment: fixed;
 }
+
+h1::first-letter,
+h2::first-letter,
+h3::first-letter,
+a::first-letter,
+button::first-letter {
+  text-transform: capitalize;
+}

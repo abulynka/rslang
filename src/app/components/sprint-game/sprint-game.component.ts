@@ -160,7 +160,6 @@ export class SprintGameComponent implements OnInit {
     this.wordsService
       .getWords(this.group, this.page, this.gameStateService.isOpenedFormMenu)
       .subscribe((words: Word[]) => {
-        console.log(words);
         this.questions = this.questions.concat(getQuestions(words));
         if (this.timer.toString() === '60') {
           this.setTimer();
