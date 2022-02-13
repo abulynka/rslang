@@ -68,6 +68,17 @@ export class AudiocallGameComponent implements OnInit {
     }
   }
 
+  public startGame(num?: number): void {
+    if (num !== undefined) {
+      this.gamesService.group = String(num);
+      this.page = this.gamesService.setRandomPage();
+    }
+    this.state = 'process';
+    this.group = this.gamesService.group;
+    this.page = this.gamesService.page;
+    this.initWords();
+  }
+
   public playSound(audioSrc: string): void {
     this.audioObj.src = `${this.url}/${audioSrc}`;
     this.audioObj.load();
@@ -75,32 +86,11 @@ export class AudiocallGameComponent implements OnInit {
   }
 
   public chooseWord(item: HTMLElement): void {
-    const answerContainer: HTMLElement = document.querySelector(
-      '.answer-container'
-    ) as HTMLElement;
-    const sound: HTMLElement = document.querySelector('.sound') as HTMLElement;
-    const btnNext: HTMLElement = document.querySelector(
-      '.btn-next'
-    ) as HTMLElement;
-    const btnUnknown: HTMLElement = document.querySelector(
-      '.btn-unknown'
-    ) as HTMLElement;
-    const circles: NodeListOf<HTMLElement> = document.querySelectorAll(
-      '.circle'
-    ) as NodeListOf<HTMLElement>;
-    const textExample: HTMLElement = document.querySelector(
-      '.text-example'
-    ) as HTMLElement;
-    const answerBtn: NodeListOf<HTMLElement> = document.querySelectorAll(
+    this.renderAnswer();
+    const answerBtns: NodeListOf<HTMLElement> = document.querySelectorAll(
       '.answer-btn'
     ) as NodeListOf<HTMLElement>;
-    if (!answerContainer) return;
-    answerContainer.style.display = 'flex';
-    sound.style.display = 'none';
-    btnNext.style.display = 'flex';
-    btnUnknown.style.display = 'none';
-    answerBtn.forEach((btn: HTMLElement) => btn.classList.add('disabled'));
-    textExample.innerHTML = this.questions[this.wordNumber].answer.textExample;
+    answerBtns.forEach((btn: HTMLElement) => btn.classList.add('disabled'));
     if (
       (<string>item.textContent).trim() !==
       this.questions[this.wordNumber].answer.wordTranslate
@@ -131,21 +121,25 @@ export class AudiocallGameComponent implements OnInit {
       { answer: this.isCorrect, ...this.words[this.wordNumber] } as Answer,
       'audiocall'
     );
-    circles.forEach((circle: Element, index: number) => {
-      const classCircle: string = this.answerBullets[index];
-      if (classCircle) circle.classList.add(classCircle);
-    });
   }
 
-  public startGame(num?: number): void {
-    if (num !== undefined) {
-      this.gamesService.group = String(num);
-      this.page = this.gamesService.setRandomPage();
-    }
-    this.state = 'process';
-    this.group = this.gamesService.group;
-    this.page = this.gamesService.page;
-    this.initWords();
+  public skipQuestion(): void {
+    this.renderAnswer();
+    const answerBtns: NodeListOf<HTMLElement> = document.querySelectorAll(
+      '.answer-btn'
+    ) as NodeListOf<HTMLElement>;
+    this.answerBullets[this.wordNumber] = 'yellow';
+    answerBtns.forEach((btn: HTMLElement) => {
+      if (
+        (<string>btn.textContent).trim() ===
+        this.questions[this.wordNumber].answer.wordTranslate
+      ) {
+        btn.style.background = 'green';
+      }
+      btn.classList.add('disabled');
+    });
+    this.wrongCount++;
+    this.wrongAnswers.push(this.questions[this.wordNumber].answer);
   }
 
   public nextQuestion(): void {
@@ -181,50 +175,6 @@ export class AudiocallGameComponent implements OnInit {
     }
   }
 
-  public skipQuestion(): void {
-    const answerContainer: HTMLElement = document.querySelector(
-      '.answer-container'
-    ) as HTMLElement;
-    const sound: HTMLElement = document.querySelector('.sound') as HTMLElement;
-    const btnNext: HTMLElement = document.querySelector(
-      '.btn-next'
-    ) as HTMLElement;
-    const btnUnknown: HTMLElement = document.querySelector(
-      '.btn-unknown'
-    ) as HTMLElement;
-    const circles: NodeListOf<HTMLElement> = document.querySelectorAll(
-      '.circle'
-    ) as NodeListOf<HTMLElement>;
-    const textExample: HTMLElement = document.querySelector(
-      '.text-example'
-    ) as HTMLElement;
-    const answerBuns: NodeListOf<HTMLElement> = document.querySelectorAll(
-      '.answer-btn'
-    ) as NodeListOf<HTMLElement>;
-    if (!answerContainer) return;
-    answerContainer.style.display = 'flex';
-    sound.style.display = 'none';
-    btnNext.style.display = 'flex';
-    btnUnknown.style.display = 'none';
-    textExample.innerHTML = this.questions[this.wordNumber].answer.textExample;
-    this.answerBullets[this.wordNumber] = 'yellow';
-    answerBuns.forEach((btn: HTMLElement) => {
-      if (
-        (<string>btn.textContent).trim() ===
-        this.questions[this.wordNumber].answer.wordTranslate
-      ) {
-        btn.style.background = 'green';
-      }
-      btn.classList.add('disabled');
-    });
-    this.wrongCount++;
-    this.wrongAnswers.push(this.questions[this.wordNumber].answer);
-    circles.forEach((circle: Element, index: number) => {
-      const classCircle: string = this.answerBullets[index];
-      if (classCircle) circle.classList.add(classCircle);
-    });
-  }
-
   public reastartGame(): void {
     const resultPopup: HTMLElement = document.querySelector(
       '.result-popup'
@@ -245,6 +195,29 @@ export class AudiocallGameComponent implements OnInit {
     this.wordNumber = 0;
     this.ngOnInit();
     this.clicked.emit();
+  }
+
+  private initWords(): void {
+    const otherAmount: number = 4;
+    this.wordsService
+      .getWords(this.group, this.gamesService.page)
+      .subscribe((words: Word[]) => {
+        this.words = words;
+        this.totalAmount = this.words.length;
+        this.questions = new Array(this.totalAmount)
+          .fill(0)
+          .map((_: number, index: number) => {
+            return {
+              answer: this.words[index],
+              other: new Array(otherAmount).fill(0).map(() => {
+                return this.words[
+                  Math.floor(Math.random() * this.words.length)
+                ];
+              }),
+            };
+          });
+        this.renderQuestion();
+      });
   }
 
   private getRandomWord(question: QuestionAudioCall): Word[] {
@@ -283,26 +256,32 @@ export class AudiocallGameComponent implements OnInit {
     });
   }
 
-  private initWords(): void {
-    const otherAmount: number = 4;
-    this.wordsService
-      .getWords(this.group, this.gamesService.page)
-      .subscribe((words: Word[]) => {
-        this.words = words;
-        this.totalAmount = this.words.length;
-        this.questions = new Array(this.totalAmount)
-          .fill(0)
-          .map((_: number, index: number) => {
-            return {
-              answer: this.words[index],
-              other: new Array(otherAmount).fill(0).map(() => {
-                return this.words[
-                  Math.floor(Math.random() * this.words.length)
-                ];
-              }),
-            };
-          });
-        this.renderQuestion();
-      });
+  private renderAnswer(): void {
+    const answerContainer: HTMLElement = document.querySelector(
+      '.answer-container'
+    ) as HTMLElement;
+    const sound: HTMLElement = document.querySelector('.sound') as HTMLElement;
+    const btnNext: HTMLElement = document.querySelector(
+      '.btn-next'
+    ) as HTMLElement;
+    const btnUnknown: HTMLElement = document.querySelector(
+      '.btn-unknown'
+    ) as HTMLElement;
+    const circles: NodeListOf<HTMLElement> = document.querySelectorAll(
+      '.circle'
+    ) as NodeListOf<HTMLElement>;
+    const textExample: HTMLElement = document.querySelector(
+      '.text-example'
+    ) as HTMLElement;
+    if (!answerContainer) return;
+    answerContainer.style.display = 'flex';
+    sound.style.display = 'none';
+    btnNext.style.display = 'flex';
+    btnUnknown.style.display = 'none';
+    textExample.innerHTML = this.questions[this.wordNumber].answer.textExample;
+    circles.forEach((circle: Element, index: number) => {
+      const classCircle: string = this.answerBullets[index];
+      if (classCircle) circle.classList.add(classCircle);
+    });
   }
 }
