@@ -1,16 +1,75 @@
 .word {
   display: flex;
+  background-color: white;
+
+  &_color-0 {
+    background-color: rgba(255, 99, 0, 0.05);
+  }
+
+  &_color-1 {
+    background-color: rgba(239, 255, 0, 0.05);
+  }
+
+  &_color-2 {
+    background-color: rgba(19, 255, 0, 0.05);
+  }
+
+  &_color-3 {
+    background-color: rgba(0, 255, 219, 0.05);
+  }
+
+  &_color-4 {
+    background-color: rgba(0, 41, 255, 0.05);
+  }
+
+  &_color-5 {
+    background-color: rgba(255, 0, 0, 0.05);
+  }
 
   &__image {
-    width: 30%;
+    width: 30vw;
+    height: 300px;
+    object-fit: cover;
   }
 
   &__content {
     width: 70%;
-    background-color: white;
     color: black;
     padding: 30px;
     line-height: 30px;
+
+    &-title {
+      font-size: 28px;
+
+      &-main {
+        text-transform: capitalize;
+      }
+    }
+
+    &-translate {
+      font-size: 20px;
+      color: #949494
+    }
+
+    &-meaning {
+      padding-top: 5px;
+      font-size: 22px;
+
+      &-translate {
+        font-size: 20px;
+        color: #949494
+      }
+    }
+
+    &-example {
+      padding-top: 5px;
+      font-size: 22px;
+
+      &-translate {
+        font-size: 20px;
+        color: #949494
+      }
+    }
   }
 
   &__controls {
@@ -24,6 +83,14 @@
     &-button {
       background-color: transparent;
       border: none;
+
+      &_difficult {
+        color: #9eff9e;
+      }
+
+      &_learned {
+        color: #9eff9e;
+      }
     }
   }
 }

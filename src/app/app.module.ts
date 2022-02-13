@@ -28,7 +28,12 @@ import { UserProgressService } from './services/user-progress.service';
 import { UsersWordsService } from './services/users-words.service';
 import { ShortStatisticComponent } from './components/short-statistic/short-statistic.component';
 import { LongStatisticComponent } from './components/long-statistic/long-statistic.component';
-import { NgxChartsModule } from "@swimlane/ngx-charts";
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { MatButtonModule } from '@angular/material/button';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatSelectModule } from '@angular/material/select';
+import { MatListModule } from '@angular/material/list';
+
 
 const appRoutes: Routes = [
   { path: '', component: MainPageComponent },
@@ -99,6 +104,10 @@ const appRoutes: Routes = [
     BrowserAnimationsModule,
     MatPaginatorModule,
     NgxChartsModule,
+    MatButtonModule,
+    MatMenuModule,
+    MatSelectModule,
+    MatListModule,
   ],
   providers: [
     HttpService,

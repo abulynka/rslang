@@ -51,7 +51,6 @@ export class AudiocallGameComponent {
     questionContainer.style.display = 'flex';
     this.getWords();
     const answerBtns = document.querySelectorAll(".answer-btn") as NodeListOf<HTMLElement>;
-    console.log(answerBtns);
     answerBtns.forEach((item: HTMLElement) => {
       item.addEventListener("click", () => this.chooseWord(item));
     })
@@ -71,7 +70,6 @@ export class AudiocallGameComponent {
           };
         });
         this.randomWordsArr = this.getRandomWord(this.questions[this.answeredAmount]);
-        console.log(this.randomWordsArr)
       });
   }
 

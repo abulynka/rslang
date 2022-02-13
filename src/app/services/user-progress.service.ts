@@ -67,7 +67,8 @@ export class UserProgressService {
           })
         )
         .subscribe((wordResult: UserWordResult) => {
-          const word: UserWord = UserProgressService.convertUserWordResultToUserWord(wordResult);
+          const word: UserWord =
+            UserProgressService.convertUserWordResultToUserWord(wordResult);
           word.difficulty = this.difficulty.hard;
 
           this.userWordsService
