@@ -10,8 +10,8 @@ export class LongStatisticComponent {
   public height: number = 400;
   public gradient: boolean = false;
 
-  public newWordsPerEveryDay() {
-    return [
+  public constructor() {
+    this.newWordsPerEveryDay = [
       {
         "name": "",
         "series": [
@@ -36,12 +36,10 @@ export class LongStatisticComponent {
             "name": "2016-09-14T13:43:43.119Z"
           }
         ]
-      },
+      }
     ];
-  }
 
-  public newWordsPerEveryDayIntegral() {
-    return [
+    this.newWordsPerEveryDayIntegral = [
       {
         "name": "",
         "series": [
@@ -66,11 +64,16 @@ export class LongStatisticComponent {
             "name": "2016-09-14T13:43:43.119Z"
           }
         ]
-      },
+      }
     ];
   }
 
+  public newWordsPerEveryDay: any = [];
+
+  public newWordsPerEveryDayIntegral: any = [];
+
   public dateTickFormatting(val: any): string {
-    return new Date(val).toString();
+    const obj = new Date(val);
+    return `${obj.getDate()} / ${obj.getMonth()}`;
   }
 }
