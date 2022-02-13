@@ -69,12 +69,12 @@ export class WordsService {
         map((data: any) => {
           return data[0].paginatedResults.map((word: Word) => {
             if (word['_id']) {
-              word.id = <string>word['_id'];
+              word.id = word['_id'];
               delete word['_id'];
             }
             return word;
           }) as Word[];
         })
-      ) as Observable<Word[]>;
+      );
   }
 }
