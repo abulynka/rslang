@@ -1,4 +1,8 @@
-<section class="sprint-game">
+<section
+  class="sprint-game"
+  #sprintSection
+  [ngClass]="{ 'full-screen': isFullScreen }"
+>
   <app-games-start
     gameName="Спринт"
     (clicked)="startGame()"
@@ -9,15 +13,32 @@
     [answers]="answers"
     [score]="score"
     *ngIf="state === 'end'"
-  ></app-game-result>
+  >
+  </app-game-result>
+  <article class="button-container">
+    <button mat-icon-button (click)="toggleVolume()">
+      <mat-icon class="icon-display" *ngIf="isMuteSound">volume_off</mat-icon>
+      <mat-icon class="icon-display" *ngIf="!isMuteSound">volume_up</mat-icon>
+    </button>
+    <button mat-icon-button (click)="makeFullScreen()">
+      <mat-icon class="icon-display" *ngIf="!isFullScreen">fullscreen</mat-icon>
+      <mat-icon class="icon-display" *ngIf="isFullScreen"
+        >fullscreen_exit</mat-icon
+      >
+    </button>
+  </article>
   <article class="sprint-game__info" *ngIf="state === 'process'">
     <div class="sprint-game__timer">
       <span>{{ timer }}</span>
+      <span><mat-icon class="clock">hourglass_empty</mat-icon></span>
     </div>
   </article>
   <article
     class="sprint-game__window"
     *ngIf="questions[wordNumber] && state === 'process'"
+    [class.none]="answer === null"
+    [class.right]="answer === true"
+    [class.wrong]="answer === false"
   >
     <div class="sprint-game__score">
       <span>{{ score }}</span>
@@ -28,11 +49,15 @@
         [ngClass]="{ active: rightNumbers >= num }"
       ></span>
     </div>
-    <img
-      class="sprint-game__image"
-      src="../../../assets/svg/monky.svg"
-      alt=""
-    />
+    <div class="sprint-game__animals">
+      <img
+        *ngFor="let img of animals"
+        class="sprint-game__image"
+        src="{{ img.src }}"
+        alt="{{ img.alt }}"
+      />
+    </div>
+
     <div class="sprint-game__words">
       <button
         class="sprint-game__sound-btn"
@@ -46,10 +71,20 @@
       </p>
     </div>
     <div class="sprint-game__buttons">
-      <button type="button" class="btn btn-danger" (click)="checkWord(false)">
+      <button
+        mat-raised-button
+        type="button"
+        color="warn"
+        (click)="checkWord(false)"
+      >
         <span>←</span> не верно
       </button>
-      <button type="button" class="btn btn-success" (click)="checkWord(true)">
+      <button
+        mat-raised-button
+        type="button"
+        style="background: green"
+        (click)="checkWord(true)"
+      >
         верно <span>→</span>
       </button>
     </div>

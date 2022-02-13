@@ -1,9 +1,16 @@
 import { Component, HostListener, OnInit } from '@angular/core';
-import { Word, Question, Answer } from 'src/app/interfaces/interfaces';
+import {
+  Word,
+  Question,
+  Answer,
+  AnimalSVG,
+} from 'src/app/interfaces/interfaces';
 import { GamesStatesService } from 'src/app/services/games-states.service';
 import { UserProgressService } from 'src/app/services/user-progress.service';
 import { WordsService } from 'src/app/services/words.service';
 import { environment } from 'src/environments/environment';
+
+let timeOut: ReturnType<typeof setTimeout>;
 
 function getQuestions(words: Word[]): Question[] {
   const questions: Question[] = [];
@@ -44,6 +51,10 @@ export class SprintGameComponent implements OnInit {
   public score: number = 0;
   public rightNumbers: number = 0;
   public state: string = '';
+  public isFullScreen: boolean = false;
+  public isMuteSound: boolean = true;
+  public answer: boolean | null = null;
+  public animals: AnimalSVG[];
 
   private group: string = '0';
   private page: string = '0';
@@ -55,14 +66,23 @@ export class SprintGameComponent implements OnInit {
     private userProgressService: UserProgressService
   ) {
     this.state = this.gameStateService.state;
+    this.animals = [
+      {
+        src: '../../../assets/svg/monky.svg',
+        alt: 'mnky',
+      },
+    ];
   }
 
   @HostListener('document:keyup', ['$event'])
   public handleKeyboardEvent(event: KeyboardEvent): void {
+    console.log(event.key);
     if (event.key === 'ArrowLeft') {
       this.checkWord(false);
     } else if (event.key === 'ArrowRight') {
       this.checkWord(true);
+    } else if (event.key === 'f') {
+      this.makeFullScreen();
     }
   }
 
@@ -99,6 +119,7 @@ export class SprintGameComponent implements OnInit {
 
   public checkWord(userAnswer?: boolean): void {
     const question: Question = this.questions[this.wordNumber];
+
     if (!question) return;
 
     const answer: boolean = question.isTrue === userAnswer;
@@ -111,6 +132,17 @@ export class SprintGameComponent implements OnInit {
     this.answers.push(wordAnswer);
     this.setRightAnswer(answer);
     this.nextWord();
+  }
+
+  public toggleVolume(): void {
+    this.isMuteSound = !this.isMuteSound;
+  }
+
+  public makeFullScreen(): void {
+    this.isFullScreen = !this.isFullScreen;
+    let elem: Element = document.documentElement;
+    if (this.isFullScreen) elem.requestFullscreen.call(elem);
+    else document.exitFullscreen();
   }
 
   public restartGame(): void {
@@ -160,17 +192,48 @@ export class SprintGameComponent implements OnInit {
   private setRightAnswer(checkedAnswer: boolean): void {
     const rightNumbers: number = 3;
     const clearTime: number = 500;
+    this.setWindow(checkedAnswer);
 
     if (checkedAnswer) {
       this.rightNumbers += 1;
       this.score += 10;
     } else {
       this.rightNumbers = 0;
+      this.animals = this.animals.slice(0, 1);
     }
 
     if (this.rightNumbers === rightNumbers) {
       this.score += 20;
+      if (this.animals.length.toString() <= '4') {
+        this.animals.push({
+          src: `../../../assets/svg/${this.animals.length.toString()}.svg`,
+          alt: '',
+        });
+      }
       setTimeout(() => (this.rightNumbers = 0), clearTime);
     }
+  }
+
+  private setWindow(answer: boolean): void {
+    this.answer = answer;
+
+    if (answer) {
+      this.audioObj.src = '../../../assets/sounds/good.mp3';
+    } else {
+      this.audioObj.src = '../../../assets/sounds/mistake.mp3';
+    }
+
+    if (!this.isMuteSound) {
+      this.audioObj.play();
+    }
+    this.clearWindowClass();
+  }
+
+  private clearWindowClass(): void {
+    const time: number = 300;
+    clearTimeout(timeOut);
+    timeOut = setTimeout(() => {
+      this.answer = null;
+    }, time);
   }
 }
