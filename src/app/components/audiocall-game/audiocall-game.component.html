@@ -1,41 +1,65 @@
 <section class="audio-call-section">
   <div class="rules-container">
     <h2>Аудиовызов</h2>
-    <p>Выберите из предложенных вариантов ответа правильный перевод слова, который услышите</p>
-    <button type="button" class="btn btn-primary start-audio-call-btn" (click)="renderQuestion()">Начать</button>
+    <p>Ниже выберите уровень сложности. Затем выберите из предложенных вариантов ответа правильный перевод слова, который услышите</p>
+    <div class="group-btn-container">
+      <button type="button" class="btn btn-primary btn-group-num" *ngFor="let num of [0, 1, 2, 3, 4, 5]" (click)="renderQuestion(num)">{{num + 1}}</button>
+    </div>
   </div>
 
   <div class="question-container">
     <div class="circle-container">
-      <span class="circle" *ngFor="let num of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]"></span>
+      <span class="circle" *ngFor="let num of questions"></span>
     </div>
-    <img class="sound" src="../../../assets/svg/1486564396-audio_81506.svg" alt="sound" *ngIf="questions[0]" (click)="playSound(questions[answeredAmount].answer)">
+    <img class="sound" src="../../../assets/svg/1486564396-audio_81506.svg" alt="sound" *ngIf="questions[0]" (click)="playSound(questions[wordNumber].answer.audio)">
 
-    <div class="answer-container" *ngIf="questions[0]">
-      <img class="correct-img" src="{{ url + '/' + questions[answeredAmount].answer.image }}" alt="image">
+    <div class="answer-container" *ngIf="questions[0] && questions[wordNumber]">
+      <img class="correct-img" src="{{ url + '/' + questions[wordNumber].answer.image }}" alt="image">
       <div class="answer-right-column">
         <div class="correct-word">
-          <img class="small-svg" src="../../../assets/svg/volume-audio-svgrepo-com.svg" alt="image" (click)="playSound(questions[answeredAmount].answer)">
-          <p class="answer-word">{{ questions[answeredAmount].answer.word }}</p>
-          <p>{{ questions[answeredAmount].answer.transcription }}</p>
+          <img class="small-svg" src="../../../assets/svg/volume-audio-svgrepo-com.svg" alt="image" (click)="playSound(questions[wordNumber].answer.audio)">
+          <p class="answer-word">{{ questions[wordNumber].answer.word }}</p>
+          <p>{{ questions[wordNumber].answer.transcription }}</p>
         </div>
         <div class="english-exaple">
-          <p>{{ questions[answeredAmount].answer.textExample }}</p>
+          <img class="small-svg" src="../../../assets/svg/volume-audio-svgrepo-com.svg" alt="image" (click)="playSound(questions[wordNumber].answer.audioExample)">
+          <p class="text-example"></p>
         </div>
         <div class="russian-example">
-          <p>{{ questions[answeredAmount].answer.textExampleTranslate }}</p>
+          <p>{{ questions[wordNumber].answer.textExampleTranslate }}</p>
         </div>
       </div>
     </div>
 
-    <div class="audio-call-btn-container">
-      <button type="button" class="btn btn-primary btn-lg answer-btn">{{ randomWordsArr[0].word }}</button>
-      <button type="button" class="btn btn-primary btn-lg answer-btn">{{ randomWordsArr[1].word }}</button>
-      <button type="button" class="btn btn-primary btn-lg answer-btn">{{ randomWordsArr[2].word }}</button>
-      <button type="button" class="btn btn-primary btn-lg answer-btn">{{ randomWordsArr[3].word }}</button>
-      <button type="button" class="btn btn-primary btn-lg answer-btn">{{ randomWordsArr[4].word }}</button>
+    <div class="audio-call-btn-container" *ngIf="randomWordsArr[0]">
+      <button type="button" class="btn btn-primary btn-lg answer-btn" *ngFor="let randomWord of randomWordsArr" #button1 (click)="chooseWord(button1)">{{ randomWord.wordTranslate }}</button>
     </div>
-    <button type="button" class="btn btn-warning btn-unknown">Не знаю</button>
+    <button type="button" class="btn btn-warning btn-unknown" (click)="nextQuestion()">Не знаю</button>
     <button type="button" class="btn btn-warning btn-next" (click)="nextQuestion()">→</button>
+  </div>
+
+  <div class="result-popup">
+    <div class="result-container">
+      <p class="close-btn" (click)="reastartGame()">X</p>
+      <h2>Результаты</h2>
+      <div class="wrong-answers">
+        <h3>Ошибок <span class="red-count">{{ wrongCount }}</span></h3>
+        <div class="result-row" *ngFor="let answer of wrongAnswers">
+          <img class="small-svg" src="../../../assets/svg/volume-audio-svgrepo-com.svg" alt="image"  *ngIf="answer" (click)="playSound(answer.audio)">
+          <p *ngIf="answer">{{ answer.word }}</p>
+          <p *ngIf="answer">{{ answer.transcription }}</p>
+          <p *ngIf="answer">{{ answer.wordTranslate }}</p>
+        </div>
+      </div>
+      <div class="correct-answers">
+        <h3>Знаю <span class="green-count">{{ correctCount }}</span></h3>
+        <div class="result-row" *ngFor="let answer of correctAnswers">
+          <img class="small-svg" src="../../../assets/svg/volume-audio-svgrepo-com.svg" alt="image"  *ngIf="answer" (click)="playSound(answer.audio)">
+          <p *ngIf="answer">{{ answer.word }}</p>
+          <p *ngIf="answer">{{ answer.transcription }}</p>
+          <p *ngIf="answer">{{ answer.wordTranslate }}</p>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
