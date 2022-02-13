@@ -71,7 +71,8 @@ export interface WordHistoryUnit {
 export interface UserWordOptional {
   countOfAnswersInRow: number;
   isLearned: boolean;
-  wordHistory: WordHistoryUnit;
+  sprintHistory?: WordHistoryUnit;
+  gameCallhistory?: WordHistoryUnit;
 }
 
 export interface QuestionAudioCall {
@@ -82,4 +83,9 @@ export interface QuestionAudioCall {
 export interface AnimalSVG {
   src: string;
   alt: string;
+}
+
+export interface ChartData {
+  name: string;
+  value: number;
 }

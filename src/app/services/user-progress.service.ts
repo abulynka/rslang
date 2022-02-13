@@ -1,9 +1,20 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, Subscriber } from 'rxjs';
-import { Answer, UserWord, UserWordResult } from '../interfaces/interfaces';
+import {
+  Answer,
+  UserWord,
+  UserWordOptional,
+  UserWordResult,
+  WordHistoryUnit,
+} from '../interfaces/interfaces';
 import { AuthService } from './auth.service';
 import { UsersWordsService } from './users-words.service';
+
+type WordHistoryType = Pick<
+  UserWordOptional,
+  'sprintHistory' | 'gameCallhistory'
+>;
 
 @Injectable({
   providedIn: 'root',
@@ -20,6 +31,13 @@ export class UserProgressService {
     private userWordsService: UsersWordsService,
     private auth: AuthService
   ) {}
+
+  private static convertUserWordResultToUserWord(
+    wordResult: UserWordResult
+  ): UserWord {
+    const { ...word }: UserWord = { ...wordResult };
+    return word;
+  }
 
   public checkWord(answer: Answer, gameName: string): void {
     if (!this.auth.checkAuth()) {
@@ -43,13 +61,6 @@ export class UserProgressService {
       });
   }
 
-  private static convertUserWordResultToUserWord(
-    wordResult: UserWordResult
-  ): UserWord {
-    const { id, wordId, ...word } = { ...wordResult };
-    return word;
-  }
-
   public makeTheWordDifficult(wordId: string): Observable<void> {
     return new Observable((observer: Subscriber<void>) => {
       if (!this.auth.checkAuth()) {
@@ -67,7 +78,8 @@ export class UserProgressService {
           })
         )
         .subscribe((wordResult: UserWordResult) => {
-          const word: UserWord = UserProgressService.convertUserWordResultToUserWord(wordResult);
+          const word: UserWord =
+            UserProgressService.convertUserWordResultToUserWord(wordResult);
           word.difficulty = this.difficulty.hard;
 
           this.userWordsService
@@ -112,7 +124,6 @@ export class UserProgressService {
                   optional: {
                     countOfAnswersInRow: 0,
                     isLearned: true,
-                    wordHistory: {},
                   },
                 })
                 .subscribe();
@@ -159,7 +170,6 @@ export class UserProgressService {
       optional: {
         countOfAnswersInRow: 0,
         isLearned: false,
-        wordHistory: {},
       },
     });
   }
@@ -182,6 +192,34 @@ export class UserProgressService {
     );
   }
 
+  private getWordHistory(
+    answer: boolean,
+    userWord?: UserWordResult
+  ): WordHistoryType {
+    const wordHistory: WordHistoryType = {
+      sprintHistory: userWord ? userWord.optional.sprintHistory || {} : {},
+      gameCallhistory: userWord ? userWord.optional.gameCallhistory || {} : {},
+    };
+
+    const assignAnswer = (obj: WordHistoryUnit): WordHistoryUnit => {
+      return Object.assign(obj, {
+        [Date.now()]: {
+          isRight: answer,
+          gameName: this.gameName,
+        },
+      });
+    };
+
+    if (this.gameName === 'sprint') {
+      wordHistory.sprintHistory = assignAnswer(wordHistory.sprintHistory || {});
+    } else {
+      wordHistory.gameCallhistory = assignAnswer(
+        wordHistory.gameCallhistory || {}
+      );
+    }
+    return wordHistory;
+  }
+
   private updateUserWord(answer: Answer, userWord: UserWordResult): void {
     const wordId: string = answer.id || <string>answer['_id'];
     const answersInRow: number = answer.answer
@@ -194,12 +232,7 @@ export class UserProgressService {
       optional: {
         countOfAnswersInRow: answersInRow,
         isLearned: isLearned,
-        wordHistory: Object.assign(userWord.optional.wordHistory, {
-          [Date.now()]: {
-            isRight: answer.answer,
-            gameName: this.gameName,
-          },
-        }),
+        ...this.getWordHistory(answer.answer, userWord),
       },
     };
     this.userWordsService
@@ -216,12 +249,7 @@ export class UserProgressService {
         optional: {
           countOfAnswersInRow: answer.answer ? 1 : 0,
           isLearned: false,
-          wordHistory: {
-            [Date.now()]: {
-              isRight: answer.answer,
-              gameName: this.gameName,
-            },
-          },
+          ...this.getWordHistory(answer.answer),
         },
       })
       .subscribe();

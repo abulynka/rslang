@@ -35,7 +35,8 @@ export class WordsService {
         page,
         JSON.stringify({
           $or: [{ 'userWord.optional.isLearned': false }, { userWord: null }],
-        })
+        }),
+        '20'
       );
     }
 
@@ -45,18 +46,28 @@ export class WordsService {
   }
 
   public getAggregatedWords(
-    group: string,
-    page: string,
-    filter?: string
+    group?: string,
+    page?: string,
+    filter?: string,
+    wordsPerPage: string = '4000'
   ): Observable<Word[]> {
-    const params: HttpParams = new HttpParams().set('wordsPerPage', '20').set(
-      'filter',
-      JSON.stringify({
-        group: Number(group),
-        page: Number(page),
-        ...JSON.parse(filter || '{}'),
-      })
-    );
+    interface Pages {
+      group?: number;
+      page?: number;
+    }
+    const pages: Pages = group
+      ? { group: Number(group), page: Number(page) }
+      : {};
+
+    const params: HttpParams = new HttpParams()
+      .set('wordsPerPage', wordsPerPage)
+      .set(
+        'filter',
+        JSON.stringify({
+          ...pages,
+          ...JSON.parse(filter || '{}'),
+        })
+      );
 
     return this.httpService.http
       .get(
