@@ -1,4 +1,10 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  HostListener,
+} from '@angular/core';
 import { GamesStatesService } from 'src/app/services/games-states.service';
 
 @Component({
@@ -12,9 +18,18 @@ export class GamesStartComponent {
 
   public constructor(private gamesStateService: GamesStatesService) {}
 
+  @HostListener('document:keyup', ['$event'])
+  public handleKeyboardEvent(event: KeyboardEvent): void {
+    const key: number = Number(event.key);
+    const limit: number = 6;
+    if (key >= 1 && key <= limit) {
+      this.startGame(key - 1);
+    }
+  }
+
   public startGame(group: number): void {
     this.gamesStateService.group = group.toString();
-    // this.gamesStateService.setRandomPage();
+    this.gamesStateService.setRandomPage();
     this.clicked.emit();
   }
 }

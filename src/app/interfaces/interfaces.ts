@@ -78,3 +78,8 @@ export interface QuestionAudioCall {
   answer: Word;
   other: Word[];
 }
+
+export interface AnimalSVG {
+  src: string;
+  alt: string;
+}
