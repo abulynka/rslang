@@ -21,7 +21,7 @@ export interface Auth {
 }
 
 export interface Word {
-  audioSrc: any;
+  _id?: string;
   id: string;
   group: number;
   page: number;
@@ -37,6 +37,7 @@ export interface Word {
   textMeaningTranslate: string;
   textExampleTranslate: string;
   difficult: boolean;
+  userWord?: UserWord;
 }
 
 export interface Question {
@@ -46,6 +47,7 @@ export interface Question {
 }
 
 export interface Answer extends Word {
+  [key: string]: string | boolean | number | UserWord | undefined;
   answer: boolean;
 }
 
