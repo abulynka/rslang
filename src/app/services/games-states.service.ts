@@ -21,8 +21,9 @@ export class GamesStatesService {
     }
   }
 
-  public setRandomPage(): void {
+  public setRandomPage(): string {
     const pagesAmount: number = 29;
     this.page = Math.round(Math.random() * pagesAmount).toString();
+    return this.page;
   }
 }
