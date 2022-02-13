@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { PageEvent } from '@angular/material/paginator';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { PageComponent } from '../page/page.component';
 
 @Component({
   selector: 'app-chapter',
@@ -7,18 +7,26 @@ import { PageEvent } from '@angular/material/paginator';
   styleUrls: ['./chapter.component.scss'],
 })
 export class ChapterComponent implements OnInit {
-  public pageEvent: PageEvent;
+  @Input() public chapter: number = 0;
 
-  public constructor() {
-    this.pageEvent = new PageEvent();
-  }
+  @ViewChild(PageComponent, { static: true }) private page:
+    | PageComponent
+    | undefined;
 
   public ngOnInit(): void {
-    // empty
     return;
   }
 
-  public getServerData(event: PageEvent): PageEvent {
-    return event;
+  public setPage(page: number): void {
+    if (this.page) {
+      this.page.pageNumber = page;
+    }
+  }
+
+  public setChapter(chapter: number): void {
+    if (this.page) {
+      this.page.groupNumber = chapter;
+      this.page.pageNumber = 0;
+    }
   }
 }

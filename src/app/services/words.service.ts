@@ -20,6 +20,17 @@ export class WordsService {
     ) as Observable<Word>;
   }
 
+  public getHardWords(): Observable<Word[]> {
+    return this.getAggregatedWords(
+      undefined,
+      undefined,
+      JSON.stringify({
+        $or: [{ 'userWord.difficulty': 'hard' }],
+      }),
+      '3600'
+    );
+  }
+
   public getWords(
     group: string,
     page: string,
@@ -45,18 +56,23 @@ export class WordsService {
   }
 
   public getAggregatedWords(
-    group: string,
-    page: string,
-    filter?: string
+    group?: string,
+    page?: string,
+    filter?: string,
+    wordsPerPage?: string
   ): Observable<Word[]> {
-    const params: HttpParams = new HttpParams().set('wordsPerPage', '20').set(
-      'filter',
-      JSON.stringify({
-        group: Number(group),
-        page: Number(page),
-        ...JSON.parse(filter || '{}'),
-      })
-    );
+    const filterObj: { [key: string]: string | number } = {};
+    if (group) {
+      filterObj['group'] = Number(group);
+    }
+    if (page) {
+      filterObj['page'] = Number(page);
+    }
+    Object.assign(filterObj, JSON.parse(filter || '{}'));
+
+    const params: HttpParams = new HttpParams()
+      .set('wordsPerPage', wordsPerPage || '20')
+      .set('filter', JSON.stringify(filterObj));
 
     return this.httpService.http
       .get(
