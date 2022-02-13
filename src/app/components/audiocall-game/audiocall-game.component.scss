@@ -123,7 +123,6 @@
     row-gap: 10px;
     width: 50%;
     height: 70%;
-    row-gap: 24px;
     background-color: #ffffff;
     border-radius: 20px;
     color: #000000;
@@ -133,17 +132,21 @@
       cursor: pointer;
     }
 
+    .green-count {
+      padding: 5px 20px;
+      background: green;
+      border-radius: 10px;
+    }
+
+    .red-count {
+      padding: 5px 20px;
+      background: red;
+      border-radius: 10px;
+    }
+
     .result-row {
       display: flex;
       column-gap: 10px;
-    }
-
-    .result-row.green {
-      color: green;
-    }
-
-    .result-row.red {
-      color: red;
     }
   }
 }
