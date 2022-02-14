@@ -17,16 +17,9 @@ export class ChapterComponent implements OnInit {
     return;
   }
 
-  public setPage(page: number): void {
+  public setChapter(chapter: number, page: number): void {
     if (this.page) {
-      this.page.pageNumber = page;
-    }
-  }
-
-  public setChapter(chapter: number): void {
-    if (this.page) {
-      this.page.groupNumber = chapter;
-      this.page.pageNumber = 0;
+      this.page.setGroupPageNumber(chapter, page);
     }
   }
 }
