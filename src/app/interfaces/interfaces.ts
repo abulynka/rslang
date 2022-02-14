@@ -100,3 +100,11 @@ export interface UserStatistics {
   learnedWords: number;
   optional: StatisticsOpt;
 }
+
+export interface AboutUsCard {
+  name: string;
+  gitHub: string;
+  position: string;
+  image: string;
+  description: string[];
+}

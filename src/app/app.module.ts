@@ -9,7 +9,7 @@ import { AppComponent } from './app.component';
 import { MainPageComponent } from './components/main-page/main-page.component';
 import { SigninComponent } from './components/sign-in/signin.component';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
-import { AboutUsComponent } from './components/about-us/about-us.component';
+import { AboutUsComponent } from './components/about/about-us/about-us.component';
 import { CheckAuthGuard } from './guards/check-auth.guard';
 import { HttpService } from './services/http.service';
 import { AuthService } from './services/auth.service';
@@ -34,6 +34,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 import { MatListModule } from '@angular/material/list';
+import { AboutUsCardComponent } from './components/about/about-us-card/about-us-card.component';
+import { MatCardModule } from '@angular/material/card';
 
 const appRoutes: Routes = [
   { path: '', component: MainPageComponent },
@@ -95,6 +97,7 @@ const appRoutes: Routes = [
     GamesStartComponent,
     ShortStatisticComponent,
     LongStatisticComponent,
+    AboutUsCardComponent,
   ],
   imports: [
     BrowserModule,
@@ -109,6 +112,7 @@ const appRoutes: Routes = [
     MatMenuModule,
     MatSelectModule,
     MatListModule,
+    MatCardModule,
   ],
   providers: [
     HttpService,
