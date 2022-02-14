@@ -1,4 +1,40 @@
 <div class="etextbook">
-  <p>Учебник</p>
-  <app-chapter></app-chapter>
+  <div class="etextbook__main">
+    <div class="etextbook__title">
+      <h2>Учебник</h2>
+    </div>
+
+    <div class="etextbook__container">
+      <div class="etextbook__buttons">
+        <mat-form-field class="etextbook__buttons-chapter" appearance="fill">
+          <mat-label>Глава</mat-label>
+          <mat-select [(value)]="selectedChapter">
+            <mat-option
+              (onSelectionChange)="changeChapter($event)"
+              *ngFor="let chapter of chapters"
+              [value]="chapter['index']"
+              class="etextbook__word_color-{{ chapter['index'] }}"
+            >
+              {{ chapter['name'] }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <button mat-flat-button class="etextbook__buttons-game">аудиовызов</button>
+        <button mat-flat-button class="etextbook__buttons-game">спринт</button>
+
+        <mat-paginator
+          class="etextbook__buttons-pages"
+          [length]="30 * 20"
+          [pageSizeOptions]="[20]"
+          [showFirstLastButtons]="true"
+          aria-label="Выбрать страницу"
+          (page)="changePage($event)"
+          title="test"
+        ></mat-paginator>
+      </div>
+
+      <app-chapter></app-chapter>
+    </div>
+  </div>
 </div>

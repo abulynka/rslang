@@ -31,6 +31,9 @@ import { LongStatisticComponent } from './components/long-statistic/long-statist
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatSelectModule } from '@angular/material/select';
+import { MatListModule } from '@angular/material/list';
 
 const appRoutes: Routes = [
   { path: '', component: MainPageComponent },
@@ -103,6 +106,9 @@ const appRoutes: Routes = [
     NgxChartsModule,
     MatButtonModule,
     MatIconModule,
+    MatMenuModule,
+    MatSelectModule,
+    MatListModule,
   ],
   providers: [
     HttpService,

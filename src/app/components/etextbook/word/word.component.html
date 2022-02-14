@@ -4,24 +4,41 @@
     src="{{ this.httpService.getUrl(word.image) }}"
     alt="{{ word.word }}"
   />
-  <div class="word__content">
-    <div>
-      <div>
-        {{ word.word }}({{ word.transcription }}) - {{ word.wordTranslate }}
-        <app-audio class="word__play" [word]="word"></app-audio>
-      </div>
+  <div class="word__content word_color-{{ word.group }}">
+    <div class="word__content-title">
+      <span class="word__content-title-main">{{ word.word }}</span
+      >({{ word.transcription }}) - {{ word.wordTranslate }}
+      <app-audio class="word__play" [word]="word"></app-audio>
     </div>
-    <div>{{ word.wordTranslate }}</div>
-    <div [innerHTML]="word.textMeaning"></div>
-    <div [innerHTML]="word.textMeaningTranslate"></div>
-    <div [innerHTML]="word.textExample"></div>
-    <div [innerHTML]="word.textExampleTranslate"></div>
+    <div class="word__content-translate">{{ word.wordTranslate }}</div>
+    <div class="word__content-meaning" [innerHTML]="word.textMeaning"></div>
+    <div
+      class="word__content-meaning-translate"
+      [innerHTML]="word.textMeaningTranslate"
+    ></div>
+    <div class="word__content-example" [innerHTML]="word.textExample"></div>
+    <div
+      class="word__content-example-translate"
+      [innerHTML]="word.textExampleTranslate"
+    ></div>
   </div>
-  <div class="word__controls">
-    <button class="word__controls-button" title="Отметить как сложное">
+  <div #wordControls *ngIf="isAuthorized()" class="word__controls">
+    <button
+      [disabled]="isDisabledDifficult"
+      (click)="makeDifficult()"
+      class="word__controls-button"
+      title="Отметить как сложное"
+      difficult
+    >
       <i class="fa fa-graduation-cap" aria-hidden="true"></i>
     </button>
-    <button class="word__controls-button" title="Отметить как изученное">
+    <button
+      [disabled]="isDisabledLearned"
+      (click)="makeLearned()"
+      class="word__controls-button"
+      title="Отметить как изученное"
+      learned
+    >
       <i class="fa fa-check-circle" aria-hidden="true"></i>
     </button>
   </div>

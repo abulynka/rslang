@@ -70,23 +70,18 @@ export class WordsService {
     filter?: string,
     wordsPerPage: string = '4000'
   ): Observable<Word[]> {
-    interface Pages {
-      group?: number;
-      page?: number;
+    const filterObj: { [key: string]: string | number } = {};
+    if (group) {
+      filterObj['group'] = Number(group);
     }
-    const pages: Pages = group
-      ? { group: Number(group), page: Number(page) }
-      : {};
+    if (page) {
+      filterObj['page'] = Number(page);
+    }
+    Object.assign(filterObj, JSON.parse(filter || '{}'));
 
     const params: HttpParams = new HttpParams()
-      .set('wordsPerPage', wordsPerPage)
-      .set(
-        'filter',
-        JSON.stringify({
-          ...pages,
-          ...JSON.parse(filter || '{}'),
-        })
-      );
+      .set('wordsPerPage', wordsPerPage || '20')
+      .set('filter', JSON.stringify(filterObj));
 
     return this.httpService.http
       .get(
