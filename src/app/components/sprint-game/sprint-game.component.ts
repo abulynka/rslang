@@ -46,6 +46,8 @@ function getQuestions(words: Word[]): Question[] {
 export class SprintGameComponent implements OnInit {
   public questions: Question[] = [];
   public answers: Answer[] = [];
+  public correctAnswers: Word[] = [];
+  public wrongAnswers: Word[] = [];
   public wordNumber: number = 0;
   public timer: number = 0;
   public score: number = 0;
@@ -55,6 +57,7 @@ export class SprintGameComponent implements OnInit {
   public isMuteSound: boolean = true;
   public answer: boolean | null = null;
   public animals: AnimalSVG[];
+  public assetsURL: string = '../../../assets';
 
   private group: string = '0';
   private page: string = '0';
@@ -76,7 +79,6 @@ export class SprintGameComponent implements OnInit {
 
   @HostListener('document:keyup', ['$event'])
   public handleKeyboardEvent(event: KeyboardEvent): void {
-    console.log(event.key);
     if (event.key === 'ArrowLeft') {
       this.checkWord(false);
     } else if (event.key === 'ArrowRight') {
@@ -129,6 +131,11 @@ export class SprintGameComponent implements OnInit {
     };
 
     this.userProgressService.checkWord(wordAnswer, 'sprint');
+    if (answer) {
+      this.correctAnswers.push(question.wordData);
+    } else {
+      this.wrongAnswers.push(question.wordData);
+    }
     this.answers.push(wordAnswer);
     this.setRightAnswer(answer);
     this.nextWord();
@@ -206,7 +213,7 @@ export class SprintGameComponent implements OnInit {
       this.score += 20;
       if (this.animals.length.toString() <= '4') {
         this.animals.push({
-          src: `../../../assets/svg/${this.animals.length.toString()}.svg`,
+          src: `${this.assetsURL}/svg/${this.animals.length.toString()}.svg`,
           alt: '',
         });
       }
@@ -218,9 +225,9 @@ export class SprintGameComponent implements OnInit {
     this.answer = answer;
 
     if (answer) {
-      this.audioObj.src = '../../../assets/sounds/good.mp3';
+      this.audioObj.src = `${this.assetsURL}/sounds/good.mp3`;
     } else {
-      this.audioObj.src = '../../../assets/sounds/mistake.mp3';
+      this.audioObj.src = `${this.assetsURL}/sounds/mistake.mp3`;
     }
 
     if (!this.isMuteSound) {
