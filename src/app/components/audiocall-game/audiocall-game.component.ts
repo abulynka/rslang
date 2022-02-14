@@ -1,10 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  HostListener,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { Answer, QuestionAudioCall, Word } from 'src/app/interfaces/interfaces';
 import { GamesStatesService } from 'src/app/services/games-states.service';
 import { UserProgressService } from 'src/app/services/user-progress.service';
@@ -17,7 +11,6 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./audiocall-game.component.scss'],
 })
 export class AudiocallGameComponent implements OnInit {
-  @Output() public clicked: EventEmitter<string> = new EventEmitter();
   public words: Word[] = [];
   public wordNumber: number = 0;
   public state: string = '';
@@ -28,12 +21,11 @@ export class AudiocallGameComponent implements OnInit {
   public url: string = environment.apiUrl;
   public isCorrect: boolean = false;
   public totalAmount: number = this.questions.length;
-  public correctCount: number = 0;
-  public wrongCount: number = 0;
   private group: string = '0';
   private page: string = '0';
   private audioObj: HTMLAudioElement = new Audio();
   private answerBullets: string[] = new Array(this.totalAmount).fill('');
+  private digitsIsActive: boolean = true;
 
   public constructor(
     private wordsService: WordsService,
@@ -46,22 +38,22 @@ export class AudiocallGameComponent implements OnInit {
     const answerBuns: NodeListOf<HTMLElement> = document.querySelectorAll(
       '.answer-btn'
     ) as NodeListOf<HTMLElement>;
+    const answerContainer: HTMLElement = document.querySelector(
+      '.answer-container'
+    ) as HTMLElement;
     const threeIndex: number = 3;
     const fourIndex: number = 4;
-    if (event.key === '1') {
+    if (event.key === '1' && this.digitsIsActive === true) {
       this.chooseWord(answerBuns[0]);
-    } else if (event.key === '2') {
+    } else if (event.key === '2' && this.digitsIsActive === true) {
       this.chooseWord(answerBuns[1]);
-    } else if (event.key === '3') {
+    } else if (event.key === '3' && this.digitsIsActive === true) {
       this.chooseWord(answerBuns[2]);
-    } else if (event.key === '4') {
+    } else if (event.key === '4' && this.digitsIsActive === true) {
       this.chooseWord(answerBuns[threeIndex]);
-    } else if (event.key === '5') {
+    } else if (event.key === '5' && this.digitsIsActive === true) {
       this.chooseWord(answerBuns[fourIndex]);
     } else if (event.key === 'Enter') {
-      const answerContainer: HTMLElement = document.querySelector(
-        '.answer-container'
-      ) as HTMLElement;
       if (answerContainer.style.display === 'flex') {
         this.nextQuestion();
       } else {
@@ -118,13 +110,11 @@ export class AudiocallGameComponent implements OnInit {
           btn.style.background = 'green';
         }
       });
-      this.wrongCount++;
       this.wrongAnswers.push(this.questions[this.wordNumber].answer);
     } else {
       this.answerBullets[this.wordNumber] = 'green';
       this.isCorrect = true;
       item.style.background = 'green';
-      this.correctCount++;
       this.correctAnswers.push(this.questions[this.wordNumber].answer);
     }
     this.userProgressService.checkWord(
@@ -155,7 +145,6 @@ export class AudiocallGameComponent implements OnInit {
       }
       btn.classList.add('disabled');
     });
-    this.wrongCount++;
     this.wrongAnswers.push(this.questions[this.wordNumber].answer);
     circles.forEach((circle: Element, index: number) => {
       const classCircle: string = this.answerBullets[index];
@@ -165,6 +154,7 @@ export class AudiocallGameComponent implements OnInit {
 
   public nextQuestion(): void {
     this.wordNumber += 1;
+    this.digitsIsActive = true;
     const answerBtns: NodeListOf<HTMLElement> = document.querySelectorAll(
       '.answer-btn'
     ) as NodeListOf<HTMLElement>;
@@ -178,9 +168,6 @@ export class AudiocallGameComponent implements OnInit {
     const btnUnknown: HTMLElement = document.querySelector(
       '.btn-unknown'
     ) as HTMLElement;
-    const resultPopup: HTMLElement = document.querySelector(
-      '.result-popup'
-    ) as HTMLElement;
     if (this.wordNumber < this.totalAmount) {
       this.renderQuestion();
       answerBtns.forEach((item: HTMLElement) => {
@@ -192,7 +179,8 @@ export class AudiocallGameComponent implements OnInit {
       btnNext.style.display = 'none';
       btnUnknown.style.display = 'flex';
     } else {
-      resultPopup.style.display = 'block';
+      this.state = 'end';
+      return;
     }
   }
 
@@ -217,10 +205,8 @@ export class AudiocallGameComponent implements OnInit {
     this.answerBullets = [];
     this.randomWordsArr = [];
     this.wordNumber = 0;
-    this.correctCount = 0;
-    this.wrongCount = 0;
+    this.digitsIsActive = true;
     this.ngOnInit();
-    this.clicked.emit();
   }
 
   private initWords(): void {
@@ -283,6 +269,7 @@ export class AudiocallGameComponent implements OnInit {
   }
 
   private renderAnswer(): void {
+    this.digitsIsActive = false;
     const answerContainer: HTMLElement = document.querySelector(
       '.answer-container'
     ) as HTMLElement;

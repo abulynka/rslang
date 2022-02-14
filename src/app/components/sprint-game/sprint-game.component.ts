@@ -46,6 +46,8 @@ function getQuestions(words: Word[]): Question[] {
 export class SprintGameComponent implements OnInit {
   public questions: Question[] = [];
   public answers: Answer[] = [];
+  public correctAnswers: Word[] = [];
+  public wrongAnswers: Word[] = [];
   public wordNumber: number = 0;
   public timer: number = 0;
   public score: number = 0;
@@ -129,6 +131,11 @@ export class SprintGameComponent implements OnInit {
     };
 
     this.userProgressService.checkWord(wordAnswer, 'sprint');
+    if (answer) {
+      this.correctAnswers.push(question.wordData);
+    } else {
+      this.wrongAnswers.push(question.wordData);
+    }
     this.answers.push(wordAnswer);
     this.setRightAnswer(answer);
     this.nextWord();
