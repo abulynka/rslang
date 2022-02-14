@@ -1,8 +1,12 @@
-<article class="sprint-result">
-<button (click)="reastartGame()">Играть заново</button>
-  <article class="sprint-result__window">
-    <h2>Результаты <span class="score">{{ score }}</span></h2>
-    <div class="sprint-result__frame">
+<article class="result-popup">
+  <!-- <button (click)="reastartGame()">Играть заново</button> -->
+  <article class="result-container">
+    <p class="close-btn" (click)="reastartGame()">X</p>
+    <h2>
+      Результаты
+      <!-- <span class="score">{{ score }}</span> -->
+    </h2>
+    <!-- <div class="sprint-result__frame">
       <div class="sprint-result__line" *ngFor="let answer of answers">
         <button
           class="sprint-result__sound-btn"
@@ -13,9 +17,47 @@
         <p>{{ answer.word }}</p>
         <p>{{ answer.transcription }}</p>
         <p>{{ answer.wordTranslate }}</p>
-        <p class="sprint-result__mark" [ngClass]="{ 'right-answer': answer.answer }">
+        <p
+          class="sprint-result__mark"
+          [ngClass]="{ 'right-answer': answer.answer }"
+        >
           {{ answer.answer ? '+' : '-' }}
         </p>
+      </div>
+    </div> -->
+
+    <div class="wrong-answers">
+      <h3>
+        Ошибок <span class="red-count">{{ wrongAnswers.length }}</span>
+      </h3>
+      <div class="result-row" *ngFor="let answer of wrongAnswers">
+        <img
+          class="small-svg"
+          src="../../../assets/svg/volume-audio-svgrepo-com.svg"
+          alt="image"
+          *ngIf="answer"
+          (click)="playSound(answer.audio)"
+        />
+        <p *ngIf="answer">{{ answer.word }}</p>
+        <p *ngIf="answer">{{ answer.transcription }}</p>
+        <p *ngIf="answer">{{ answer.wordTranslate }}</p>
+      </div>
+    </div>
+    <div class="correct-answers">
+      <h3>
+        Знаю <span class="green-count">{{ correctAnswers.length }}</span>
+      </h3>
+      <div class="result-row" *ngFor="let answer of correctAnswers">
+        <img
+          class="small-svg"
+          src="../../../assets/svg/volume-audio-svgrepo-com.svg"
+          alt="image"
+          *ngIf="answer"
+          (click)="playSound(answer.audio)"
+        />
+        <p *ngIf="answer">{{ answer.word }}</p>
+        <p *ngIf="answer">{{ answer.transcription }}</p>
+        <p *ngIf="answer">{{ answer.wordTranslate }}</p>
       </div>
     </div>
   </article>

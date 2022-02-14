@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import { catchError } from 'rxjs';
 import { Answer, UserStatistics } from 'src/app/interfaces/interfaces';
 import { UserStatisticsService } from 'src/app/services/user-statistics.service';
+import { Answer, Word } from 'src/app/interfaces/interfaces';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -22,6 +23,8 @@ export class GameResultComponent implements OnChanges, OnInit {
   @Input() public answers: Answer[] = [];
   @Input() public score: number = 0;
   @Input() public gameName: string = '';
+  @Input() public wrongAnswers: Word[] = [];
+  @Input() public correctAnswers: Word[] = [];
   @Output() public clicked: EventEmitter<string> = new EventEmitter();
 
   public route: string = '';
