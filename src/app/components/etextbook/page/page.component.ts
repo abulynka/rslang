@@ -20,12 +20,11 @@ export class PageComponent implements OnInit {
     this.hardWordsPageNumber = 6;
   }
 
-  @Input() public set groupNumber(groupNumber: number) {
+  @Input() public setGroupPageNumber(
+    groupNumber: number,
+    pageNumber: number
+  ): void {
     this._groupNumber = groupNumber;
-    this.init();
-  }
-
-  @Input() public set pageNumber(pageNumber: number) {
     this._pageNumber = pageNumber;
     this.init();
   }

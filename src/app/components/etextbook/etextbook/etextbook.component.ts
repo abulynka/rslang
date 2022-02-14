@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { OnInit, Component, ViewChild, AfterViewInit } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { ChapterComponent } from '../chapter/chapter.component';
 import { MatOptionSelectionChange } from '@angular/material/core';
@@ -8,11 +8,8 @@ import { MatOptionSelectionChange } from '@angular/material/core';
   templateUrl: './etextbook.component.html',
   styleUrls: ['./etextbook.component.scss'],
 })
-export class EtextbookComponent {
-  @ViewChild(ChapterComponent, { static: true }) private chapter:
-    | ChapterComponent
-    | undefined;
-
+export class EtextbookComponent implements OnInit, AfterViewInit {
+  @ViewChild(ChapterComponent) private chapter: ChapterComponent | undefined;
   @ViewChild(MatPaginator) private paginator: MatPaginator | undefined;
 
   public chapters: Array<{ [key: string]: string | number }> = [
@@ -47,21 +44,48 @@ export class EtextbookComponent {
   ];
 
   public selectedChapter: number = 0;
+  public selectedPage: number = 0;
 
-  public changePage(event: PageEvent): PageEvent {
-    if (this.chapter) {
-      this.chapter.setPage(event.pageIndex);
-    }
+  private readonly keys: Record<string, string> = {
+    chapter: 'etextbookcomponent-chapter',
+    page: 'etextbookcomponent-page',
+  };
+
+  public ngOnInit(): void {
+    this.selectedChapter = parseInt(
+      sessionStorage.getItem(this.keys['chapter']) || ''
+    );
+    this.selectedPage = parseInt(
+      sessionStorage.getItem(this.keys['page']) || ''
+    );
+  }
+
+  public ngAfterViewInit(): void {
+    this.changeChapter(this.selectedChapter, this.selectedPage);
+  }
+
+  public changePageEvent(event: PageEvent): PageEvent {
+    const page: number = event.pageIndex;
+    this.selectedPage = page;
+    sessionStorage.setItem(this.keys['page'], page.toString());
+    this.changeChapter(this.selectedChapter, this.selectedPage);
     return event;
   }
 
-  public changeChapter(
+  public changeChapterEvent(
     chapterEvent: MatOptionSelectionChange<string | number>
   ): void {
-    if (chapterEvent.isUserInput && this.chapter) {
+    if (chapterEvent.isUserInput) {
       const chapter: number = parseInt(`${chapterEvent.source.value}`);
-      this.chapter.setChapter(chapter);
+      this.selectedChapter = chapter;
+      sessionStorage.setItem(this.keys['chapter'], chapter.toString());
+      this.changeChapter(this.selectedChapter, this.selectedPage);
+    }
+  }
 
+  private changeChapter(chapter: number, page: number): void {
+    if (this.chapter) {
+      this.chapter.setChapter(chapter, page);
       const hardChapter: number = 6;
       if (chapter === hardChapter) {
         if (this.paginator) {
