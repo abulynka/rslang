@@ -6,7 +6,7 @@ import {
   EventEmitter,
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { Answer } from 'src/app/interfaces/interfaces';
+import { Answer, Word } from 'src/app/interfaces/interfaces';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -17,6 +17,8 @@ import { environment } from 'src/environments/environment';
 export class GameResultComponent implements OnChanges {
   @Input() public answers: Answer[] = [];
   @Input() public score: number = 0;
+  @Input() public wrongAnswers: Word[] = [];
+  @Input() public correctAnswers: Word[] = [];
   @Output() public clicked: EventEmitter<string> = new EventEmitter();
 
   public route: string = '';
