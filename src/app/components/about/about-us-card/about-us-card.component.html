@@ -1,0 +1,26 @@
+<mat-card-content class="card">
+  <img
+    class="card__img"
+    src="{{ getImagePath() }}"
+    alt="{{ aboutUsCard.name }}"
+  />
+  <div class="card__body">
+    <h3 class="card__body-title">{{ aboutUsCard.name }}</h3>
+    <h4 class="card__body-position">{{ aboutUsCard.position }}</h4>
+    <mat-list class="card__body-text">
+      <mat-list-item *ngFor="let desc of aboutUsCard.description">{{
+        desc
+      }}</mat-list-item>
+    </mat-list>
+    <a
+      target="_blank"
+      href="{{ aboutUsCard.gitHub }}"
+      class="mat-button card__body-github"
+      ><img
+        class="card__body-github-img"
+        src="../../../../assets/svg/github.svg"
+        alt="{{ aboutUsCard.gitHub }}"
+      />{{ getGitHubUserName() }}</a
+    >
+  </div>
+</mat-card-content>
