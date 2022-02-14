@@ -2,7 +2,7 @@ import { OnInit, Component, ViewChild, AfterViewInit } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { ChapterComponent } from '../chapter/chapter.component';
 import { MatOptionSelectionChange } from '@angular/material/core';
-import {AuthService} from "../../../services/auth.service";
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-etextbook',
