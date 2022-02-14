@@ -1,7 +1,6 @@
 <section class="short-stat">
   <h2 class="short-stat__title">Краткосрочная статистика</h2>
   <section class="short-stat__content">
-
     <article class="short-stat__graph">
       <h3 class="short-stat__graph-title">Спринт</h3>
       <div class="short-stat__graph-content">
@@ -15,6 +14,7 @@
           [xAxis]="true"
           [yAxis]="true"
           [gradient]="gradient"
+          d="0"
         >
         </ngx-charts-bar-vertical>
       </div>
@@ -33,6 +33,7 @@
           [xAxis]="true"
           [yAxis]="true"
           [gradient]="gradient"
+          d="0"
         >
         </ngx-charts-bar-vertical>
       </div>
@@ -43,7 +44,7 @@
       <div class="short-stat__graph-content">
         <ngx-charts-bar-vertical
           [view]="[width, height]"
-          [results]="audio"
+          [results]="words"
           [xAxisLabel]="''"
           [yAxisLabel]="''"
           [showXAxisLabel]="false"
@@ -51,10 +52,10 @@
           [xAxis]="true"
           [yAxis]="true"
           [gradient]="gradient"
+          d="0"
         >
         </ngx-charts-bar-vertical>
       </div>
     </article>
-
   </section>
 </section>

@@ -31,6 +31,14 @@ export class WordsService {
     );
   }
 
+  public getAllLearnedWords(): Observable<Word[]> {
+    return this.getAggregatedWords(
+      undefined,
+      undefined,
+      JSON.stringify({ 'userWord.optional.isLearned': true })
+    );
+  }
+
   public getWords(
     group: string,
     page: string,
@@ -46,7 +54,8 @@ export class WordsService {
         page,
         JSON.stringify({
           $or: [{ 'userWord.optional.isLearned': false }, { userWord: null }],
-        })
+        }),
+        '20'
       );
     }
 
@@ -59,7 +68,7 @@ export class WordsService {
     group?: string,
     page?: string,
     filter?: string,
-    wordsPerPage?: string
+    wordsPerPage: string = '4000'
   ): Observable<Word[]> {
     const filterObj: { [key: string]: string | number } = {};
     if (group) {
