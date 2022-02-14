@@ -83,3 +83,11 @@ export interface AnimalSVG {
   src: string;
   alt: string;
 }
+
+export interface AboutUsCard {
+  name: string;
+  gitHub: string;
+  position: string;
+  image: string;
+  description: string[];
+}
