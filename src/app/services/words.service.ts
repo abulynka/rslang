@@ -20,6 +20,25 @@ export class WordsService {
     ) as Observable<Word>;
   }
 
+  public getHardWords(): Observable<Word[]> {
+    return this.getAggregatedWords(
+      undefined,
+      undefined,
+      JSON.stringify({
+        $or: [{ 'userWord.difficulty': 'hard' }],
+      }),
+      '3600'
+    );
+  }
+
+  public getAllLearnedWords(): Observable<Word[]> {
+    return this.getAggregatedWords(
+      undefined,
+      undefined,
+      JSON.stringify({ 'userWord.optional.isLearned': true })
+    );
+  }
+
   public getWords(
     group: string,
     page: string,

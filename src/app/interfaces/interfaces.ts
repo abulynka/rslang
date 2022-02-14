@@ -89,3 +89,14 @@ export interface ChartData {
   name: string;
   value: number;
 }
+
+export interface StatisticsOpt {
+  sprintSeriesOfAnswers: number;
+  audioSeriesOfAnswers: number;
+}
+
+export interface UserStatistics {
+  id?: string;
+  learnedWords: number;
+  optional: StatisticsOpt;
+}
