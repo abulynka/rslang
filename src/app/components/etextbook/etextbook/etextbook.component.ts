@@ -2,6 +2,7 @@ import { OnInit, Component, ViewChild, AfterViewInit } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { ChapterComponent } from '../chapter/chapter.component';
 import { MatOptionSelectionChange } from '@angular/material/core';
+import {AuthService} from "../../../services/auth.service";
 
 @Component({
   selector: 'app-etextbook',
@@ -37,10 +38,6 @@ export class EtextbookComponent implements OnInit, AfterViewInit {
       name: 'Раздел 6',
       index: 5,
     },
-    {
-      name: 'Сложные слова',
-      index: 6,
-    },
   ];
 
   public selectedChapter: number = 0;
@@ -51,10 +48,21 @@ export class EtextbookComponent implements OnInit, AfterViewInit {
     page: 'etextbookcomponent-page',
   };
 
+  public constructor(public auth: AuthService) {}
+
   public ngOnInit(): void {
+    if (this.auth.checkAuth()) {
+      this.chapters.push({
+        name: 'Сложные слова',
+        index: 6,
+      });
+    }
     this.selectedChapter = parseInt(
       sessionStorage.getItem(this.keys['chapter']) || ''
     );
+    if (this.selectedChapter > this.chapters.length) {
+      this.selectedChapter = 0;
+    }
     this.selectedPage = parseInt(
       sessionStorage.getItem(this.keys['page']) || ''
     );
