@@ -38,12 +38,16 @@
       background-color: #c4c4c4;
     }
 
-    .circle.red {
-      background-color: red;
-    }
-
     .circle.green {
       background-color: green;
+    }
+
+    .circle.yellow {
+      background-color: yellow;
+    }
+
+    .circle.red {
+      background-color: red;
     }
   }
 
@@ -86,6 +90,11 @@
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
+
+    .answer-btn.disabled {
+      pointer-events: none;
+      opacity: 1;
+    }
   }
 
   .btn-next {
