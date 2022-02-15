@@ -88,46 +88,6 @@
     </button>
   </div>
 
-  <div class="result-popup">
-    <div class="result-container">
-      <p class="close-btn" (click)="restartGame()">X</p>
-      <h2>Результаты</h2>
-      <div class="wrong-answers">
-        <h3>
-          Ошибок <span class="red-count">{{ wrongCount }}</span>
-        </h3>
-        <div class="result-row" *ngFor="let answer of wrongAnswers">
-          <img
-            class="small-svg"
-            src="../../../assets/svg/volume-audio-svgrepo-com.svg"
-            alt="image"
-            *ngIf="answer"
-            (click)="playSound(answer.audio)"
-          />
-          <p *ngIf="answer">{{ answer.word }}</p>
-          <p *ngIf="answer">{{ answer.transcription }}</p>
-          <p *ngIf="answer">{{ answer.wordTranslate }}</p>
-        </div>
-      </div>
-      <div class="correct-answers">
-        <h3>
-          Знаю <span class="green-count">{{ correctCount }}</span>
-        </h3>
-        <div class="result-row" *ngFor="let answer of correctAnswers">
-          <img
-            class="small-svg"
-            src="../../../assets/svg/volume-audio-svgrepo-com.svg"
-            alt="image"
-            *ngIf="answer"
-            (click)="playSound(answer.audio)"
-          />
-          <p *ngIf="answer">{{ answer.word }}</p>
-          <p *ngIf="answer">{{ answer.transcription }}</p>
-          <p *ngIf="answer">{{ answer.wordTranslate }}</p>
-        </div>
-      </div>
-    </div>
-  </div>
   <app-game-result
     (clicked)="restartGame()"
     [gameName]="'audioGame'"

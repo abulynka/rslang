@@ -46,6 +46,8 @@ function getQuestions(words: Word[]): Question[] {
 export class SprintGameComponent implements OnInit {
   public questions: Question[] = [];
   public answers: Answer[] = [];
+  public correctAnswers: Word[] = [];
+  public wrongAnswers: Word[] = [];
   public wordNumber: number = 0;
   public timer: number = 0;
   public score: number = 0;
@@ -54,8 +56,6 @@ export class SprintGameComponent implements OnInit {
   public isFullScreen: boolean = false;
   public isMuteSound: boolean = true;
   public answer: boolean | null = null;
-  public correctAnswers: Word[] = [];
-  public wrongAnswers: Word[] = [];
   public animals: AnimalSVG[];
   public assetsURL: string = '../../../assets';
 
