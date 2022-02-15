@@ -113,6 +113,7 @@ export class UserStatisticsService {
         })
       )
       .subscribe((data: Word[]) => {
+        this.clearData();
         this.userWords = data;
         this.setStatisticsData();
         cb();

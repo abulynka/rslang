@@ -10,7 +10,7 @@
           <mat-label>Глава</mat-label>
           <mat-select [(value)]="selectedChapter">
             <mat-option
-              (onSelectionChange)="changeChapter($event)"
+              (onSelectionChange)="changeChapterEvent($event)"
               *ngFor="let chapter of chapters"
               [value]="chapter['index']"
               class="etextbook__word_color-{{ chapter['index'] }}"
@@ -20,7 +20,9 @@
           </mat-select>
         </mat-form-field>
 
-        <button mat-flat-button class="etextbook__buttons-game">аудиовызов</button>
+        <button mat-flat-button class="etextbook__buttons-game">
+          аудиовызов
+        </button>
         <button mat-flat-button class="etextbook__buttons-game">спринт</button>
 
         <mat-paginator
@@ -29,8 +31,9 @@
           [pageSizeOptions]="[20]"
           [showFirstLastButtons]="true"
           aria-label="Выбрать страницу"
-          (page)="changePage($event)"
-          title="test"
+          (page)="changePageEvent($event)"
+          title="Выбрать страницу"
+          [pageIndex]="selectedPage"
         ></mat-paginator>
       </div>
 

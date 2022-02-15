@@ -28,8 +28,10 @@ export class GamesStartComponent {
   }
 
   public startGame(group: number): void {
-    this.gamesStateService.group = group.toString();
-    this.gamesStateService.setRandomPage();
+    this.gamesStateService.setParameters(
+      group.toString(),
+      this.gamesStateService.setRandomPage()
+    );
     this.clicked.emit();
   }
 }

@@ -1,5 +1,5 @@
 import { Component, DoCheck } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { routeChangeAnimation } from './components/change-route-animation';
 import { Auth } from './interfaces/interfaces';
 import { AuthService } from './services/auth.service';
@@ -19,7 +19,8 @@ export class AppComponent implements DoCheck {
 
   public constructor(
     private authService: AuthService,
-    private gamesStatesService: GamesStatesService
+    private gamesStatesService: GamesStatesService,
+    private router: Router
   ) {}
 
   public ngDoCheck(): void {
@@ -43,10 +44,11 @@ export class AppComponent implements DoCheck {
   public logOut(): void {
     this.authService.deleteUserData();
     this.isAuthUser = false;
+    this.router.navigateByUrl('');
   }
 
   public setGameState(): void {
-    this.gamesStatesService.isOpenedFormMenu = true;
+    this.gamesStatesService.startFromHeader();
   }
 
   public getRouteAnimationState(outlet: RouterOutlet): RouterOutlet {
