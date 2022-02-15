@@ -1,3 +1,4 @@
+
 .long-stat {
   display: flex;
   flex-direction: column;
@@ -9,5 +10,11 @@
 
   &__content {
     display: flex;
+
+    .long-stat__graph-content {
+      overflow-x: auto;
+      min-width: 0;
+      width: 500px;
+    }
   }
 }

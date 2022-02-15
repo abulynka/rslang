@@ -9,9 +9,8 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError } from 'rxjs';
-import { Answer, UserStatistics } from 'src/app/interfaces/interfaces';
+import { Answer, UserStatistics, Word } from 'src/app/interfaces/interfaces';
 import { UserStatisticsService } from 'src/app/services/user-statistics.service';
-import { Answer, Word } from 'src/app/interfaces/interfaces';
 import { environment } from 'src/environments/environment';
 
 @Component({

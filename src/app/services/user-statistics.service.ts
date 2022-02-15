@@ -62,6 +62,19 @@ export class UserStatisticsService {
     private auth: AuthService
   ) {}
 
+  public clearData(): void {
+     this.newWordsAmount = new NewAmount();
+     this.gameWinsRate = new NewAmount();
+     this.sprintSeries = 0;
+     this.audioSeries = 0;
+     this.sprintWinRate = 0;
+     this.audioWinRate = 0;
+     this.commonWinRate = 0;
+     this.sprintWinRateArr = [];
+     this.audioWinRateArr = [];
+     this.commonWinRateArr = [];
+  }
+
   public getWords(cb: () => void): void {
     this.wordsService
       .getAggregatedWords(
@@ -75,6 +88,7 @@ export class UserStatisticsService {
         })
       )
       .subscribe((data: Word[]) => {
+        this.clearData();
         this.userWords = data;
         this.setStatisticsData();
         cb();
