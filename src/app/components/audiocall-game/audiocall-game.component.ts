@@ -62,7 +62,7 @@ export class AudiocallGameComponent implements OnInit {
     }
   }
   public ngOnInit(): void {
-    if (!this.gamesService.isOpenedFormMenu) {
+    if (!this.gamesService.isOpenedFromMenu) {
       this.startGame();
     }
   }

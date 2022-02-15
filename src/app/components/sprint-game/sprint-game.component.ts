@@ -89,7 +89,7 @@ export class SprintGameComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    if (!this.gameStateService.isOpenedFormMenu) {
+    if (!this.gameStateService.isOpenedFromMenu) {
       this.startGame();
     }
   }
@@ -165,7 +165,7 @@ export class SprintGameComponent implements OnInit {
 
   private getWords(): void {
     this.wordsService
-      .getWords(this.group, this.page, this.gameStateService.isOpenedFormMenu)
+      .getWords(this.group, this.page, this.gameStateService.isOpenedFromMenu)
       .subscribe((words: Word[]) => {
         this.questions = this.questions.concat(getQuestions(words));
         if (this.timer.toString() === '60') {
