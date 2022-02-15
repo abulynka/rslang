@@ -1,6 +1,4 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { catchError } from 'rxjs';
 import { ChartData, UserStatistics } from 'src/app/interfaces/interfaces';
 import { Word } from '../../interfaces/interfaces';
 import { UserStatisticsService } from 'src/app/services/user-statistics.service';
@@ -64,7 +62,7 @@ export class ShortStatisticComponent implements OnInit {
   public constructor(private statisticsService: UserStatisticsService) {}
 
   public ngOnInit(): void {
-    this.statisticsService.getWords(() => {
+    this.statisticsService.getUserWords(() => {
       this.sprint[0].value = this.statisticsService.newWordsAmount.sprint;
       this.audio[0].value = this.statisticsService.newWordsAmount.gameCall;
       this.words[0].value = this.statisticsService.newWordsAmount.common();
@@ -92,12 +90,6 @@ export class ShortStatisticComponent implements OnInit {
     };
     this.statisticsService
       .getUserStatistics()
-      .pipe(
-        catchError((err: HttpErrorResponse) => {
-          if (!err.ok) setData(0, 0);
-          return [];
-        })
-      )
       .subscribe((data: UserStatistics) => {
         setData(
           data.optional.sprintSeriesOfAnswers,

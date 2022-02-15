@@ -12,7 +12,9 @@
     (clicked)="restartGame()"
     [answers]="answers"
     [score]="score"
-    gameName="sprint"
+    [gameName]="'sprint'"
+    [wrongAnswers]="wrongAnswers"
+    [correctAnswers]="correctAnswers"
     *ngIf="state === 'end'"
   >
   </app-game-result>

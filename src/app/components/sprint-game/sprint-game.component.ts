@@ -54,6 +54,8 @@ export class SprintGameComponent implements OnInit {
   public isFullScreen: boolean = false;
   public isMuteSound: boolean = true;
   public answer: boolean | null = null;
+  public correctAnswers: Word[] = [];
+  public wrongAnswers: Word[] = [];
   public animals: AnimalSVG[];
   public assetsURL: string = '../../../assets';
 
@@ -129,6 +131,11 @@ export class SprintGameComponent implements OnInit {
     };
 
     this.userProgressService.checkWord(wordAnswer, 'sprint');
+    if (answer) {
+      this.correctAnswers.push(question.wordData);
+    } else {
+      this.wrongAnswers.push(question.wordData);
+    }
     this.answers.push(wordAnswer);
     this.setRightAnswer(answer);
     this.nextWord();
