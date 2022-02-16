@@ -1,67 +1,66 @@
 <header class="header">
-  <img
-    routerLink="/"
-    class="logo"
-    src="https://leon-center.by/sub/images/language.svg"
-    alt="icon"
-  />
-  <nav class="navbar">
-    <ul class="navbar-list">
-      <li class="navbar-item"><a routerLink="/">главная</a></li>
-      <li class="navbar-item"><a routerLink="etextbook">учебник</a></li>
-      <li class="navbar-item games-btn">
-        <button class="btn">мини-игры</button>
-        <div class="dropdown">
-          <button class="btn">
-            <em class="fa fa-caret-down"></em>
+  <mat-toolbar color="primary" class="mat-header">
+    <img
+      routerLink="/"
+      class="logo"
+      src="https://leon-center.by/sub/images/language.svg"
+      alt="icon"
+    />
+    <nav class="navbar">
+      <ul class="navbar-list">
+        <li class="navbar-item"><a routerLink="/">главная</a></li>
+        <li class="navbar-item"><a routerLink="etextbook">учебник</a></li>
+        <li class="navbar-item">
+          <button class="btn" [matMenuTriggerFor]="menu">мини-игры</button>
+          <mat-menu #menu="matMenu">
+            <a (click)="setGameState()" mat-menu-item routerLink="/audiocall">
+              <span>аудиовызов</span>
+            </a>
+            <a (click)="setGameState()" mat-menu-item routerLink="/sprint-game">
+              <span>спринт</span>
+            </a>
+          </mat-menu>
+        </li>
+        <li class="navbar-item" *ngIf="isAuthUser">
+          <button class="btn" [matMenuTriggerFor]="statistics">
+            статистика
           </button>
-          <div class="dropdown-content">
-            <a (click)="setGameState()" routerLink="/audiocall">аудиовызов</a>
-            <a (click)="setGameState()" routerLink="/sprint-game">спринт</a>
-          </div>
-        </div>
-      </li>
+          <mat-menu class="dropdown" #statistics="matMenu">
+            <a routerLink="/short-statistic" mat-menu-item>краткосрочная</a>
+            <a routerLink="/long-statistic" mat-menu-item>долгосрочная</a>
+          </mat-menu>
+        </li>
+      </ul>
 
-      <li class="navbar-item games-btn" *ngIf="isAuthUser">
-        <button class="btn">статистика</button>
-        <div class="dropdown">
-          <button class="btn">
-            <em class="fa fa-caret-down"></em>
+      <ul class="navbar-list">
+        <li class="navbar-item user-info" *ngIf="isAuthUser">
+          <p class="user-info__name">{{ userName }}</p>
+          <img class="user-info__img" src="../assets/user.png" alt="user" />
+          <button
+            type="button"
+            class="btn btn-outline-warning"
+            (click)="logOut()"
+          >
+            выйти
           </button>
-          <div class="dropdown-content">
-            <a routerLink="/short-statistic">краткосрочная</a>
-            <a routerLink="/long-statistic">долгосрочная</a>
-          </div>
-        </div>
-      </li>
-
-    </ul>
-
-    <ul class="navbar-list">
-      <li class="navbar-item user-info" *ngIf="isAuthUser">
-        <p class="user-info__name">{{ userName }}</p>
-        <img class="user-info__img" src="../assets/user.png" alt="user" />
-        <button
-          type="button"
-          class="btn btn-outline-warning"
-          (click)="logOut()"
-        >
-          выйти
-        </button>
-      </li>
-      <li class="navbar-item enter" *ngIf="!isAuthUser">
-        <a routerLink="signin">Войти</a>
-      </li>
-      <li class="navbar-item"><a routerLink="about-us">О команде</a></li>
-    </ul>
-  </nav>
+        </li>
+        <li class="navbar-item" *ngIf="!isAuthUser">
+          <button class="mat-button" mat-raised-button routerLink="signin">
+            <mat-icon>login</mat-icon>
+            <span>войти</span>
+          </button>
+        </li>
+        <li class="navbar-item"><a routerLink="about-us">О команде</a></li>
+      </ul>
+    </nav>
+  </mat-toolbar>
 </header>
 
 <main class="main" [@routeChangeAnimation]="getRouteAnimationState(outlet)">
   <router-outlet #outlet="outlet"></router-outlet>
 </main>
 
-<footer class="footer">
+<footer class="footer" *ngIf="!isFooterHidden">
   <p>© Jet Squad</p>
   <p>2021</p>
   <a href="https://rs.school/js/"

@@ -4,12 +4,12 @@ import { AuthService } from 'src/app/services/auth.service';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements DoCheck {
   @Input() isAuthUser: boolean = false;
   public name: string = 'On Packer';
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService) {}
 
   public ngDoCheck(): void {
     const userData = this.authService.getUserData();

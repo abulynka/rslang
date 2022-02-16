@@ -36,6 +36,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatListModule } from '@angular/material/list';
 import { AboutUsCardComponent } from './components/about/about-us-card/about-us-card.component';
 import { MatCardModule } from '@angular/material/card';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 const appRoutes: Routes = [
   { path: '', component: MainPageComponent },
@@ -63,10 +65,16 @@ const appRoutes: Routes = [
   {
     path: 'sprint-game',
     component: SprintGameComponent,
+    data: {
+      isFooterHidden: true,
+    },
   },
   {
     path: 'audiocall',
     component: AudiocallGameComponent,
+    data: {
+      isFooterHidden: true,
+    },
   },
   {
     path: 'short-statistic',
@@ -113,6 +121,8 @@ const appRoutes: Routes = [
     MatSelectModule,
     MatListModule,
     MatCardModule,
+    MatToolbarModule,
+    MatProgressSpinnerModule,
   ],
   providers: [
     HttpService,
