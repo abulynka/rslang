@@ -90,6 +90,7 @@
 
   <app-game-result
     (clicked)="restartGame()"
+    [gameName]="'audioGame'"
     [wrongAnswers]="wrongAnswers"
     [correctAnswers]="correctAnswers"
     *ngIf="state === 'end'"

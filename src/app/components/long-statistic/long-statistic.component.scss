@@ -10,11 +10,13 @@
 
   &__content {
     display: flex;
+    flex-direction: column;
+    align-items: center;
 
     .long-stat__graph-content {
       overflow-x: auto;
       min-width: 0;
-      width: 500px;
+      max-width: 700px;
     }
   }
 }

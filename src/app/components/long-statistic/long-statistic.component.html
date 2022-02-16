@@ -24,7 +24,7 @@
     <article class="long-stat__graph">
       <h3 class="long-stat__graph-title">новые слова за весь период</h3>
       <div class="long-stat__graph-content">
-        <ngx-charts-line-chart
+        <ngx-charts-bar-vertical
           [view]="[width, height]"
           [results]="newWordsPerEveryDayIntegral"
           [xAxisLabel]="''"
@@ -33,9 +33,11 @@
           [showYAxisLabel]="false"
           [xAxis]="true"
           [yAxis]="true"
+          [noBarWhenZero]="false"
+          [legend]="true"
           [gradient]="gradient"
         >
-        </ngx-charts-line-chart>
+        </ngx-charts-bar-vertical>
       </div>
     </article>
   </section>
