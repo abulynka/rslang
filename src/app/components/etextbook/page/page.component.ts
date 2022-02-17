@@ -12,6 +12,8 @@ export class PageComponent implements OnInit {
 
   public readonly hardWordsPageNumber: number;
 
+  public difficultChapter: boolean = false;
+
   private _groupNumber: number = 0;
 
   private _pageNumber: number = 0;
@@ -26,6 +28,8 @@ export class PageComponent implements OnInit {
   ): void {
     this._groupNumber = groupNumber;
     this._pageNumber = pageNumber;
+    const difficultChapterConst: number = 6;
+    this.difficultChapter = this._groupNumber === difficultChapterConst;
     this.init();
   }
 
@@ -35,6 +39,7 @@ export class PageComponent implements OnInit {
 
   public init(): void {
     if (this._groupNumber === this.hardWordsPageNumber) {
+      this.words = [];
       this.wordsService.getHardWords().subscribe((words: Word[]) => {
         this.words = words;
       });
@@ -45,5 +50,15 @@ export class PageComponent implements OnInit {
           this.words = words;
         });
     }
+  }
+
+  public removeWord(word: Word): void {
+    this.words.some((value: Word, key: number) => {
+      if (this.words[key].id === word.id) {
+        this.words.splice(key, 1);
+        return true;
+      }
+      return false;
+    });
   }
 }
