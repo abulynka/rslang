@@ -3,6 +3,12 @@ import { Router } from '@angular/router';
 import { catchError } from 'rxjs';
 import { User } from 'src/app/interfaces/interfaces';
 import { SignUpService } from '../../services/sign-up.service';
+import {
+  FormControl,
+  Validators,
+  FormGroup,
+  AbstractControl,
+} from '@angular/forms';
 
 @Component({
   selector: 'app-sign-up',
@@ -10,22 +16,51 @@ import { SignUpService } from '../../services/sign-up.service';
   styleUrls: ['./sign-up.component.scss'],
 })
 export class SignUpComponent {
-  public userName: string = '';
-  public email: string = '';
-  public password: string = '';
+  public hide: boolean = true;
   public isSent: boolean = false;
   public isUserExist: boolean = false;
+  public formGroup: FormGroup = new FormGroup({
+    name: new FormControl('', [
+      Validators.required,
+      Validators.minLength(Number('3')),
+      Validators.pattern(/^[A-Za-zА-я]{3,}$/i),
+    ]),
+    email: new FormControl('', [
+      Validators.required,
+      Validators.email,
+      Validators.pattern(
+        /^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/i
+      ),
+    ]),
+    password: new FormControl('', [
+      Validators.required,
+      Validators.minLength(Number('8')),
+      Validators.pattern(/[a-zA-Z\d].{8,}$/i),
+    ]),
+  });
 
   public constructor(
     private signUpService: SignUpService,
     private router: Router
   ) {}
 
+  public get emailControl(): AbstractControl {
+    return this.formGroup.get('email') as AbstractControl;
+  }
+
+  public get nameControl(): AbstractControl {
+    return this.formGroup.get('name') as AbstractControl;
+  }
+
+  public get passwordControl(): AbstractControl {
+    return this.formGroup.get('password') as AbstractControl;
+  }
+
   public send(): void {
     const user: User = {
-      name: this.userName,
-      email: this.email,
-      password: this.password,
+      name: this.nameControl.value,
+      email: this.emailControl.value,
+      password: this.passwordControl.value,
     };
     this.isSent = true;
     this.signUpService
