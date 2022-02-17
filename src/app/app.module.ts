@@ -40,6 +40,9 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { StatisticsComponent } from './components/etextbook/statistics/statistics.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatTableModule } from '@angular/material/table';
 
 const appRoutes: Routes = [
   { path: '', component: MainPageComponent },
@@ -108,6 +111,7 @@ const appRoutes: Routes = [
     ShortStatisticComponent,
     LongStatisticComponent,
     AboutUsCardComponent,
+    StatisticsComponent,
   ],
   imports: [
     BrowserModule,
@@ -128,6 +132,8 @@ const appRoutes: Routes = [
     MatInputModule,
     MatFormFieldModule,
     ReactiveFormsModule,
+    MatDialogModule,
+    MatTableModule,
   ],
   providers: [
     HttpService,
