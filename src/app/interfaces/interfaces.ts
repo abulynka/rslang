@@ -108,3 +108,15 @@ export interface AboutUsCard {
   image: string;
   description: string[];
 }
+
+interface UserWordStatisticsGame {
+  gameName: string;
+  rightAnswers: number;
+  wrongAnswers: number;
+}
+
+export interface UserWordStatistics {
+  id: string;
+  audioGame: UserWordStatisticsGame;
+  sprintGame: UserWordStatisticsGame;
+}

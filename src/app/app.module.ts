@@ -36,6 +36,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatListModule } from '@angular/material/list';
 import { AboutUsCardComponent } from './components/about/about-us-card/about-us-card.component';
 import { MatCardModule } from '@angular/material/card';
+import { StatisticsComponent } from './components/etextbook/statistics/statistics.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatTableModule } from '@angular/material/table';
 
 const appRoutes: Routes = [
   { path: '', component: MainPageComponent },
@@ -98,6 +101,7 @@ const appRoutes: Routes = [
     ShortStatisticComponent,
     LongStatisticComponent,
     AboutUsCardComponent,
+    StatisticsComponent,
   ],
   imports: [
     BrowserModule,
@@ -113,6 +117,8 @@ const appRoutes: Routes = [
     MatSelectModule,
     MatListModule,
     MatCardModule,
+    MatDialogModule,
+    MatTableModule,
   ],
   providers: [
     HttpService,

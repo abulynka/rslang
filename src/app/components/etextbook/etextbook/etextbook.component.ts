@@ -1,19 +1,24 @@
-import { OnInit, Component, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, AfterViewInit } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { ChapterComponent } from '../chapter/chapter.component';
 import { MatOptionSelectionChange } from '@angular/material/core';
 import { AuthService } from '../../../services/auth.service';
+import { GamesStatesService } from '../../../services/games-states.service';
 
 @Component({
   selector: 'app-etextbook',
   templateUrl: './etextbook.component.html',
   styleUrls: ['./etextbook.component.scss'],
 })
-export class EtextbookComponent implements OnInit, AfterViewInit {
+export class EtextbookComponent implements AfterViewInit {
   @ViewChild(ChapterComponent) private chapter: ChapterComponent | undefined;
   @ViewChild(MatPaginator) private paginator: MatPaginator | undefined;
 
-  public chapters: Array<{ [key: string]: string | number }> = [
+  public selectedChapter: number;
+  public selectedPage: number = 0;
+  public loading: boolean = false;
+
+  public chapters: Array<Record<string, string | number>> = [
     {
       name: 'Раздел 1',
       index: 0,
@@ -40,32 +45,39 @@ export class EtextbookComponent implements OnInit, AfterViewInit {
     },
   ];
 
-  public selectedChapter: number = 0;
-  public selectedPage: number = 0;
-
   private readonly keys: Record<string, string> = {
     chapter: 'etextbookcomponent-chapter',
     page: 'etextbookcomponent-page',
   };
 
-  public constructor(public auth: AuthService) {}
-
-  public ngOnInit(): void {
-    if (this.auth.checkAuth()) {
+  public constructor(
+    public auth: AuthService,
+    public game: GamesStatesService
+  ) {
+    this.loading = true;
+    if (this.isAuthorized()) {
       this.chapters.push({
         name: 'Сложные слова',
         index: 6,
       });
     }
+
     this.selectedChapter = parseInt(
       sessionStorage.getItem(this.keys['chapter']) || ''
     );
     if (this.selectedChapter > this.chapters.length) {
       this.selectedChapter = 0;
     }
+
     this.selectedPage = parseInt(
-      sessionStorage.getItem(this.keys['page']) || ''
+      sessionStorage.getItem(this.keys['page']) || '0'
     );
+
+    this.changeChapter(this.selectedChapter, this.selectedPage);
+  }
+
+  public isAuthorized(): boolean {
+    return this.auth.checkAuth();
   }
 
   public ngAfterViewInit(): void {
@@ -91,19 +103,23 @@ export class EtextbookComponent implements OnInit, AfterViewInit {
     }
   }
 
+  public startAudioGame(): void {
+    this.game.startAudioGameFromBook(
+      this.selectedChapter.toString(),
+      this.selectedPage.toString()
+    );
+  }
+
+  public startSprintGame(): void {
+    this.game.startSprintFromBook(
+      this.selectedChapter.toString(),
+      this.selectedPage.toString()
+    );
+  }
+
   private changeChapter(chapter: number, page: number): void {
     if (this.chapter) {
       this.chapter.setChapter(chapter, page);
-      const hardChapter: number = 6;
-      if (chapter === hardChapter) {
-        if (this.paginator) {
-          this.paginator.length = 1;
-          this.paginator.showFirstLastButtons = false;
-          const maxPageSizeOptions: number = 3600;
-          this.paginator.pageSize = maxPageSizeOptions;
-          this.paginator.pageSizeOptions = [maxPageSizeOptions];
-        }
-      }
     }
   }
 }

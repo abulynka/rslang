@@ -25,9 +25,9 @@
   <div #wordControls *ngIf="isAuthorized()" class="word__controls">
     <button
       [disabled]="isDisabledDifficult"
-      (click)="makeDifficult()"
+      (click)="clickDifficult()"
       class="word__controls-button"
-      title="Отметить как сложное"
+      title="{{ difficultTitle }}"
       difficult
     >
       <i class="fa fa-graduation-cap" aria-hidden="true"></i>
@@ -40,6 +40,14 @@
       learned
     >
       <i class="fa fa-check-circle" aria-hidden="true"></i>
+    </button>
+    <button
+      (click)="openStatistics()"
+      class="word__controls-button"
+      title="Статистика по слову"
+      learned
+    >
+      <i class="fa fa-area-chart" aria-hidden="true"></i>
     </button>
   </div>
 </section>

@@ -20,12 +20,23 @@
           </mat-select>
         </mat-form-field>
 
-        <button mat-flat-button class="etextbook__buttons-game">
+        <button
+          mat-flat-button
+          class="etextbook__buttons-game"
+          (click)="startAudioGame()"
+        >
           аудиовызов
         </button>
-        <button mat-flat-button class="etextbook__buttons-game">спринт</button>
+        <button
+          mat-flat-button
+          class="etextbook__buttons-game"
+          (click)="startSprintGame()"
+        >
+          спринт
+        </button>
 
         <mat-paginator
+          *ngIf="selectedChapter !== 6"
           class="etextbook__buttons-pages"
           [length]="30 * 20"
           [pageSizeOptions]="[20]"
@@ -35,8 +46,18 @@
           title="Выбрать страницу"
           [pageIndex]="selectedPage"
         ></mat-paginator>
-      </div>
 
+        <mat-paginator
+          *ngIf="isAuthorized() && selectedChapter === 6"
+          class="etextbook__buttons-pages"
+          [length]="1"
+          [pageSizeOptions]="[3600]"
+          [showFirstLastButtons]="false"
+          aria-label="Выбрать страницу"
+          title="Выбрать страницу"
+          [pageIndex]="0"
+        ></mat-paginator>
+      </div>
       <app-chapter></app-chapter>
     </div>
   </div>

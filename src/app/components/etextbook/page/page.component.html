@@ -4,6 +4,8 @@
       *ngFor="let word of words"
       class="page__words-item"
       [word]="word"
+      [difficultChapter]="difficultChapter"
+      (removeWordEvent)="removeWord($event)"
     ></app-word>
   </div>
 </section>
