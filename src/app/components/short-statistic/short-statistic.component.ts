@@ -3,8 +3,8 @@ import { ChartData, UserStatistics } from 'src/app/interfaces/interfaces';
 import { Word } from '../../interfaces/interfaces';
 import { UserStatisticsService } from 'src/app/services/user-statistics.service';
 
-const width: number = 500;
-const height: number = 400;
+const width: number = 600;
+const height: number = 500;
 @Component({
   selector: 'app-short-statistic',
   templateUrl: './short-statistic.component.html',
@@ -14,6 +14,7 @@ export class ShortStatisticComponent implements OnInit {
   public width: number = width;
   public height: number = height;
   public gradient: boolean = false;
+  public isLoaded: boolean = false;
   public sprint: ChartData[] = [
     {
       name: 'Количество новых слов за день',
@@ -58,7 +59,12 @@ export class ShortStatisticComponent implements OnInit {
       value: 0,
     },
   ];
-
+  public jokes: string[] = [
+    'Собираем некоторые сведения о вас',
+    'Пожалуйста подождите, идет взлом пентагона',
+    'Вот вот загрузится',
+  ];
+  public joke: string = this.getJoke();
   public constructor(private statisticsService: UserStatisticsService) {}
 
   public ngOnInit(): void {
@@ -70,6 +76,7 @@ export class ShortStatisticComponent implements OnInit {
       this.setAmountOfNewWords();
       this.updateWinRate();
       this.updateDataArrays();
+      this.isLoaded = true;
     });
   }
 
@@ -77,9 +84,13 @@ export class ShortStatisticComponent implements OnInit {
     this.statisticsService
       .getLearnedWordsPerADay()
       .subscribe((data: Word[]) => {
-        this.words[1].value = data.length;
+        this.words[1].value = data.length || 0;
         this.words = [...this.words];
       });
+  }
+
+  private getJoke(): string {
+    return this.jokes[Math.round(Math.random() * (this.jokes.length - 1))];
   }
 
   private setSeriesOfAnswers(): void {

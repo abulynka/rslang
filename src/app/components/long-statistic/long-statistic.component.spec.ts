@@ -8,9 +8,8 @@ describe('LongStatisticComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ LongStatisticComponent ]
-    })
-    .compileComponents();
+      declarations: [LongStatisticComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { Routes, RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -36,6 +36,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatListModule } from '@angular/material/list';
 import { AboutUsCardComponent } from './components/about/about-us-card/about-us-card.component';
 import { MatCardModule } from '@angular/material/card';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { StatisticsComponent } from './components/etextbook/statistics/statistics.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTableModule } from '@angular/material/table';
@@ -66,10 +70,16 @@ const appRoutes: Routes = [
   {
     path: 'sprint-game',
     component: SprintGameComponent,
+    data: {
+      isFooterHidden: true,
+    },
   },
   {
     path: 'audiocall',
     component: AudiocallGameComponent,
+    data: {
+      isFooterHidden: true,
+    },
   },
   {
     path: 'short-statistic',
@@ -117,6 +127,11 @@ const appRoutes: Routes = [
     MatSelectModule,
     MatListModule,
     MatCardModule,
+    MatToolbarModule,
+    MatProgressSpinnerModule,
+    MatInputModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
     MatDialogModule,
     MatTableModule,
   ],

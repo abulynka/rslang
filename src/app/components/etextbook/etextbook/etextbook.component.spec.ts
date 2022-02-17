@@ -9,8 +9,7 @@ describe('EtextbookComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [EtextbookComponent],
-    })
-    .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {
