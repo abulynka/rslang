@@ -1,9 +1,10 @@
-import { Component, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { ChapterComponent } from '../chapter/chapter.component';
 import { MatOptionSelectionChange } from '@angular/material/core';
 import { AuthService } from '../../../services/auth.service';
 import { GamesStatesService } from '../../../services/games-states.service';
+import { EtextbookService } from '../../../services/etextbook.service';
 
 @Component({
   selector: 'app-etextbook',
@@ -14,7 +15,7 @@ export class EtextbookComponent implements AfterViewInit {
   @ViewChild(ChapterComponent) private chapter: ChapterComponent | undefined;
   @ViewChild(MatPaginator) private paginator: MatPaginator | undefined;
 
-  public selectedChapter: number;
+  public selectedChapter: number = 0;
   public selectedPage: number = 0;
   public loading: boolean = false;
 
@@ -45,14 +46,13 @@ export class EtextbookComponent implements AfterViewInit {
     },
   ];
 
-  private readonly keys: Record<string, string> = {
-    chapter: 'etextbookcomponent-chapter',
-    page: 'etextbookcomponent-page',
-  };
+  public disableGames: boolean = false;
 
   public constructor(
-    public auth: AuthService,
-    public game: GamesStatesService
+    private auth: AuthService,
+    private game: GamesStatesService,
+    private etextbookService: EtextbookService,
+    private element: ElementRef
   ) {
     this.loading = true;
     if (this.isAuthorized()) {
@@ -61,17 +61,8 @@ export class EtextbookComponent implements AfterViewInit {
         index: 6,
       });
     }
-
-    this.selectedChapter = parseInt(
-      sessionStorage.getItem(this.keys['chapter']) || ''
-    );
-    if (this.selectedChapter > this.chapters.length) {
-      this.selectedChapter = 0;
-    }
-
-    this.selectedPage = parseInt(
-      sessionStorage.getItem(this.keys['page']) || '0'
-    );
+    this.selectedChapter = this.etextbookService.getDefaultChapter();
+    this.selectedPage = this.etextbookService.getDefaultPage();
 
     this.changeChapter(this.selectedChapter, this.selectedPage);
   }
@@ -87,7 +78,7 @@ export class EtextbookComponent implements AfterViewInit {
   public changePageEvent(event: PageEvent): PageEvent {
     const page: number = event.pageIndex;
     this.selectedPage = page;
-    sessionStorage.setItem(this.keys['page'], page.toString());
+    this.etextbookService.setDefaultPage(page);
     this.changeChapter(this.selectedChapter, this.selectedPage);
     return event;
   }
@@ -98,7 +89,7 @@ export class EtextbookComponent implements AfterViewInit {
     if (chapterEvent.isUserInput) {
       const chapter: number = parseInt(`${chapterEvent.source.value}`);
       this.selectedChapter = chapter;
-      sessionStorage.setItem(this.keys['chapter'], chapter.toString());
+      this.etextbookService.setDefaultChapter(chapter);
       this.changeChapter(this.selectedChapter, this.selectedPage);
     }
   }
@@ -115,6 +106,20 @@ export class EtextbookComponent implements AfterViewInit {
       this.selectedChapter.toString(),
       this.selectedPage.toString()
     );
+  }
+
+  public pageIsLearned(isLearned: boolean): void {
+    if (isLearned) {
+      this.disableGames = true;
+      this.element.nativeElement
+        .querySelector('.etextbook__buttons-pages')
+        .classList.add('etextbook_highlight');
+    } else {
+      this.disableGames = false;
+      this.element.nativeElement
+        .querySelector('.etextbook__buttons-pages')
+        .classList.remove('etextbook_highlight');
+    }
   }
 
   private changeChapter(chapter: number, page: number): void {
