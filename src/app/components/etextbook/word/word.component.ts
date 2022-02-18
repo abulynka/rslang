@@ -107,6 +107,10 @@ export class WordComponent {
     }
   }
 
+  public disable(): void {
+    this.element.nativeElement.classList.add('word_disable');
+  }
+
   public openStatistics(): void {
     const obj: MatDialogRef<StatisticsComponent> =
       this.dialog.open(StatisticsComponent);
@@ -142,6 +146,12 @@ export class WordComponent {
 
   private makeLearnedUI(): void {
     this.learned?.classList.add('word__controls-button_learned');
+    this.difficult?.classList.remove('word__controls-button_difficult');
     this.isDisabledLearned = true;
+    this.isDisabledDifficult = true;
+
+    if (this._difficultChapter) {
+      this.removeWordEvent.next(this._word);
+    }
   }
 }
