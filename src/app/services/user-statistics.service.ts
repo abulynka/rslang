@@ -138,7 +138,7 @@ export class UserStatisticsService {
         }
         return [];
       })
-    ) as Observable<UserStatistics>;
+    );
   }
 
   public updatUserStatistics(body: UserStatistics): void {
