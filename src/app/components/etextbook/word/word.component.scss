@@ -27,9 +27,19 @@
   }
 
   &__image {
-    width: 30vw;
-    height: 300px;
-    object-fit: cover;
+    overflow: hidden;
+
+    &-item {
+      width: 30vw;
+      height: 300px;
+      object-fit: cover;
+      transform: scale(1);
+      transition: .3s ease-in-out;
+
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
   }
 
   &__content {
