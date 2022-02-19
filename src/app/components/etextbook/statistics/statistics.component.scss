@@ -1,9 +1,37 @@
 .mat-header-cell {
   font-size: 28px;
   padding-right: 20px;
+
+  @media (max-width: 1000px) {
+    font-size: 16px;
+    padding-right: 10px;
+  }
+
+  @media (max-width: 500px) {
+    font-size: 10px;
+    padding-right: 1px;
+  }
 }
 
 .mat-cell {
   font-size: 28px;
   padding-right: 20px;
+
+  @media (max-width: 1000px) {
+    font-size: 16px;
+    padding-right: 10px;
+  }
+
+  @media (max-width: 500px) {
+    font-size: 10px;
+    padding-right: 1px;
+  }
+}
+
+.statistics {
+  &__header {
+    @media (max-width: 1000px) {
+      font-size: 18px;
+    }
+  }
 }

@@ -14,6 +14,10 @@ main.main {
 
 .mat-header {
   box-shadow: 2px 0 4px 1px black;
+
+  @media (max-width: 711px) {
+    justify-content: space-between;
+  }
 }
 
 .header {
@@ -40,10 +44,45 @@ main.main {
   background-color: transparent;
 }
 
+@media (max-width: 711px) {
+  .navbar {
+    position: absolute;
+    padding: 24px 24px 170px;
+    background-color: #3f51b5;
+    transition: 0.3s;
+    left: -5000%;
+    top: 64px;
+    z-index: 999;
+  }
+
+  .active {
+    left: 0px;
+  }
+
+  .nav-games-btn {
+    padding: 0 !important;
+  }
+
+  .navbar-list {
+    padding: 0 !important;
+  }
+}
+
+@media (max-width: 599px) {
+  .navbar {
+    top: 56px;
+  }
+}
+
 .navbar-list {
   display: flex;
   flex-wrap: wrap;
   gap: 15px;
+
+  @media (max-width: 711px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
 
 .navbar-item {
@@ -86,11 +125,30 @@ main.main {
   color: #e2e2e2;
 }
 
+.navbar-link {
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.navbar-link:hover {
+  transform: scale(1.1);
+}
+
 .mat-button {
   font-size: 1em;
 
   span {
     margin: 0 5px;
+  }
+}
+
+.burger-icon {
+  display: none;
+
+  @media (max-width: 711px) {
+    display: block;
   }
 }
 
@@ -141,10 +199,6 @@ main.main {
   background-color: transparent;
   border: 3px solid #ffffff;
   border-radius: 10px;
-}
-
-.games-btn:hover {
-  transform: scale(1);
 }
 
 .btn {

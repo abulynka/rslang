@@ -14,7 +14,7 @@ export class EtextbookService {
 
   public getDefaultChapter(): number {
     let selectedChapter: number = parseInt(
-      sessionStorage.getItem(this.keys['chapter']) || ''
+      sessionStorage.getItem(this.keys['chapter']) || '0'
     );
     const hardChapter: number = 6;
     if (!this.auth.checkAuth() && selectedChapter === hardChapter) {
