@@ -7,7 +7,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { Answer, UserStatistics, Word } from 'src/app/interfaces/interfaces';
+import { Answer, Word, UserStatistics } from 'src/app/interfaces/interfaces';
 import { UserStatisticsService } from 'src/app/services/user-statistics.service';
 import { environment } from 'src/environments/environment';
 
