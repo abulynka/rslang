@@ -60,6 +60,24 @@ export class AppComponent implements DoCheck {
       outlet.activatedRouteData['animation']
     );
   }
+
+  public adaptiveMenu(): void {
+    const navbar: HTMLElement = document.querySelector(
+      '.navbar'
+    ) as HTMLElement;
+    navbar.classList.toggle('active');
+  }
+
+  public closeMenuList(e: Event): void {
+    let target: HTMLElement = e.target as HTMLElement;
+    const navbar: HTMLElement = document.querySelector(
+      '.navbar'
+    ) as HTMLElement;
+    if (target.closest('.menu-item')) {
+      navbar.classList.remove('active');
+    }
+  }
+
   private checkURL(): void {
     const routePath: string = this.router.url.split('').slice(1).join('');
     this.isFooterHidden = false;
@@ -74,3 +92,7 @@ export class AppComponent implements DoCheck {
       });
   }
 }
+
+  // this.menuLink.forEach(n => n.addEventListener('click', () => {
+  // this.closeMenuList();
+  // }));
