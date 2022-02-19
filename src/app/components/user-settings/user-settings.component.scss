@@ -1,0 +1,195 @@
+.settings {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  position: absolute;
+  background: white;
+  min-height: 0;
+  overflow-y: auto;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding-top: 100px;
+  padding-bottom: 20px;
+
+  .settings__save-btn {
+    width: 200px;
+    height: 50px;
+    font-size: 1.2em;
+  }
+
+  .settings__container {
+    width: 80%;
+    height: 80%;
+  }
+
+  .mat-tab-group {
+    margin-bottom: 48px;
+  }
+
+  .container__label {
+    font-size: 1.5em;
+  }
+
+  .container__body {
+    display: flex;
+    // flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    overflow: auto;
+
+    width: 100%;
+    min-height: 280px;
+    padding: 20px;
+
+    .form__field-title {
+      color: gray;
+      text-align: center;
+      margin: 0 0 10px 0;
+    }
+
+    .container__form {
+      min-width: 150px;
+      max-width: 600px;
+      width: 100%;
+
+      .wrong-input {
+        color: red;
+      }
+
+      .table-content {
+        display: flex;
+
+        @media screen and (max-width: 600px ){
+          flex-wrap: wrap;
+        }
+      }
+
+      .buttons-group {
+        display: flex;
+        justify-content: center;
+        @media screen and (max-width: 480px ){
+          flex-wrap: wrap;
+        }
+
+        button {
+          margin: 5px 10px;
+        }
+      }
+
+      .form__field {
+        width: 100%;
+        color: black;
+      }
+    }
+
+    input.example-right-align::-webkit-outer-spin-button,
+    input.example-right-align::-webkit-inner-spin-button {
+      display: none;
+    }
+
+    input.example-right-align {
+      -moz-appearance: textfield;
+    }
+
+    .user-image {
+      max-width: 280px;
+      width: 100%;
+      height: 280px;
+      max-height: 280px;
+      padding: 5px;
+      margin: 40px;
+      @media screen and (max-width: 600px ){
+        max-width: 180px;
+        height: 180px;
+      }
+      @media screen and (max-width: 384px ){
+        max-width: 120px;
+        height: 120px;
+      }
+      img {
+        width: 100%;
+        height: 100%;
+        box-shadow: 0 0 4px 1px gray;
+        border-radius: 100%;
+      }
+    }
+
+    .toys-content__drop-zone {
+      position: relative;
+      max-width: 300px;
+      height: 300px;
+      padding: 25px;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      justify-content: space-around;
+      text-align: center;
+      font-weight: 500;
+      font-size: 20px;
+      color: #818181;
+      border: 4px dashed #005eaa;
+      border-radius: 10px;
+
+      @media screen and (max-width: 600px ){
+        height: 200px;
+      }
+    }
+
+    .btn {
+      position: relative;
+      padding: 0;
+      width: 100px;
+    }
+
+    .drop-zone__icon {
+      transform: scale(2);
+    }
+
+    .drop-zone__prompt {
+      line-height: 20px;
+    }
+
+    .drop-zone__input {
+      display: none;
+    }
+
+    .drop-zone__label {
+      width: 80px;
+      padding: 0 5px;
+      height: 1;
+      cursor: pointer;
+    }
+
+    .drop-zone__thumb {
+      position: relative;
+      width: 100%;
+      min-width: 300px;
+      height: 100%;
+      border-radius: 10px;
+      overflow: hidden;
+      background-color: #cccccc;
+      background-size: cover;
+    }
+
+    .drop-zone__thumb::after {
+      content: attr(data-label);
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      padding: 5px 0;
+      color: #ffffff;
+      background: rgba(0, 0, 0, 0.75);
+      font-size: 14px;
+      text-align: center;
+    }
+  }
+}
+
+.label {
+  font-size: 1.5em;
+}

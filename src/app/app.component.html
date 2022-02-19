@@ -1,6 +1,6 @@
 <header class="header">
   <mat-toolbar
-    color="primary"
+    [color]="shellColor"
     class="mat-header"
     (click)="closeMenuList($event)"
   >
@@ -63,9 +63,21 @@
       </ul>
 
       <ul class="navbar-list">
-        <li class="navbar-item user-info" *ngIf="isAuthUser">
-          <p class="user-info__name">{{ userName }}</p>
-          <img class="user-info__img" src="../assets/user.png" alt="user" />
+        <li class="user-info" *ngIf="isAuthUser">
+          <p class="user-info__name">{{ userName }} {{ lastName }}</p>
+          <button
+            class="user-info__menu"
+            mat-fab
+            matBadge="S"
+            matBadgeColor="accent"
+            routerLink="settings"
+          >
+            <img
+              class="user-info__img"
+              src="{{ userImageUrl || '../assets/user.png' }}"
+              alt="user"
+            />
+          </button>
           <button
             type="button"
             class="btn btn-outline-warning menu-item"
@@ -95,45 +107,52 @@
   </mat-toolbar>
 </header>
 
-<main class="main" [@routeChangeAnimation]="getRouteAnimationState(outlet)">
+<main
+  class="main"
+  [style.background-image]="'url(/assets/' + bgUrl + ')'"
+  [@routeChangeAnimation]="getRouteAnimationState(outlet)"
+>
   <router-outlet #outlet="outlet"></router-outlet>
 </main>
 
 <footer class="footer" *ngIf="!isFooterHidden">
-  <div class="authors">
-    <p>© Jet Squad:</p>
-    <ul class="github-links-container">
-      <li>
-        <a
-          class="navbar-link"
-          href="https://github.com/abulynka"
-          target="_blank"
-          >abulynka</a
-        >
-      </li>
-      <li>
-        <a
-          class="navbar-link"
-          href="https://github.com/cheerfulperson"
-          target="_blank"
-          >cheerfulperson</a
-        >
-      </li>
-      <li>
-        <a
-          class="navbar-link"
-          href="https://github.com/YuliyaBondar"
-          target="_blank"
-          >YuliyaBondar</a
-        >
-      </li>
-    </ul>
-  </div>
-  <p>2022</p>
-  <a href="https://rs.school/js/"
-    ><img
-      class="footer__svg"
-      src="https://raw.githubusercontent.com/YuliyaBondar/christmas-data/main/assets/svg/rss.svg"
-      alt="rs_school_js"
-  /></a>
+  <!-- <p>© Jet Squad</p> -->
+  <mat-toolbar class="footer__tool-bar" [color]="shellColor">
+    <div class="authors">
+      <p>© Jet Squad:</p>
+      <ul class="github-links-container">
+        <li>
+          <a
+            class="navbar-link"
+            href="https://github.com/abulynka"
+            target="_blank"
+            >abulynka</a
+          >
+        </li>
+        <li>
+          <a
+            class="navbar-link"
+            href="https://github.com/cheerfulperson"
+            target="_blank"
+            >cheerfulperson</a
+          >
+        </li>
+        <li>
+          <a
+            class="navbar-link"
+            href="https://github.com/YuliyaBondar"
+            target="_blank"
+            >YuliyaBondar</a
+          >
+        </li>
+      </ul>
+    </div>
+    <p>2022</p>
+    <a href="https://rs.school/js/"
+      ><img
+        class="footer__svg"
+        src="https://raw.githubusercontent.com/YuliyaBondar/christmas-data/main/assets/svg/rss.svg"
+        alt="rs_school_js"
+    /></a>
+  </mat-toolbar>
 </footer>

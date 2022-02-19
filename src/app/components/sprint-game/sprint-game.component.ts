@@ -116,7 +116,11 @@ export class SprintGameComponent implements OnInit {
   public playSound(word: Word): void {
     this.audioObj.src = `${environment.apiUrl}/${word.audio}`;
     this.audioObj.load();
-    this.audioObj.play();
+    try {
+      this.audioObj.play();
+    } catch (error) {
+      this.audioObj.pause();
+    }
   }
 
   public checkWord(userAnswer?: boolean): void {
@@ -171,6 +175,7 @@ export class SprintGameComponent implements OnInit {
         if (this.timer.toString() === '60') {
           this.setTimer();
         }
+        this.checkWordNumber();
       });
   }
 
@@ -193,6 +198,8 @@ export class SprintGameComponent implements OnInit {
     ) {
       this.page = (parseInt(this.page) - 1).toString();
       this.getWords();
+    } else if (this.questions.length === 0) {
+      this.state = 'end';
     }
   }
 

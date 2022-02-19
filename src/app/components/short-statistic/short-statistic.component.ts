@@ -1,18 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { ChartData, UserStatistics } from 'src/app/interfaces/interfaces';
 import { Word } from '../../interfaces/interfaces';
 import { UserStatisticsService } from 'src/app/services/user-statistics.service';
 
 const width: number = 600;
-const height: number = 500;
+const height: number = 600;
 @Component({
   selector: 'app-short-statistic',
   templateUrl: './short-statistic.component.html',
   styleUrls: ['./short-statistic.component.scss'],
 })
 export class ShortStatisticComponent implements OnInit {
-  public width: number = width;
-  public height: number = height;
+  public size: [number, number] = [width, height];
   public gradient: boolean = false;
   public isLoaded: boolean = false;
   public sprint: ChartData[] = [
@@ -67,7 +66,12 @@ export class ShortStatisticComponent implements OnInit {
   public joke: string = this.getJoke();
   public constructor(private statisticsService: UserStatisticsService) {}
 
+  @HostListener('window:resize', ['$event']) public onResize(): void {
+    this.resizecharts();
+  }
+
   public ngOnInit(): void {
+    this.resizecharts();
     this.statisticsService.getUserWords(() => {
       this.sprint[0].value = this.statisticsService.newWordsAmount.sprint;
       this.audio[0].value = this.statisticsService.newWordsAmount.gameCall;
@@ -87,6 +91,18 @@ export class ShortStatisticComponent implements OnInit {
         this.words[1].value = data.length || 0;
         this.words = [...this.words];
       });
+  }
+
+  private resizecharts(): void {
+    if (window.innerWidth < Number('360')) {
+      const sizes: number = 280;
+      this.size = [sizes, sizes];
+    } else if (window.innerWidth < Number('640')) {
+      const sizes: number = 320;
+      this.size = [sizes, sizes];
+    } else {
+      this.size = [width, height];
+    }
   }
 
   private getJoke(): string {

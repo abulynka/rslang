@@ -4,6 +4,18 @@
   src: url('./Steppe.ttf');
 }
 
+* {
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: rgb(209, 209, 209);
+  }
+  &::-webkit-scrollbar-thumb {
+    box-shadow: inset 0 0 6px #0080e9d5;
+  }
+}
+
 ul {
   list-style: none;
 }
@@ -28,11 +40,6 @@ body {
   font-weight: 600;
   line-height: 14px;
   color: #ffffff;
-  background: center/cover;
-  background-image: url('https://images.unsplash.com/photo-1618005198919-d3d4b5a92ead?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1074&q=80');
-  background-repeat: no-repeat;
-  background-blend-mode: multiply;
-  background-attachment: fixed;
 }
 
 h1::first-letter,

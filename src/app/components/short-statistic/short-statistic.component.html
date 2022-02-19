@@ -18,7 +18,7 @@
       </div>
       <div class="short-stat__graph-content" *ngIf="isLoaded">
         <ngx-charts-bar-vertical
-          [view]="[width, height]"
+          [view]="size"
           [results]="game.data"
           [xAxisLabel]="''"
           [yAxisLabel]="''"
@@ -26,6 +26,7 @@
           [showYAxisLabel]="false"
           [xAxis]="false"
           [yAxis]="true"
+          [noBarWhenZero]="false"
           [gradient]="gradient"
           [yScaleMin]="0"
         >

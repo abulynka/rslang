@@ -14,12 +14,15 @@ export class SignInService {
     private authService: AuthService
   ) {}
 
-  public singIn(email: string, password: string): Observable<unknown> {
+  public singIn(email: string, password: string): Observable<Auth> {
     const data: UserInfo = {
       email,
       password,
     };
-    return this.httpService.http.post(`${this.httpService.url}/signin`, data);
+    return this.httpService.http.post(
+      `${this.httpService.url}/signin`,
+      data
+    ) as Observable<Auth>;
   }
 
   public refreshToken(userId: string): void {
