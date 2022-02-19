@@ -10,6 +10,18 @@ main.main {
   background-repeat: no-repeat;
   background-blend-mode: multiply;
   background-attachment: fixed;
+
+  @media (max-width: 855px) {
+    min-height: calc(100vh - 180px);
+  }
+
+  @media (max-width: 600px) {
+    min-height: calc(100vh - 214px);
+  }
+
+  @media (max-width: 454px) {
+    min-height: calc(100vh - 225px);
+  }
 }
 
 .mat-header {
@@ -91,6 +103,7 @@ main.main {
   align-items: center;
   transition: 0.3s;
 }
+
 .user-info {
   display: flex;
   justify-content: center;
@@ -156,11 +169,38 @@ main.main {
   height: 50px;
   cursor: pointer;
   transition: 0.3s;
+
+  @media (max-width: 855px) {
+    height: 40px;
+  }
+
+  @media (max-width: 503px) {
+    height: 30px;
+  }
 }
 
 .footer {
   height: $footerHeight;
   position: relative;
+  width: 100%;
+  bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+
+  @media (max-width: 855px) {
+    flex-direction: column;
+    height: 180px;
+  }
+
+  @media (max-width: 600px) {
+    height: 214px;
+  }
+
+  @media (max-width: 454px) {
+    height: 225px;
+  }
 
   .footer__tool-bar {
     width: 100%;
@@ -170,7 +210,18 @@ main.main {
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    @media (max-width: 855px) {
+      flex-direction: column;
+      justify-content: space-around;
+      padding: 16px;
+    }
+
+    @media (max-width: 632px) {
+      align-items: flex-start;
+    }
   }
+
   p {
     margin: 0;
   }
@@ -235,4 +286,13 @@ main.main {
 
 .dropdown:hover .dropdown-content {
   display: block;
+}
+
+.authors,
+.github-links-container {
+  padding-left: 0;
+  display: flex;
+  column-gap: 15px;
+  flex-wrap: wrap;
+  row-gap: 15px;
 }
