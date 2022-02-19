@@ -120,3 +120,14 @@ export interface UserWordStatistics {
   audioGame: UserWordStatisticsGame;
   sprintGame: UserWordStatisticsGame;
 }
+
+export interface UserSettingsOptional {
+  lastName?: string;
+  bio?: string;
+  bgUrl?: string;
+  fontColor?: string;
+}
+export interface UserSettings {
+  wordsPerDay: number;
+  optional: UserSettingsOptional;
+}

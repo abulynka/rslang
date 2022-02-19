@@ -1,0 +1,140 @@
+<section class="settings">
+  <mat-tab-group mat-align-tabs="center" class="settings__container">
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <span class="container__label">Медиа</span>
+      </ng-template>
+      <section class="container__body">
+        <div class="user-image">
+          <img
+            src="{{ imageLink || '../../../assets/user.png' }}"
+            alt="image"
+          />
+        </div>
+        <div
+          class="toys-content__drop-zone"
+          appDragAndDrop
+          (dropFile)="uploadImage($event)"
+        >
+          <mat-icon class="drop-zone__icon">upload</mat-icon>
+          <span class="drop-zone__prompt">Перетяните изображение сюда</span>
+          <input
+            type="file"
+            name="myFile"
+            id="imageInput"
+            accept="image/png, image/jpeg, image/jpg, image/gif"
+            class="drop-zone__input"
+            (change)="uploadFile($event)"
+          />
+          <button mat-raised-button color="primary" class="btn">
+            <label class="drop-zone__label" for="imageInput">Загрузить</label>
+          </button>
+        </div>
+      </section>
+    </mat-tab>
+    <mat-tab bodyClass="settings__item" label="Second">
+      <ng-template mat-tab-label>
+        <span class="container__label">Персональные данные </span></ng-template
+      >
+      <section class="container__body">
+        <form class="container__form">
+          <mat-form-field class="form__field" appearance="fill">
+            <mat-label>Email (нельзя изменить)</mat-label>
+            <input matInput disabled [value]="userEmail" />
+          </mat-form-field>
+
+          <table class="form__field" cellspacing="0">
+            <tr>
+              <td>
+                <mat-form-field class="form__field" appearance="fill">
+                  <mat-label>Имя</mat-label>
+                  <input matInput [formControl]="nameControl" />
+                </mat-form-field>
+              </td>
+              <td>
+                <mat-form-field class="form__field" appearance="fill">
+                  <mat-label>Фамилия</mat-label>
+                  <input matInput />
+                </mat-form-field>
+              </td>
+            </tr>
+          </table>
+
+          <mat-form-field class="form__field" appearance="fill">
+            <mat-label>Введите текущий пароль</mat-label>
+            <input
+              name="oldPassword"
+              matInput
+              [type]="hide ? 'password' : 'text'"
+              [(ngModel)]="currentPassword"
+              autocomplete="new-password"
+            />
+            <button
+              mat-icon-button
+              matSuffix
+              (click)="hide = !hide"
+              [attr.aria-label]="'Hide password'"
+              [attr.aria-pressed]="hide"
+            >
+              <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+            </button>
+            <mat-error *ngIf="newPswControl.errors?.['value']"
+              >Неправильный пароль</mat-error
+            >
+          </mat-form-field>
+          <button mat-raised-button (click)="checkPassword()">Проверить</button>
+
+          <mat-form-field class="form__field" appearance="fill">
+            <mat-label>Введите новый пароль</mat-label>
+            <input
+              matInput
+              [type]="hideNewPsw ? 'password' : 'text'"
+              [formControl]="newPswControl"
+              autocomplete="off"
+            />
+            <button
+              mat-icon-button
+              matSuffix
+              (click)="hideNewPsw = !hideNewPsw"
+              [attr.aria-label]="'Hide password'"
+              [attr.aria-pressed]="hideNewPsw"
+            >
+              <mat-icon>{{
+                hideNewPsw ? 'visibility_off' : 'visibility'
+              }}</mat-icon>
+            </button>
+            <mat-error
+              *ngIf="
+                newPswControl.hasError('password') ||
+                newPswControl.hasError('pattern')
+              "
+            >
+              Пожалуйста, введите пароль длинной более 8 символов
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="form__field" appearance="fill">
+            <mat-label>Расскажите немного о себе</mat-label>
+            <textarea
+              matInput
+              placeholder="Люблю читать книги на английском..."
+            ></textarea>
+          </mat-form-field>
+        </form>
+      </section>
+    </mat-tab>
+    <mat-tab bodyClass="settings__item" label="Third">
+      <ng-template mat-tab-label>
+        <span class="container__label">Оформление</span>
+      </ng-template>
+    </mat-tab>
+  </mat-tab-group>
+  <button
+    mat-raised-button
+    color="accent"
+    class="settings__save-btn"
+    (click)="saveSettings()"
+  >
+    Сохранить
+  </button>
+</section>

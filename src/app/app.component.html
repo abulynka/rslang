@@ -33,9 +33,17 @@
       </ul>
 
       <ul class="navbar-list">
-        <li class="navbar-item user-info" *ngIf="isAuthUser">
+        <li class="user-info" *ngIf="isAuthUser">
           <p class="user-info__name">{{ userName }}</p>
-          <img class="user-info__img" src="../assets/user.png" alt="user" />
+          <button
+            class="user-info__menu"
+            mat-fab
+            matBadge="S"
+            matBadgeColor="accent"
+            routerLink="settings"
+          >
+            <img class="user-info__img" src="{{ userImageUrl }}" alt="user" />
+          </button>
           <button
             type="button"
             class="btn btn-outline-warning"
@@ -61,7 +69,18 @@
 </main>
 
 <footer class="footer" *ngIf="!isFooterHidden">
-  <p>© Jet Squad</p>
+  <!-- <p>© Jet Squad</p> -->
+  <ul class="github-footer">
+    <li class="github-footer__item" *ngFor="let aboutUs of aboutUsArray">
+      <a href="{{ aboutUs.gitHub }}" class="mat-button"
+        ><img
+          class="card__body-github-img"
+          src="../../../assets/svg/github.svg"
+          alt="github"
+        />{{ aboutUs.name }}</a
+      >
+    </li>
+  </ul>
   <p>2021</p>
   <a href="https://rs.school/js/"
     ><img

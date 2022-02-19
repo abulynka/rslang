@@ -30,6 +30,7 @@ import { UserProgressService } from './services/user-progress.service';
 import { UsersWordsService } from './services/users-words.service';
 import { ShortStatisticComponent } from './components/short-statistic/short-statistic.component';
 import { LongStatisticComponent } from './components/long-statistic/long-statistic.component';
+import { UserSettingsComponent } from './components/user-settings/user-settings.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -46,6 +47,9 @@ import { StatisticsComponent } from './components/etextbook/statistics/statistic
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTableModule } from '@angular/material/table';
 import { getRussianPaginatorIntl } from './components/etextbook/etextbook/russian-paginator-intl';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatTabsModule } from '@angular/material/tabs';
+import { DragAndDropDirective } from '../app/directives/drag-and-drop.directive';
 
 const appRoutes: Routes = [
   { path: '', component: MainPageComponent },
@@ -92,6 +96,11 @@ const appRoutes: Routes = [
     path: 'long-statistic',
     component: LongStatisticComponent,
   },
+  {
+    path: 'settings',
+    component: UserSettingsComponent,
+    canActivate: [CheckAuthGuard],
+  },
   { path: '**', component: MainPageComponent },
 ];
 
@@ -115,6 +124,8 @@ const appRoutes: Routes = [
     LongStatisticComponent,
     AboutUsCardComponent,
     StatisticsComponent,
+    UserSettingsComponent,
+    DragAndDropDirective,
   ],
   imports: [
     BrowserModule,
@@ -137,6 +148,8 @@ const appRoutes: Routes = [
     ReactiveFormsModule,
     MatDialogModule,
     MatTableModule,
+    MatBadgeModule,
+    MatTabsModule,
   ],
   providers: [
     HttpService,

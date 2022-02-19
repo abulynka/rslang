@@ -48,7 +48,7 @@ export class WordsService {
       .set('group', group)
       .set('page', page);
 
-    if (this.auth.checkAuth() && !isfromMenu) {
+    if (this.auth.checkAuth() && isfromMenu === false) {
       return this.getAggregatedWords(
         group,
         page,

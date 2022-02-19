@@ -22,7 +22,7 @@ type WordHistoryType = Pick<
 })
 export class UserProgressService {
   private gameName: string = '';
-
+  private cachedWords: string[] = [];
   private readonly difficulty: any = {
     hard: 'hard',
     easy: 'easy',
@@ -145,15 +145,7 @@ export class UserProgressService {
         .pipe(
           catchError((err: HttpErrorResponse) => {
             if (!err.ok) {
-              this.userWordsService
-                .insert(this.auth.getCurrentUserId(), wordId, {
-                  difficulty: this.difficulty.easy,
-                  optional: {
-                    countOfAnswersInRow: 0,
-                    isLearned: true,
-                  },
-                })
-                .subscribe();
+              this.insertDefaultUserWord(wordId).subscribe();
             }
             return [];
           })
@@ -223,7 +215,6 @@ export class UserProgressService {
           const word: UserWord =
             UserProgressService.convertUserWordResultToUserWord(wordResult);
           word.difficulty = level;
-
           this.userWordsService
             .update(this.auth.getCurrentUserId(), wordResult.wordId, word)
             .subscribe(() => {
@@ -234,7 +225,12 @@ export class UserProgressService {
   }
 
   private insertDefaultUserWord(wordId: string): Observable<UserWordResult> {
-    return this.userWordsService.insert(this.auth.getCurrentUserId(), wordId, {
+    const userId: string = this.auth.getCurrentUserId();
+    if (this.cachedWords.includes(wordId)) {
+      return this.userWordsService.get(userId, wordId);
+    }
+    this.cachedWords.push(wordId);
+    return this.userWordsService.insert(userId, wordId, {
       difficulty: this.difficulty.easy,
       optional: {
         countOfAnswersInRow: 0,

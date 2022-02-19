@@ -1,7 +1,7 @@
 import { Component, DoCheck } from '@angular/core';
 import { Route, Router, RouterOutlet } from '@angular/router';
 import { routeChangeAnimation } from './components/change-route-animation';
-import { Auth } from './interfaces/interfaces';
+import { AboutUsCard, Auth } from './interfaces/interfaces';
 import { AuthService } from './services/auth.service';
 import { GamesStatesService } from './services/games-states.service';
 
@@ -17,6 +17,21 @@ export class AppComponent implements DoCheck {
   public isAuthUser: boolean = false;
   public userLoginTime: number | null = null;
   public isFooterHidden: boolean = false;
+  public userImageUrl: string = '';
+  public aboutUsArray: Array<Pick<AboutUsCard, 'name' | 'gitHub'>> = [
+    {
+      name: 'abulynka',
+      gitHub: 'https://github.com/abulynka',
+    },
+    {
+      name: 'YuliyaBondar',
+      gitHub: 'https://github.com/YuliyaBondar',
+    },
+    {
+      name: 'cheerfulperson',
+      gitHub: 'https://github.com/cheerfulperson',
+    },
+  ];
 
   public constructor(
     private authService: AuthService,
@@ -41,6 +56,7 @@ export class AppComponent implements DoCheck {
       this.isAuthUser = true;
     }
     this.checkURL();
+    this.setUserImage();
   }
 
   public logOut(): void {
@@ -60,6 +76,14 @@ export class AppComponent implements DoCheck {
       outlet.activatedRouteData['animation']
     );
   }
+
+  private setUserImage(): void {
+    const userImage: string | null = this.authService.getUserImage();
+    if (this.authService.checkAuth() && userImage) {
+      this.userImageUrl = userImage;
+    }
+  }
+
   private checkURL(): void {
     const routePath: string = this.router.url.split('').slice(1).join('');
     this.isFooterHidden = false;

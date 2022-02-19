@@ -69,7 +69,6 @@ export class GameResultComponent implements OnChanges, OnInit {
     ) {
       data.optional.audioSeriesOfAnswers = series;
     }
-    console.log(this.gameName, data, series);
     this.userStatistics.updatUserStatistics(data);
   }
 

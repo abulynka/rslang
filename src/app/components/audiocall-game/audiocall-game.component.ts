@@ -261,7 +261,7 @@ export class AudiocallGameComponent implements OnInit {
       .getWords(
         this.group,
         this.gamesService.page,
-        this.gamesService.isOpenedFormMenu
+        this.gamesService.isOpenedFromMenu
       )
       .subscribe((words: Word[]) => {
         this.words = words;
