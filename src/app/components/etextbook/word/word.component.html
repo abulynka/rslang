@@ -1,9 +1,11 @@
 <section class="word" data-id="{{ word.id }}">
-  <img
-    class="word__image"
-    src="{{ this.httpService.getUrl(word.image) }}"
-    alt="{{ word.word }}"
-  />
+  <div class="word__image">
+    <img
+      class="word__image-item"
+      src="{{ this.httpService.getUrl(word.image) }}"
+      alt="{{ word.word }}"
+    />
+  </div>
   <div class="word__content word_color-{{ word.group }}">
     <div class="word__content-title">
       <span class="word__content-title-main">{{ word.word }}</span

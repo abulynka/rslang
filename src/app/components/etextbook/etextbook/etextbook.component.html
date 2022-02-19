@@ -24,6 +24,7 @@
           mat-flat-button
           class="etextbook__buttons-game"
           (click)="startAudioGame()"
+          [disabled]="disableGames"
         >
           аудиовызов
         </button>
@@ -31,6 +32,7 @@
           mat-flat-button
           class="etextbook__buttons-game"
           (click)="startSprintGame()"
+          [disabled]="disableGames"
         >
           спринт
         </button>
@@ -41,7 +43,6 @@
           [length]="30 * 20"
           [pageSizeOptions]="[20]"
           [showFirstLastButtons]="true"
-          aria-label="Выбрать страницу"
           (page)="changePageEvent($event)"
           title="Выбрать страницу"
           [pageIndex]="selectedPage"
@@ -58,7 +59,7 @@
           [pageIndex]="0"
         ></mat-paginator>
       </div>
-      <app-chapter></app-chapter>
+      <app-chapter (pageIsLearned)="pageIsLearned($event)"></app-chapter>
     </div>
   </div>
 </div>
