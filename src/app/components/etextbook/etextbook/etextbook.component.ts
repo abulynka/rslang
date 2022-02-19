@@ -115,11 +115,24 @@ export class EtextbookComponent implements AfterViewInit {
         .querySelector('.etextbook__buttons-pages')
         .classList.add('etextbook_highlight');
     } else {
-      this.disableGames = false;
+      const hardWordsNumber: number = 6;
+      this.disableGames = this.selectedChapter === hardWordsNumber;
       this.element.nativeElement
         .querySelector('.etextbook__buttons-pages')
         .classList.remove('etextbook_highlight');
     }
+  }
+
+  private disableComponent(): void {
+    this.element.nativeElement
+      .querySelector('.etextbook')
+      .classList.add('etextbook_disable');
+  }
+
+  private enableComponent(): void {
+    this.element.nativeElement
+      .querySelector('.etextbook')
+      .classList.remove('etextbook_disable');
   }
 
   private changeChapter(chapter: number, page: number): void {

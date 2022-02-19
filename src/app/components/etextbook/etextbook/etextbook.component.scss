@@ -9,6 +9,12 @@
     background-color: #9fff7d;
   }
 
+  &_disable {
+    pointer-events: none;
+    opacity: 0.7;
+    user-select: none;
+  }
+
   &__word {
     &_color-0 {
       background-color: rgba(255, 99, 0, 0.05);
