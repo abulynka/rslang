@@ -115,9 +115,13 @@ export class AudiocallGameComponent implements OnInit {
   }
 
   public playSound(audioSrc: string): void {
-    this.audioObj.src = `${this.url}/${audioSrc}`;
-    this.audioObj.load();
-    this.audioObj.play();
+    try {
+      this.audioObj.src = `${this.url}/${audioSrc}`;
+      this.audioObj.load();
+      this.audioObj.play();
+    } catch {
+      // empty
+    }
   }
 
   public chooseWord(item: HTMLElement): void {
@@ -218,6 +222,7 @@ export class AudiocallGameComponent implements OnInit {
     } else {
       this.state = 'end';
     }
+    this.checkWordNumber();
   }
 
   public restartGame(): void {
@@ -314,6 +319,18 @@ export class AudiocallGameComponent implements OnInit {
       return array;
     };
     return shuffle([question.answer, ...question.other]);
+  }
+
+  private checkWordNumber(): void {
+    const preAmountOfWords: number = 5;
+    // Если остается 4 слова и, то дополняем вопросами
+    if (
+      this.wordNumber >= this.questions.length - preAmountOfWords &&
+      this.page !== '0'
+    ) {
+      this.page = (parseInt(this.page) - 1).toString();
+      this.initWords();
+    }
   }
 
   private renderQuestion(): void {

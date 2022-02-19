@@ -5,6 +5,18 @@ main.main {
   position: relative;
   padding-top: $headerHeight;
   min-height: calc(100vh - $footerHeight);
+
+  @media (max-width: 855px) {
+    min-height: calc(100vh - 180px);
+  }
+
+  @media (max-width: 600px) {
+    min-height: calc(100vh - 214px);
+  }
+
+  @media (max-width: 454px) {
+    min-height: calc(100vh - 225px);
+  }
 }
 
 .mat-header {
@@ -138,6 +150,14 @@ main.main {
   height: 50px;
   cursor: pointer;
   transition: 0.3s;
+
+  @media (max-width: 855px) {
+    height: 40px;
+  }
+
+  @media (max-width: 503px) {
+    height: 30px;
+  }
 }
 
 .footer {
@@ -150,6 +170,25 @@ main.main {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+
+  @media (max-width: 855px) {
+    flex-direction: column;
+    height: 180px;
+    padding: 30px;
+  }
+
+  @media (max-width: 632px) {
+    align-items: flex-start;
+  }
+
+  @media (max-width: 600px) {
+    height: 214px;
+  }
+
+  @media (max-width: 454px) {
+    height: 225px;
+  }
 
   p {
     margin: 0;
@@ -196,4 +235,13 @@ main.main {
 
 .dropdown:hover .dropdown-content {
   display: block;
+}
+
+.authors,
+.github-links-container {
+  padding-left: 0;
+  display: flex;
+  column-gap: 15px;
+  flex-wrap: wrap;
+  row-gap: 15px;
 }
