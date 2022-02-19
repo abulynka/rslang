@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { User } from 'src/app/interfaces/interfaces';
+import {
+  SelecetData,
+  User,
+  UserSettings,
+  UserSettingsOptional,
+} from 'src/app/interfaces/interfaces';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserSettingsService } from 'src/app/services/user-settings.service';
 
@@ -16,6 +21,26 @@ export class UserSettingsComponent implements OnInit {
   public currentPassword: string = '';
   public hide: boolean = true;
   public hideNewPsw: boolean = true;
+  public isPasswordTrue: boolean | null = null;
+  public toppings: FormControl = new FormControl('primary');
+  public bgURLs: string[] = [
+    'monkey-bg.png',
+    'mountain.png',
+    'terry.jpg',
+    'unsplesh.jfif',
+  ].map((name: string) => `../../../assets/bg/${name}`);
+  public toppingList: SelecetData[] = [
+    { name: 'primary', value: 'основной' },
+    { name: 'accent', value: 'розовый' },
+    { name: 'warn', value: 'красный' },
+  ];
+  public userData: UserSettingsOptional = {
+    lastName: '',
+    bio: '',
+    shellColor: '',
+    bgUrl: '',
+    image: '',
+  };
   public newPswControl: FormControl = new FormControl(
     { value: '', disabled: true },
     [Validators.minLength(Number('8')), Validators.pattern(/[a-zA-Z\d].{8,}$/i)]
@@ -34,6 +59,15 @@ export class UserSettingsComponent implements OnInit {
     this.settingsService.getUserEmail().subscribe((email: string) => {
       this.userEmail = email;
     });
+    this.settingsService.getUserSettings().subscribe((data: UserSettings) => {
+      if (data.optional) {
+        this.userData.lastName = data.optional.lastName || '';
+        this.userData.bio = data.optional.bio || '';
+        this.userData.bgUrl = data.optional.bgUrl || '';
+        this.imageLink = data.optional.image || '';
+        this.toppings.setValue(data.optional.shellColor || 'primary');
+      }
+    });
   }
 
   public uploadFile(e: Event): void {
@@ -51,7 +85,7 @@ export class UserSettingsComponent implements OnInit {
 
     fileReader.onload = (): void => {
       // '1000000' - 1 mb
-      if (imageSize < Number('1000000')) {
+      if (imageSize < Number('100000')) {
         this.imageLink = String(fileReader.result);
       }
     };
@@ -63,17 +97,51 @@ export class UserSettingsComponent implements OnInit {
       .subscribe((data: boolean) => {
         if (data) {
           this.newPswControl.enable();
+          this.isPasswordTrue = true;
         } else {
           this.newPswControl.disable();
+          this.isPasswordTrue = false;
         }
       });
   }
 
   public saveSettings(): void {
     if (this.imageLink.length > 0) {
-      this.auth.setUserimage(this.imageLink);
+      this.userData.image = this.imageLink;
     }
+    this.setUserData();
+    this.setUserSettings();
+    this.newPswControl.disable();
+  }
+
+  public changeShellColor(): void {
+    this.userData.shellColor = this.toppings.value as string;
+  }
+
+  public setUserSettings(): void {
+    const settingsOptional: UserSettingsOptional = {};
+    Object.entries(this.userData).forEach(
+      (entry: Array<string | undefined>) => {
+        if (!entry[0]) return;
+        if (entry[1] !== '') {
+          settingsOptional[entry[0]] = entry[1];
+        }
+      }
+    );
+    this.settingsService.updateUserSettings(settingsOptional);
+  }
+
+  public deleteAccaunt(): void {
+    this.settingsService.deleteUserAccaunt();
+  }
+
+  public setBgUrl(url: string): void {
+    this.userData.bgUrl = url;
+  }
+
+  private setUserData(): void {
     const data: Partial<User> = {};
+
     if (this.nameControl.valid) {
       data.name = this.nameControl.value;
     }
@@ -81,6 +149,5 @@ export class UserSettingsComponent implements OnInit {
       data.password = this.newPswControl.value;
     }
     this.settingsService.setUserData(data);
-    this.newPswControl.disable();
   }
 }

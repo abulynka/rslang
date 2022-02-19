@@ -122,12 +122,20 @@ export interface UserWordStatistics {
 }
 
 export interface UserSettingsOptional {
+  [key: string]: string | undefined;
   lastName?: string;
   bio?: string;
+  shellColor?: string;
   bgUrl?: string;
   fontColor?: string;
+  image?: string;
 }
 export interface UserSettings {
   wordsPerDay: number;
-  optional: UserSettingsOptional;
+  optional?: UserSettingsOptional;
+}
+
+export interface SelecetData {
+  name: string;
+  value: string;
 }

@@ -57,8 +57,8 @@ export class SigninComponent {
         })
       )
       .subscribe((data: any) => {
-        this.change(false);
         if (data.token) {
+          this.change(false);
           this.authService.setUserData(data);
           this.router.navigate(['/']);
         }

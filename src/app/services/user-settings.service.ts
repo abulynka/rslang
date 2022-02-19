@@ -1,7 +1,13 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { catchError, Observable, Observer } from 'rxjs';
-import { Auth, User, UserSettings } from '../interfaces/interfaces';
+import {
+  Auth,
+  User,
+  UserSettings,
+  UserSettingsOptional,
+} from '../interfaces/interfaces';
 import { AuthService } from './auth.service';
 import { HttpService } from './http.service';
 import { SignInService } from './sign-in.service';
@@ -15,7 +21,8 @@ export class UserSettingsService {
   public constructor(
     private http: HttpService,
     private auth: AuthService,
-    private signInService: SignInService
+    private signInService: SignInService,
+    private router: Router
   ) {}
 
   public getUserEmail(): Observable<string> {
@@ -56,11 +63,31 @@ export class UserSettingsService {
   }
 
   public getUserSettings(): Observable<UserSettings> {
+    this.userId = this.auth.getCurrentUserId();
     return this.http.get(`/users/${this.userId}/settings`).pipe(
       catchError((err: HttpErrorResponse) => {
+        if (!err.ok) {
+          this.updateUserSettings({});
+        }
         return [];
       })
     );
+  }
+
+  public updateUserSettings(userData: UserSettingsOptional): void {
+    this.auth.setUserSettings(userData);
+    this.http
+      .put(`/users/${this.userId}/settings`, {
+        wordsPerDay: 1,
+        optional: userData,
+      })
+      .subscribe();
+  }
+
+  public deleteUserAccaunt(): void {
+    this.http.delete(`users/${this.userId}`).subscribe();
+    this.auth.deleteUserData();
+    this.router.navigate(['']);
   }
 
   private getUserData(): Observable<User> {

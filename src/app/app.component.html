@@ -1,5 +1,5 @@
 <header class="header">
-  <mat-toolbar color="primary" class="mat-header">
+  <mat-toolbar [color]="shellColor" class="mat-header">
     <img
       routerLink="/"
       class="logo"
@@ -34,7 +34,7 @@
 
       <ul class="navbar-list">
         <li class="user-info" *ngIf="isAuthUser">
-          <p class="user-info__name">{{ userName }}</p>
+          <p class="user-info__name">{{ userName }} {{ lastName }}</p>
           <button
             class="user-info__menu"
             mat-fab
@@ -42,7 +42,11 @@
             matBadgeColor="accent"
             routerLink="settings"
           >
-            <img class="user-info__img" src="{{ userImageUrl }}" alt="user" />
+            <img
+              class="user-info__img"
+              src="{{ userImageUrl || '../assets/user.png' }}"
+              alt="user"
+            />
           </button>
           <button
             type="button"
@@ -64,28 +68,34 @@
   </mat-toolbar>
 </header>
 
-<main class="main" [@routeChangeAnimation]="getRouteAnimationState(outlet)">
+<main
+  class="main"
+  [style.background-image]="'url(/assets/' + bgUrl + ')'"
+  [@routeChangeAnimation]="getRouteAnimationState(outlet)"
+>
   <router-outlet #outlet="outlet"></router-outlet>
 </main>
 
 <footer class="footer" *ngIf="!isFooterHidden">
   <!-- <p>© Jet Squad</p> -->
-  <ul class="github-footer">
-    <li class="github-footer__item" *ngFor="let aboutUs of aboutUsArray">
-      <a href="{{ aboutUs.gitHub }}" class="mat-button"
-        ><img
-          class="card__body-github-img"
-          src="../../../assets/svg/github.svg"
-          alt="github"
-        />{{ aboutUs.name }}</a
-      >
-    </li>
-  </ul>
-  <p>2021</p>
-  <a href="https://rs.school/js/"
-    ><img
-      class="footer__svg"
-      src="https://raw.githubusercontent.com/YuliyaBondar/christmas-data/main/assets/svg/rss.svg"
-      alt="rs_school_js"
-  /></a>
+  <mat-toolbar class="footer__tool-bar" [color]="shellColor">
+    <ul class="github-footer">
+      <li class="github-footer__item" *ngFor="let aboutUs of aboutUsArray">
+        <a href="{{ aboutUs.gitHub }}" class="mat-button"
+          ><img
+            class="card__body-github-img"
+            src="../../../assets/svg/github.svg"
+            alt="github"
+          />{{ aboutUs.name }}</a
+        >
+      </li>
+    </ul>
+    <p>2021</p>
+    <a href="https://rs.school/js/"
+      ><img
+        class="footer__svg"
+        src="https://raw.githubusercontent.com/YuliyaBondar/christmas-data/main/assets/svg/rss.svg"
+        alt="rs_school_js"
+    /></a>
+  </mat-toolbar>
 </footer>

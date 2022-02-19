@@ -5,18 +5,52 @@
   align-items: center;
 
   &__title {
-    padding: 30px 0;
+    padding: 30px 10px;
+    font-weight: 600;
+    text-shadow: 1px 1px 10px #0000008c;
+    line-break: auto;
+    text-align: center;
   }
 
-  &__content {
+  .long-stat__content {
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
     align-items: center;
+    background: white;
+    border: 2px solid rgb(202, 202, 202);
+    border-radius: 10px;
+    margin: 10px;
+    padding: 10px;
+    transition: 0.3s;
+
+    @media screen and (max-width: 720px ){
+      padding: 5px;
+      margin: 5px 0;
+    }
+
+    .long-stat__graph {
+      margin: 40px;
+      @media screen and (max-width: 900px ){
+        margin: 40px 0;
+      }
+    }
+
+    .long-stat__graph-title {
+      text-align: center;
+      color: gray;
+      font-weight: 600;
+      line-break: auto;
+      text-align: center;
+    }
 
     .long-stat__graph-content {
+      display: flex;
+      justify-content: center;
+      align-items: center;
       overflow-x: auto;
       min-width: 0;
-      max-width: 700px;
+
     }
   }
 }
