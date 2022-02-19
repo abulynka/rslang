@@ -1,5 +1,5 @@
 import { Component, DoCheck } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Route, Router, RouterOutlet } from '@angular/router';
 import { routeChangeAnimation } from './components/change-route-animation';
 import { Auth } from './interfaces/interfaces';
 import { AuthService } from './services/auth.service';
@@ -16,10 +16,12 @@ export class AppComponent implements DoCheck {
   public userName: string = '';
   public isAuthUser: boolean = false;
   public userLoginTime: number | null = null;
+  public isFooterHidden: boolean = false;
 
   public constructor(
     private authService: AuthService,
-    private gamesStatesService: GamesStatesService
+    private gamesStatesService: GamesStatesService,
+    private router: Router
   ) {}
 
   public ngDoCheck(): void {
@@ -38,15 +40,17 @@ export class AppComponent implements DoCheck {
       this.userName = userData.name;
       this.isAuthUser = true;
     }
+    this.checkURL();
   }
 
   public logOut(): void {
     this.authService.deleteUserData();
     this.isAuthUser = false;
+    this.router.navigateByUrl('');
   }
 
   public setGameState(): void {
-    this.gamesStatesService.isOpenedFormMenu = true;
+    this.gamesStatesService.startFromHeader();
   }
 
   public getRouteAnimationState(outlet: RouterOutlet): RouterOutlet {
@@ -55,5 +59,18 @@ export class AppComponent implements DoCheck {
       outlet.activatedRouteData &&
       outlet.activatedRouteData['animation']
     );
+  }
+  private checkURL(): void {
+    const routePath: string = this.router.url.split('').slice(1).join('');
+    this.isFooterHidden = false;
+    this.router.config
+      .filter((route: Route) =>
+        route.data ? route.data['isFooterHidden'] : false
+      )
+      .forEach((route: Route) => {
+        if (route.path === routePath) {
+          this.isFooterHidden = true;
+        }
+      });
   }
 }

@@ -1,6 +1,8 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { catchError, map, Observable } from 'rxjs';
 import {
+  ChartData,
   UserStatistics,
   UserWord,
   UserWordOptional,
@@ -28,7 +30,7 @@ const getCurrentDate = (): number => {
 };
 
 const getWordFirstDate = (history?: WordHistoryUnit): number => {
-  return Number(Object.keys(history || {})[0]);
+  return Number(Object.keys(history || {})[0] || 0);
 };
 
 const checkDates = (history?: WordHistoryUnit): boolean => {
@@ -40,6 +42,42 @@ const checkDates = (history?: WordHistoryUnit): boolean => {
   return isLearnedToday;
 };
 
+const getWinRate = (
+  history?: WordHistoryUnit,
+  isPerADay: boolean = false
+): number | undefined => {
+  if (!history) return;
+  const currentDate: number = getCurrentDate();
+  const keys: string[] = Object.keys(history || {});
+  return (
+    keys.filter((key: string) => {
+      const answer: boolean = history[key].isRight;
+      if (isPerADay && Number(key) > currentDate && answer) {
+        return answer;
+      }
+      if (!isPerADay && answer) {
+        return answer;
+      }
+      return false;
+    }).length / (keys.length || 1)
+  );
+};
+
+const getDayOfTheFirstMeeating = (
+  ...args: Array<WordHistoryUnit | undefined>
+): number | undefined => {
+  const dates: number[] = [];
+  args.forEach((data: WordHistoryUnit | undefined) => {
+    const firstDate: number = getWordFirstDate(data);
+    if (firstDate !== 0) dates.push(firstDate);
+  });
+  return dates.sort().reverse()[0];
+};
+
+const formattingDate = (dateMS: number): string => {
+  const date: Date = new Date(dateMS);
+  return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
+};
 @Injectable({
   providedIn: 'root',
 })
@@ -62,7 +100,7 @@ export class UserStatisticsService {
     private auth: AuthService
   ) {}
 
-  public getWords(cb: () => void): void {
+  public getUserWords(cb: () => void): void {
     this.wordsService
       .getAggregatedWords(
         undefined,
@@ -75,6 +113,7 @@ export class UserStatisticsService {
         })
       )
       .subscribe((data: Word[]) => {
+        this.clearData();
         this.userWords = data;
         this.setStatisticsData();
         cb();
@@ -83,7 +122,23 @@ export class UserStatisticsService {
 
   public getUserStatistics(): Observable<UserStatistics> {
     const path: string = `/users/${this.auth.getCurrentUserId()}/statistics`;
-    return this.http.get(path) as Observable<UserStatistics>;
+    return this.http.get(path).pipe(
+      catchError((err: HttpErrorResponse) => {
+        const statusCode: number = 404;
+        if (err.status === statusCode) {
+          const body: UserStatistics = {
+            learnedWords: 0,
+            optional: {
+              sprintSeriesOfAnswers: 0,
+              audioSeriesOfAnswers: 0,
+            },
+          };
+          this.updatUserStatistics(body);
+          return [body];
+        }
+        return [];
+      })
+    );
   }
 
   public updatUserStatistics(body: UserStatistics): void {
@@ -114,6 +169,43 @@ export class UserStatisticsService {
     );
   }
 
+  public getAmountOfNewWordsForEachDay(): ChartData[] {
+    const chartData: ChartData[] = [];
+    const wordDates: Map<string, number> = new Map();
+
+    this.userWords.forEach((data: Word) => {
+      const userWord: UserWord = <UserWord>data.userWord;
+      const wordFirstMeating: number | undefined = getDayOfTheFirstMeeating(
+        userWord.optional.sprintHistory,
+        userWord.optional.gameCallhistory
+      );
+      if (wordFirstMeating) {
+        const formattedData: string = formattingDate(wordFirstMeating);
+        const mapValue: number | undefined = wordDates.get(formattedData);
+        wordDates.set(formattedData, mapValue ? mapValue + 1 : 1);
+      }
+    });
+    wordDates.forEach((value: number, name: string) => {
+      chartData.push({
+        name,
+        value,
+      });
+    });
+    return chartData.sort((a: ChartData, b: ChartData) =>
+      a.name.localeCompare(b.name)
+    );
+  }
+
+  public getNumberByIncreaseWords(): ChartData[] {
+    return this.getAmountOfNewWordsForEachDay().map(
+      (data: ChartData, i: number, arr: ChartData[]) => {
+        if (i === 0) return data;
+        data.value += arr[i - 1].value;
+        return data;
+      }
+    );
+  }
+
   private setStatisticsData(): void {
     const currentDate: number = getCurrentDate();
 
@@ -121,32 +213,13 @@ export class UserStatisticsService {
       const userWord: UserWord | undefined = word.userWord;
       if (userWord) {
         this.setAmountOfNewWords(userWord, currentDate);
-        this.fillWinRatesArrays(userWord, currentDate);
+        this.fillWinRatesArrays(userWord);
       }
     });
   }
 
-  private fillWinRatesArrays(userWord: UserWord, currentDate: number): void {
+  private fillWinRatesArrays(userWord: UserWord): void {
     const optional: UserWordOptional = userWord.optional;
-    const getWinRate = (
-      history?: WordHistoryUnit,
-      isPerADay: boolean = false
-    ): number | undefined => {
-      if (!history) return;
-      const keys: string[] = Object.keys(history || {});
-      return (
-        keys.filter((key: string) => {
-          const answer: boolean = history[key].isRight;
-          if (isPerADay && Number(key) > currentDate && answer) {
-            return answer;
-          }
-          if (!isPerADay && answer) {
-            return answer;
-          }
-          return false;
-        }).length / (keys.length || 1)
-      );
-    };
     const sprintRate: number | undefined = getWinRate(optional.sprintHistory);
     const audioRate: number | undefined = getWinRate(optional.gameCallhistory);
     const sprintRatePerDay: number | undefined = getWinRate(
@@ -169,6 +242,7 @@ export class UserStatisticsService {
   private updateWinRate(): void {
     const factor: number = 100;
     const getAverage = (arr: number[]): number => {
+      if (arr.length === 0) return 0;
       const rate: number =
         Number(
           (
@@ -189,5 +263,18 @@ export class UserStatisticsService {
     if (getWordFirstDate(userWord.optional.gameCallhistory) > currentDate) {
       this.newWordsAmount.gameCall += 1;
     }
+  }
+
+  private clearData(): void {
+    this.newWordsAmount = new NewAmount();
+    this.gameWinsRate = new NewAmount();
+    this.sprintSeries = 0;
+    this.audioSeries = 0;
+    this.sprintWinRate = 0;
+    this.audioWinRate = 0;
+    this.commonWinRate = 0;
+    this.sprintWinRateArr = [];
+    this.audioWinRateArr = [];
+    this.commonWinRateArr = [];
   }
 }

@@ -1,12 +1,10 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { catchError } from 'rxjs';
 import { ChartData, UserStatistics } from 'src/app/interfaces/interfaces';
 import { Word } from '../../interfaces/interfaces';
 import { UserStatisticsService } from 'src/app/services/user-statistics.service';
 
-const width: number = 500;
-const height: number = 400;
+const width: number = 600;
+const height: number = 500;
 @Component({
   selector: 'app-short-statistic',
   templateUrl: './short-statistic.component.html',
@@ -16,6 +14,7 @@ export class ShortStatisticComponent implements OnInit {
   public width: number = width;
   public height: number = height;
   public gradient: boolean = false;
+  public isLoaded: boolean = false;
   public sprint: ChartData[] = [
     {
       name: 'Количество новых слов за день',
@@ -60,11 +59,16 @@ export class ShortStatisticComponent implements OnInit {
       value: 0,
     },
   ];
-
+  public jokes: string[] = [
+    'Собираем некоторые сведения о вас',
+    'Пожалуйста подождите, идет взлом пентагона',
+    'Вот вот загрузится',
+  ];
+  public joke: string = this.getJoke();
   public constructor(private statisticsService: UserStatisticsService) {}
 
   public ngOnInit(): void {
-    this.statisticsService.getWords(() => {
+    this.statisticsService.getUserWords(() => {
       this.sprint[0].value = this.statisticsService.newWordsAmount.sprint;
       this.audio[0].value = this.statisticsService.newWordsAmount.gameCall;
       this.words[0].value = this.statisticsService.newWordsAmount.common();
@@ -72,6 +76,7 @@ export class ShortStatisticComponent implements OnInit {
       this.setAmountOfNewWords();
       this.updateWinRate();
       this.updateDataArrays();
+      this.isLoaded = true;
     });
   }
 
@@ -79,9 +84,13 @@ export class ShortStatisticComponent implements OnInit {
     this.statisticsService
       .getLearnedWordsPerADay()
       .subscribe((data: Word[]) => {
-        this.words[1].value = data.length;
+        this.words[1].value = data.length || 0;
         this.words = [...this.words];
       });
+  }
+
+  private getJoke(): string {
+    return this.jokes[Math.round(Math.random() * (this.jokes.length - 1))];
   }
 
   private setSeriesOfAnswers(): void {
@@ -92,12 +101,6 @@ export class ShortStatisticComponent implements OnInit {
     };
     this.statisticsService
       .getUserStatistics()
-      .pipe(
-        catchError((err: HttpErrorResponse) => {
-          if (!err.ok) setData(0, 0);
-          return [];
-        })
-      )
       .subscribe((data: UserStatistics) => {
         setData(
           data.optional.sprintSeriesOfAnswers,

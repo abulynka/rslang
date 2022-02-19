@@ -1,10 +1,9 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { Routes, RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
 import { AppComponent } from './app.component';
 import { MainPageComponent } from './components/main-page/main-page.component';
 import { SigninComponent } from './components/sign-in/signin.component';
@@ -19,7 +18,10 @@ import { PageComponent } from './components/etextbook/page/page.component';
 import { ChapterComponent } from './components/etextbook/chapter/chapter.component';
 import { EtextbookComponent } from './components/etextbook/etextbook/etextbook.component';
 import { AudioComponent } from './components/etextbook/audio/audio.component';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import {
+  MatPaginatorIntl,
+  MatPaginatorModule,
+} from '@angular/material/paginator';
 import { SprintGameComponent } from './components/sprint-game/sprint-game.component';
 import { GameResultComponent } from './components/game-result/game-result.component';
 import { GamesStartComponent } from './components/games-start/games-start.component';
@@ -36,6 +38,14 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatListModule } from '@angular/material/list';
 import { AboutUsCardComponent } from './components/about/about-us-card/about-us-card.component';
 import { MatCardModule } from '@angular/material/card';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { StatisticsComponent } from './components/etextbook/statistics/statistics.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatTableModule } from '@angular/material/table';
+import { getRussianPaginatorIntl } from './components/etextbook/etextbook/russian-paginator-intl';
 
 const appRoutes: Routes = [
   { path: '', component: MainPageComponent },
@@ -63,10 +73,16 @@ const appRoutes: Routes = [
   {
     path: 'sprint-game',
     component: SprintGameComponent,
+    data: {
+      isFooterHidden: true,
+    },
   },
   {
     path: 'audiocall',
     component: AudiocallGameComponent,
+    data: {
+      isFooterHidden: true,
+    },
   },
   {
     path: 'short-statistic',
@@ -98,6 +114,7 @@ const appRoutes: Routes = [
     ShortStatisticComponent,
     LongStatisticComponent,
     AboutUsCardComponent,
+    StatisticsComponent,
   ],
   imports: [
     BrowserModule,
@@ -113,6 +130,13 @@ const appRoutes: Routes = [
     MatSelectModule,
     MatListModule,
     MatCardModule,
+    MatToolbarModule,
+    MatProgressSpinnerModule,
+    MatInputModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    MatDialogModule,
+    MatTableModule,
   ],
   providers: [
     HttpService,
@@ -120,6 +144,7 @@ const appRoutes: Routes = [
     GamesStatesService,
     UserProgressService,
     UsersWordsService,
+    { provide: MatPaginatorIntl, useValue: getRussianPaginatorIntl() },
   ],
   bootstrap: [AppComponent],
 })

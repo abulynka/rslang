@@ -1,4 +1,3 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import {
   Component,
   Input,
@@ -8,7 +7,6 @@ import {
   OnInit,
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { catchError } from 'rxjs';
 import { Answer, Word, UserStatistics } from 'src/app/interfaces/interfaces';
 import { UserStatisticsService } from 'src/app/services/user-statistics.service';
 import { environment } from 'src/environments/environment';
@@ -38,20 +36,6 @@ export class GameResultComponent implements OnChanges, OnInit {
   public ngOnInit(): void {
     this.userStatistics
       .getUserStatistics()
-      .pipe(
-        catchError((err: HttpErrorResponse) => {
-          if (!err.ok) {
-            this.insertStatisticsData({
-              learnedWords: 0,
-              optional: {
-                sprintSeriesOfAnswers: 0,
-                audioSeriesOfAnswers: 0,
-              },
-            });
-          }
-          return [];
-        })
-      )
       .subscribe((data: UserStatistics) => {
         this.insertStatisticsData(data);
       });
@@ -60,6 +44,7 @@ export class GameResultComponent implements OnChanges, OnInit {
   public ngOnChanges(): void {
     this.route = this.router.url;
   }
+
   public reastartGame(): void {
     this.clicked.emit();
   }
@@ -77,9 +62,14 @@ export class GameResultComponent implements OnChanges, OnInit {
       data.optional.sprintSeriesOfAnswers < series
     ) {
       data.optional.sprintSeriesOfAnswers = series;
-    } else if (data.optional.audioSeriesOfAnswers < series) {
+    }
+    if (
+      this.gameName === 'audioGame' &&
+      data.optional.audioSeriesOfAnswers < series
+    ) {
       data.optional.audioSeriesOfAnswers = series;
     }
+    console.log(this.gameName, data, series);
     this.userStatistics.updatUserStatistics(data);
   }
 
@@ -97,6 +87,6 @@ export class GameResultComponent implements OnChanges, OnInit {
         series.push(theBiggestSeries);
       }
     });
-    return series.sort().reverse()[0];
+    return Math.max(...series);
   }
 }

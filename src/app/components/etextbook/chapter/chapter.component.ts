@@ -1,4 +1,11 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { PageComponent } from '../page/page.component';
 
 @Component({
@@ -7,6 +14,9 @@ import { PageComponent } from '../page/page.component';
   styleUrls: ['./chapter.component.scss'],
 })
 export class ChapterComponent implements OnInit {
+  @Output() public pageIsLearned: EventEmitter<boolean> =
+    new EventEmitter<boolean>();
+
   @Input() public chapter: number = 0;
 
   @ViewChild(PageComponent, { static: true }) private page:
@@ -21,5 +31,9 @@ export class ChapterComponent implements OnInit {
     if (this.page) {
       this.page.setGroupPageNumber(chapter, page);
     }
+  }
+
+  public learned(isLearned: boolean): void {
+    this.pageIsLearned.emit(isLearned);
   }
 }

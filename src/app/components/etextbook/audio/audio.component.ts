@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnDestroy, OnInit } from '@angular/core';
 import { Word } from '../../../interfaces/interfaces';
 import { HttpService } from '../../../services/http.service';
 
@@ -7,7 +7,7 @@ import { HttpService } from '../../../services/http.service';
   templateUrl: './audio.component.html',
   styleUrls: ['./audio.component.scss'],
 })
-export class AudioComponent implements OnInit {
+export class AudioComponent implements OnInit, OnDestroy {
   @Input() public word: Word = {} as Word;
 
   private audio: HTMLAudioElement = new Audio();
@@ -27,7 +27,6 @@ export class AudioComponent implements OnInit {
 
   public async onClick(): Promise<void> {
     const list: HTMLElement = this.element.nativeElement.querySelector('i');
-
     if (this.isPlayingAudio) {
       this.audios.forEach((audio: HTMLAudioElement) => {
         list.classList.remove('fa-pause');
@@ -40,8 +39,18 @@ export class AudioComponent implements OnInit {
       list.classList.remove('fa-play');
       list.classList.add('fa-pause');
       this.isPlayingAudio = true;
-      await this.audio.play();
+      try {
+        await this.audio.play();
+      } catch (event) {
+        // empty
+      }
     }
+  }
+
+  public ngOnDestroy(): void {
+    this.audios.forEach((audio: HTMLAudioElement) => {
+      audio.pause();
+    });
   }
 
   public ngOnInit(): void {
@@ -51,10 +60,20 @@ export class AudioComponent implements OnInit {
     this.audioMeaning.src = this.httpService.getUrl(this.word.audioMeaning);
     this.audioExample.src = this.httpService.getUrl(this.word.audioExample);
 
-    this.audio.addEventListener('ended', async () => this.audioMeaning.play());
-    this.audioMeaning.addEventListener('ended', async () =>
-      this.audioExample.play()
-    );
+    this.audio.addEventListener('ended', async () => {
+      try {
+        await this.audioMeaning.play();
+      } catch (event) {
+        // empty
+      }
+    });
+    this.audioMeaning.addEventListener('ended', async () => {
+      try {
+        await this.audioExample.play();
+      } catch (event) {
+        // empty
+      }
+    });
     this.audioExample.addEventListener('ended', async () => {
       list.classList.remove('fa-pause');
       list.classList.add('fa-play');

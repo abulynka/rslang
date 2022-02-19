@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EtextbookComponent } from './etextbook.component';
+import { StatisticsComponent } from './statistics.component';
 
-describe('EtextbookComponent', () => {
-  let component: EtextbookComponent;
-  let fixture: ComponentFixture<EtextbookComponent>;
+describe('StatisticsComponent', () => {
+  let component: StatisticsComponent;
+  let fixture: ComponentFixture<StatisticsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [EtextbookComponent],
+      declarations: [StatisticsComponent],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EtextbookComponent);
+    fixture = TestBed.createComponent(StatisticsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

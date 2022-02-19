@@ -5,6 +5,10 @@
   justify-content: center;
   align-items: center;
 
+  &_highlight {
+    background-color: #9fff7d;
+  }
+
   &__word {
     &_color-0 {
       background-color: rgba(255, 99, 0, 0.05);

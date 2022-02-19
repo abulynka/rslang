@@ -1,0 +1,27 @@
+<h2>
+  Статистика по слову <strong>{{ word.word }}</strong>
+</h2>
+<table
+  mat-table
+  [dataSource]="dataSource"
+  class="mat-elevation-z8"
+  [width]="'100%'"
+>
+  <ng-container matColumnDef="game">
+    <th mat-header-cell *matHeaderCellDef>Игра</th>
+    <td mat-cell *matCellDef="let element">{{ element.game }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="right">
+    <th mat-header-cell *matHeaderCellDef>Правильно</th>
+    <td mat-cell *matCellDef="let element">{{ element.right }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="wrong">
+    <th mat-header-cell *matHeaderCellDef>Неправильно</th>
+    <td mat-cell *matCellDef="let element">{{ element.wrong }}</td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</table>

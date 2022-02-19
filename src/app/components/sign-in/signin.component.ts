@@ -4,6 +4,7 @@ import { catchError } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { SignInService } from '../../services/sign-in.service';
+import { FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-signin',
@@ -11,11 +12,22 @@ import { SignInService } from '../../services/sign-in.service';
   styleUrls: ['./signin.component.scss'],
 })
 export class SigninComponent {
-  public email: string = '';
-  public password: string = '';
   public isSent: boolean = false;
   public error: string = '';
   public isError: boolean = false;
+  public hide: boolean = true;
+  public emailControl: FormControl = new FormControl('', [
+    Validators.required,
+    Validators.email,
+    Validators.pattern(
+      /^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/i
+    ),
+  ]);
+  public pswControl: FormControl = new FormControl('', [
+    Validators.required,
+    Validators.minLength(Number('8')),
+    Validators.pattern(/[a-zA-Z\d].{8,}$/i),
+  ]);
 
   public constructor(
     private signInService: SignInService,
@@ -31,7 +43,7 @@ export class SigninComponent {
   public send(): void {
     this.isSent = true;
     this.signInService
-      .singIn(this.email, this.password)
+      .singIn(this.emailControl.value, this.pswControl.value)
       .pipe(
         catchError((err: HttpErrorResponse) => {
           const code: string = err.status.toString();
