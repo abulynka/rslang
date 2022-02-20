@@ -13,21 +13,39 @@ export class AboutUsComponent {
       gitHub: 'https://github.com/abulynka',
       position: 'Разработчик',
       image: 'alex.jpg',
-      description: ['Feature 1', 'Feature 2', 'Feature 3'],
+      description: [
+        'Учебник',
+        'Сервисы моделей',
+        'Статистика',
+        'О команде',
+        'Разработка дизайн-компонентов',
+      ],
     },
     {
-      name: 'Yulia',
+      name: 'Yuliya',
       gitHub: 'https://github.com/YuliyaBondar',
       position: 'Разработчик',
       image: 'julia.jpg',
-      description: ['Feature 1', 'Feature 2', 'Feature 3'],
+      description: [
+        'Главная страница',
+        'Игра "Аудиовызов"',
+        'О команде',
+        'Разработка дизайна',
+        'UI/UX игр',
+      ],
     },
     {
       name: 'Egor',
       gitHub: 'https://github.com/cheerfulperson',
       position: 'Разработчик',
       image: 'egor.jpg',
-      description: ['Feature 1', 'Feature 2', 'Feature 3'],
+      description: [
+        'Игра "Спринт"',
+        'Статистика',
+        'Настройки профиля',
+        'Сервисы моделей и авторизация',
+        'Разработка дизайн-компонентов',
+      ],
     },
   ];
 }
