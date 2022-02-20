@@ -27,7 +27,7 @@ main.main {
 .mat-header {
   box-shadow: 2px 0 4px 1px black;
 
-  @media (max-width: 711px) {
+  @media (max-width: 1024px) {
     justify-content: space-between;
   }
 }
@@ -56,10 +56,11 @@ main.main {
   background-color: transparent;
 }
 
-@media (max-width: 711px) {
+@media (max-width: 1024px) {
   .navbar {
+    align-items: flex-start;
     position: absolute;
-    padding: 24px 24px 170px;
+    padding: 24px 24px 410px;
     background-color: #3f51b5;
     transition: 0.3s;
     left: -5000%;
@@ -71,7 +72,8 @@ main.main {
     left: 0px;
   }
 
-  .nav-games-btn {
+  .nav-games-btn,
+  .statistics-btn {
     padding: 0 !important;
   }
 
@@ -91,7 +93,7 @@ main.main {
   flex-wrap: wrap;
   gap: 15px;
 
-  @media (max-width: 711px) {
+  @media (max-width: 1024px) {
     flex-direction: column;
     align-items: flex-start;
   }
@@ -102,6 +104,21 @@ main.main {
   justify-content: center;
   align-items: center;
   transition: 0.3s;
+}
+
+.navbar-item-1024 {
+  display: none;
+
+  @media (max-width: 1024px) {
+    display: block;
+  }
+}
+
+@media (max-width: 1024px) {
+  .statistics-item,
+  .games-item {
+    display: none;
+  }
 }
 
 .user-info {
@@ -160,7 +177,7 @@ main.main {
 .burger-icon {
   display: none;
 
-  @media (max-width: 711px) {
+  @media (max-width: 1024px) {
     display: block;
   }
 }

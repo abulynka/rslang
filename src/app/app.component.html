@@ -18,7 +18,7 @@
         <li class="navbar-item">
           <a class="menu-item navbar-link" routerLink="etextbook">учебник</a>
         </li>
-        <li class="navbar-item">
+        <li class="navbar-item games-item">
           <button class="btn nav-games-btn" [matMenuTriggerFor]="menu">
             мини-игры
           </button>
@@ -41,8 +41,26 @@
             </a>
           </mat-menu>
         </li>
-        <li class="navbar-item" *ngIf="isAuthUser">
-          <button class="btn" [matMenuTriggerFor]="statistics">
+        <li class="navbar-item navbar-item-1024" *ngIf="isAuthUser">
+          <a
+            (click)="setGameState()"
+            routerLink="/audiocall"
+            class="menu-item navbar-link"
+          >
+            <span>аудиовызов</span>
+          </a>
+        </li>
+        <li class="navbar-item navbar-item-1024" *ngIf="isAuthUser">
+          <a
+            (click)="setGameState()"
+            routerLink="/sprint-game"
+            class="menu-item navbar-link"
+          >
+            <span>спринт</span>
+          </a>
+        </li>
+        <li class="navbar-item statistics-item" *ngIf="isAuthUser">
+          <button class="btn statistics-btn" [matMenuTriggerFor]="statistics">
             статистика
           </button>
           <mat-menu class="dropdown" #statistics="matMenu">
@@ -59,6 +77,20 @@
               >долгосрочная</a
             >
           </mat-menu>
+        </li>
+        <li class="navbar-item navbar-item-1024" *ngIf="isAuthUser">
+          <a
+            routerLink="/short-statistic"
+            class="navbar-item menu-item navbar-link"
+            >краткосрочная</a
+          >
+        </li>
+        <li class="navbar-item navbar-item-1024" *ngIf="isAuthUser">
+          <a
+            routerLink="/long-statistic"
+            class="navbar-item menu-item navbar-link"
+            >долгосрочная</a
+          >
         </li>
       </ul>
 
