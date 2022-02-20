@@ -2,14 +2,18 @@
   width: 400px;
   color: black;
 
-  // &__img {
-  //   height: 300px;
-  // }
+  @media (max-width: 469px) {
+    width: 300px;
+  }
 
   &__body {
     padding: 30px;
     display: flex;
     flex-direction: column;
+
+    @media (max-width: 469px) {
+      padding: 10px;
+    }
 
     &-title {
       display: flex;

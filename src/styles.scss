@@ -1,3 +1,4 @@
+
 /* You can add global styles to this file, and also import other style files */
 @font-face {
   font-family: Steppe;
@@ -47,5 +48,11 @@ h2::first-letter,
 h3::first-letter,
 a::first-letter,
 button::first-letter {
+  text-transform: capitalize;
+}
+
+button,
+a,
+a > span {
   text-transform: capitalize;
 }

@@ -27,6 +27,9 @@ export class WordComponent {
   @Output() public removeWordEvent: EventEmitter<Word> =
     new EventEmitter<Word>();
 
+  @Output() public makeWordLearnedEvent: EventEmitter<Word> =
+    new EventEmitter<Word>();
+
   public url: string = environment.apiUrl;
 
   private _difficultChapter: boolean = false;
@@ -136,7 +139,10 @@ export class WordComponent {
   public makeLearned(): void {
     this.userProgress
       .makeTheWordLearned(this._word.id)
-      .subscribe(() => this.makeLearnedUI());
+      .subscribe(() => {
+        this.makeLearnedUI();
+        this.makeWordLearnedEvent.emit(this._word);
+      });
   }
 
   private makeDifficultUI(disable: boolean = true): void {

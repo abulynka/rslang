@@ -22,6 +22,9 @@ export class AudiocallGameComponent implements OnInit {
   public url: string = environment.apiUrl;
   public isCorrect: boolean = false;
   public totalAmount: number = this.questions.length;
+  public isFullScreen: boolean = false;
+  public isMuteSound: boolean = true;
+  public assetsURL: string = '../../../assets';
   private group: string = '0';
   private page: string = '0';
   private audioObj: HTMLAudioElement = new Audio();
@@ -47,6 +50,14 @@ export class AudiocallGameComponent implements OnInit {
     const threeIndex: number = 3;
     const fourIndex: number = 4;
     const fiveIndex: number = 5;
+    if (event.key === 'f') {
+      this.makeFullScreen();
+    } else if (event.code === 'Space') {
+      if (this.questions.length === 0) {
+        return;
+      }
+      this.playSound(this.questions[this.wordNumber].answer.audio);
+    }
     if (rulesContainer.style.display === 'none') {
       if (this.digitsIsActive) {
         switch (event.key) {
@@ -67,7 +78,7 @@ export class AudiocallGameComponent implements OnInit {
             break;
         }
       }
-      if (event.key === 'Enter') {
+      if (this.wordNumber < this.totalAmount && event.key === 'Enter') {
         if (answerContainer.style.display === 'flex') {
           this.nextQuestion();
         } else {
@@ -114,14 +125,23 @@ export class AudiocallGameComponent implements OnInit {
     this.initWords();
   }
 
+  public makeFullScreen(): void {
+    this.isFullScreen = !this.isFullScreen;
+    let elem: Element = document.documentElement;
+    if (this.isFullScreen) elem.requestFullscreen.call(elem);
+    else document.exitFullscreen();
+  }
+
+  public toggleVolume(): void {
+    this.isMuteSound = !this.isMuteSound;
+  }
+
   public playSound(audioSrc: string): void {
-    try {
-      this.audioObj.src = `${this.url}/${audioSrc}`;
-      this.audioObj.load();
-      this.audioObj.play();
-    } catch {
+    this.audioObj.src = `${this.url}/${audioSrc}`;
+    this.audioObj.load();
+    this.audioObj.play().catch(() => {
       // empty
-    }
+    });
   }
 
   public chooseWord(item: HTMLElement): void {
@@ -140,7 +160,6 @@ export class AudiocallGameComponent implements OnInit {
       ...this.questions[this.wordNumber].answer,
     };
     this.answers.push(wordAnswer);
-
     if (!answer) {
       item.style.background = 'red';
       this.answerBullets[this.wordNumber] = 'red';
@@ -148,18 +167,26 @@ export class AudiocallGameComponent implements OnInit {
         document.querySelectorAll('.answer-btn');
       answerBuns.forEach((btn: HTMLElement) => {
         if (
+          this.questions &&
+          this.questions[this.wordNumber] &&
+          this.questions[this.wordNumber].answer &&
           (<string>btn.textContent).trim() ===
-          this.questions[this.wordNumber].answer.wordTranslate
+            this.questions[this.wordNumber].answer.wordTranslate
         ) {
           btn.style.background = 'green';
         }
       });
       this.wrongAnswers.push(this.questions[this.wordNumber].answer);
+      this.audioObj.src = `${this.assetsURL}/sounds/mistake.mp3`;
     } else {
       this.answerBullets[this.wordNumber] = 'green';
       this.isCorrect = true;
       item.style.background = 'green';
       this.correctAnswers.push(this.questions[this.wordNumber].answer);
+      this.audioObj.src = `${this.assetsURL}/sounds/good.mp3`;
+    }
+    if (!this.isMuteSound) {
+      this.audioObj.play();
     }
     this.userProgressService.checkWord(
       { answer: this.isCorrect, ...this.words[this.wordNumber] } as Answer,
@@ -180,8 +207,11 @@ export class AudiocallGameComponent implements OnInit {
     this.answerBullets[this.wordNumber] = 'yellow';
     answerBtns.forEach((btn: HTMLElement) => {
       if (
+        this.questions &&
+        this.questions[this.wordNumber] &&
+        this.questions[this.wordNumber].answer &&
         (<string>btn.textContent).trim() ===
-        this.questions[this.wordNumber].answer.wordTranslate
+          this.questions[this.wordNumber].answer.wordTranslate
       ) {
         btn.style.background = 'green';
       }
@@ -221,6 +251,7 @@ export class AudiocallGameComponent implements OnInit {
       btnUnknown.style.display = 'flex';
     } else {
       this.state = 'end';
+      this.digitsIsActive = false;
     }
     this.checkWordNumber();
   }
@@ -334,6 +365,9 @@ export class AudiocallGameComponent implements OnInit {
   }
 
   private renderQuestion(): void {
+    if (!this.questions[this.wordNumber]) {
+      return;
+    }
     this.randomWordsArr = this.getRandomWords(this.questions[this.wordNumber]);
     this.playSound(this.questions[this.wordNumber].answer.audio);
     const rulesContainer: HTMLElement = document.querySelector(

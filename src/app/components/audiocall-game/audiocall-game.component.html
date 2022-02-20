@@ -1,15 +1,38 @@
 <section class="audio-call-section">
+  <article class="button-container">
+    <button mat-icon-button (click)="toggleVolume()">
+      <mat-icon class="icon-display" *ngIf="isMuteSound">volume_off</mat-icon>
+      <mat-icon class="icon-display" *ngIf="!isMuteSound">volume_up</mat-icon>
+    </button>
+    <button mat-icon-button (click)="makeFullScreen()">
+      <mat-icon class="icon-display" *ngIf="!isFullScreen">fullscreen</mat-icon>
+      <mat-icon class="icon-display" *ngIf="isFullScreen"
+        >fullscreen_exit</mat-icon
+      >
+    </button>
+  </article>
+
   <div class="rules-container">
     <h2>Аудиовызов</h2>
     <p>
-      Ниже выберите уровень сложности. Затем выберите из предложенных вариантов
-      ответа правильный перевод слова, который услышите
+      Ниже выбери уровень сложности. Затем выбери из предложенных вариантов
+      ответа правильный перевод слова, который услышишь
     </p>
+    <ul class="rules-container__list">
+      <li>Используй цифровые клавиши от 1 до 5 для выбора ответа</li>
+      <li>Используй пробел для повтроного звучания слова</li>
+      <li>
+        Используй клавишу Enter для перехода к следующему вопросу или если не
+        знаешь слово
+      </li>
+    </ul>
     <div class="group-btn-container">
       <button
+        mat-raised-button
         gameName="Аудиовызов"
         type="button"
-        class="btn btn-primary btn-group-num"
+        class="tn-group-num"
+        color="primary"
         *ngFor="let num of [0, 1, 2, 3, 4, 5]"
         (click)="startGame(num)"
       >
@@ -47,7 +70,7 @@
           <p class="answer-word">{{ questions[wordNumber].answer.word }}</p>
           <p>{{ questions[wordNumber].answer.transcription }}</p>
         </div>
-        <div class="english-exaple">
+        <div class="english-example">
           <img
             class="small-svg"
             src="../../../assets/svg/volume-audio-svgrepo-com.svg"
@@ -74,6 +97,8 @@
       </button>
     </div>
     <button
+      mat-raised-button
+      color="accent"
       type="button"
       class="btn btn-warning btn-unknown"
       (click)="skipQuestion()"
@@ -81,6 +106,8 @@
       Не знаю
     </button>
     <button
+      mat-raised-button
+      color="accent"
       type="button"
       class="btn btn-warning btn-next"
       (click)="nextQuestion()"

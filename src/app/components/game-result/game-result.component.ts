@@ -52,7 +52,9 @@ export class GameResultComponent implements OnChanges, OnInit {
   public playSound(audioUrl: string): void {
     this.audio.src = `${environment.apiUrl}/${audioUrl}`;
     this.audio.load();
-    this.audio.play();
+    this.audio.play().catch(() => {
+      // empty
+    });
   }
 
   private insertStatisticsData(data: UserStatistics): void {

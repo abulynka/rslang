@@ -50,6 +50,11 @@ import { getRussianPaginatorIntl } from './components/etextbook/etextbook/russia
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatTabsModule } from '@angular/material/tabs';
 import { DragAndDropDirective } from '../app/directives/drag-and-drop.directive';
+import {
+  NgbPaginationModule,
+  NgbAlertModule,
+  NgbModule,
+} from '@ng-bootstrap/ng-bootstrap';
 
 const appRoutes: Routes = [
   { path: '', component: MainPageComponent },
@@ -150,6 +155,9 @@ const appRoutes: Routes = [
     MatTableModule,
     MatBadgeModule,
     MatTabsModule,
+    NgbPaginationModule,
+    NgbAlertModule,
+    NgbModule,
   ],
   providers: [
     HttpService,

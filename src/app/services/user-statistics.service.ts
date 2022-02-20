@@ -121,6 +121,10 @@ export class UserStatisticsService {
   }
 
   public getUserStatistics(): Observable<UserStatistics> {
+    if (!this.auth.checkAuth()) {
+      return new Observable<UserStatistics>();
+    }
+
     const path: string = `/users/${this.auth.getCurrentUserId()}/statistics`;
     return this.http.get(path).pipe(
       catchError((err: HttpErrorResponse) => {
