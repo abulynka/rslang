@@ -101,7 +101,6 @@
   position: absolute;
   top: 20px;
   left: 40px;
-  z-index: 20;
   .mat-icon-button {
     width: 60px;
     height: 60px;
@@ -109,6 +108,10 @@
     .icon-display {
       transform: scale(2);
     }
+  }
+
+  @media (max-width: 460px) {
+    top: 0;
   }
 }
 .sprint-game__window {

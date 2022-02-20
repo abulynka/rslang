@@ -68,7 +68,7 @@ main.main {
     padding: 24px 24px 410px;
     background-color: #3f51b5;
     transition: 0.3s;
-    left: -5000%;
+    left: -100%;
     top: 64px;
     z-index: 999;
   }
@@ -321,6 +321,8 @@ main.main {
   column-gap: 15px;
   flex-wrap: wrap;
   row-gap: 15px;
+  align-items: center;
+  margin-bottom: 0;
 }
 
 button,
