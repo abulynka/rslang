@@ -18,9 +18,8 @@
     position: absolute;
     top: 20px;
     left: 40px;
-    z-index: 20;
 
-    @media (max-width: 460px) {
+    @media (max-width: 855px) {
       top: 0;
     }
 
@@ -60,9 +59,6 @@
 
     @media (max-width: 749px) {
       width: 95%;
-    }
-
-    @media (max-width: 460px) {
       row-gap: 10px;
       padding: 10px;
       margin-top: 30px;
@@ -75,9 +71,10 @@
       text-shadow: 1px 1px 1px white;
       padding-top: 30px;
 
-      @media (max-width: 460px) {
+      @media (max-width: 785px) {
         padding-top: 0;
         width: 100%;
+        margin-bottom: 0;
       }
 
       & > li {
@@ -95,8 +92,9 @@
       line-height: 28px;
       text-align: center;
 
-      @media (max-width: 460px) {
+      @media (max-width: 785px) {
         font-size: 1rem;
+        margin-bottom: 0;
       }
     }
 
@@ -132,11 +130,11 @@
     border: 3px solid #8865d8;
     border-radius: 30px;
 
-    @media (max-width: 840px) {
+    @media (max-width: 900px) {
       width: 95%;
     }
 
-    @media (max-width: 460px) {
+    @media (max-width: 785px) {
       padding: 10px;
       row-gap: 10px;
     }
@@ -152,6 +150,11 @@
         height: 15px;
         border-radius: 50%;
         background-color: #c4c4c4;
+
+        @media (max-width: 375px) {
+          width: 7px;
+          height: 7px;
+        }
       }
 
       .circle.green {
@@ -172,7 +175,7 @@
       cursor: pointer;
       transition: 0.3s;
 
-      @media (max-width: 460px) {
+      @media (max-width: 785px) {
         width: 118px;
       }
     }
@@ -186,15 +189,19 @@
       gap: 30px;
       flex-wrap: wrap;
 
+      @media (max-width: 900px) {
+        row-gap: 10px;
+      }
+
       @media (max-width: 340px) {
         width: 200px;
       }
 
       .correct-img {
-        width: 300px;
+        height: 150px;
 
-        @media (max-width: 340px) {
-          width: 200px;
+        @media (max-width: 520px) {
+          height: 120px;
         }
       }
 
@@ -205,11 +212,23 @@
         row-gap: 20px;
         line-height: 24px;
 
+        @media (max-width: 900px) {
+          row-gap: 10px;
+        }
+
+        @media (max-width: 375px) {
+          font-size: 14px;
+        }
+
         .correct-word,
         .english-example {
           display: flex;
           column-gap: 10px;
           flex-wrap: wrap;
+        }
+
+        p {
+          margin-bottom: 0;
         }
       }
     }
@@ -219,6 +238,18 @@
       flex-wrap: wrap;
       gap: 20px;
       justify-content: center;
+
+      @media (max-width: 375px) {
+        gap: 10px;
+      }
+
+      @media (max-width: 375px) {
+        .answer-btn {
+          font-size: 14px;
+          padding: 10px;
+          height: 42px;
+        }
+      }
 
       .answer-btn.disabled {
         pointer-events: none;

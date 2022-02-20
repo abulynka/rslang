@@ -1,9 +1,9 @@
 .card {
-  width: 400px;
+  width: 400px !important;
   color: black;
 
   @media (max-width: 469px) {
-    width: 300px;
+    width: 300px !important;
   }
 
   &__body {
