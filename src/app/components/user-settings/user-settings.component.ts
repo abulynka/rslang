@@ -23,6 +23,7 @@ export class UserSettingsComponent implements OnInit {
   public hideNewPsw: boolean = true;
   public isPasswordTrue: boolean | null = null;
   public toppings: FormControl = new FormControl('primary');
+  public isRangeLimit: boolean = false;
   public bgURLs: string[] = [
     'monkey-bg.png',
     'mountain.png',
@@ -87,6 +88,9 @@ export class UserSettingsComponent implements OnInit {
       // '1000000' - 1 mb
       if (imageSize < Number('100000')) {
         this.imageLink = String(fileReader.result);
+        this.isRangeLimit = false;
+      } else {
+        this.isRangeLimit = true;
       }
     };
   }
