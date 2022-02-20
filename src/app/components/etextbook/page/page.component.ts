@@ -50,6 +50,21 @@ export class PageComponent {
   public set words(words: Word[]) {
     this._words = words;
 
+    this.checkIsLearned();
+  }
+
+  @Input() public setGroupPageNumber(
+    groupNumber: number,
+    pageNumber: number
+  ): void {
+    this._groupNumber = groupNumber;
+    this._pageNumber = pageNumber;
+    const difficultChapterConst: number = 6;
+    this.difficultChapter = this._groupNumber === difficultChapterConst;
+    this.init();
+  }
+
+  public checkIsLearned(): void {
     if (this.auth.checkAuth()) {
       const checks: Array<Observable<boolean>> = this._words.map(
         (word: Word): Observable<boolean> => {
@@ -63,17 +78,6 @@ export class PageComponent {
         this.setLearnedPage(isLearned);
       });
     }
-  }
-
-  @Input() public setGroupPageNumber(
-    groupNumber: number,
-    pageNumber: number
-  ): void {
-    this._groupNumber = groupNumber;
-    this._pageNumber = pageNumber;
-    const difficultChapterConst: number = 6;
-    this.difficultChapter = this._groupNumber === difficultChapterConst;
-    this.init();
   }
 
   public init(): void {
