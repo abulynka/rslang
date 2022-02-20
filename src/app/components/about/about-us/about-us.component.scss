@@ -4,12 +4,20 @@
   align-items: center;
   padding: 30px;
 
+  @media (max-width: 469px) {
+    padding: 30px 10px;
+  }
+
   &__container {
     display: flex;
     padding: 0 30px;
 
     @media (max-width: 1500px) {
       flex-direction: column;
+    }
+
+    @media (max-width: 529px) {
+      padding: 0;
     }
 
     &-item {
