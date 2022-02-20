@@ -155,7 +155,6 @@ export class AudiocallGameComponent implements OnInit {
       ...this.questions[this.wordNumber].answer,
     };
     this.answers.push(wordAnswer);
-
     if (!answer) {
       item.style.background = 'red';
       this.answerBullets[this.wordNumber] = 'red';
