@@ -73,7 +73,7 @@ export class AudiocallGameComponent implements OnInit {
             break;
         }
       }
-      if (event.key === 'Enter') {
+      if (this.wordNumber < this.totalAmount && event.key === 'Enter') {
         if (answerContainer.style.display === 'flex') {
           this.nextQuestion();
         } else {
@@ -134,11 +134,9 @@ export class AudiocallGameComponent implements OnInit {
   public playSound(audioSrc: string): void {
     this.audioObj.src = `${this.url}/${audioSrc}`;
     this.audioObj.load();
-    try {
-      this.audioObj.play();
-    } catch (error) {
-      this.audioObj.pause();
-    }
+    this.audioObj.play().catch(() => {
+      // empty
+    });
   }
 
   public chooseWord(item: HTMLElement): void {
@@ -164,8 +162,11 @@ export class AudiocallGameComponent implements OnInit {
         document.querySelectorAll('.answer-btn');
       answerBuns.forEach((btn: HTMLElement) => {
         if (
+          this.questions &&
+          this.questions[this.wordNumber] &&
+          this.questions[this.wordNumber].answer &&
           (<string>btn.textContent).trim() ===
-          this.questions[this.wordNumber].answer.wordTranslate
+            this.questions[this.wordNumber].answer.wordTranslate
         ) {
           btn.style.background = 'green';
         }
@@ -201,8 +202,11 @@ export class AudiocallGameComponent implements OnInit {
     this.answerBullets[this.wordNumber] = 'yellow';
     answerBtns.forEach((btn: HTMLElement) => {
       if (
+        this.questions &&
+        this.questions[this.wordNumber] &&
+        this.questions[this.wordNumber].answer &&
         (<string>btn.textContent).trim() ===
-        this.questions[this.wordNumber].answer.wordTranslate
+          this.questions[this.wordNumber].answer.wordTranslate
       ) {
         btn.style.background = 'green';
       }
@@ -242,6 +246,7 @@ export class AudiocallGameComponent implements OnInit {
       btnUnknown.style.display = 'flex';
     } else {
       this.state = 'end';
+      this.digitsIsActive = false;
     }
     this.checkWordNumber();
   }

@@ -50,6 +50,12 @@
   &__title {
     display: flex;
     justify-content: center;
+    padding-top: 20px;
+    & > h2 {
+      font-size: 38px;
+      font-weight: 900;
+      text-shadow: 2px 2px 2px black;
+    }
   }
 
   &__container {
@@ -66,6 +72,8 @@
     }
 
     &-item {
+      background-color: white;
+
       @media (max-width: 1000px) {
         margin: 5px 0;
         height: 70px;
@@ -75,6 +83,7 @@
     &-chapter {
       height: 75px;
       font-size: 20px;
+      background-color: white;
     }
 
     &-pages {
@@ -101,6 +110,19 @@
     &-game {
       width: 250px;
       font-size: 20px;
+      border-radius: 0;
+      background-color: white;
+      border-bottom: 3px solid white;
+      transition: 0.3s;
+
+      &:hover {
+        border-bottom: 3px solid black;
+      }
+
+      &:disabled {
+        color: black;
+        text-shadow: 1px 1px 1px white;
+      }
 
       @media (max-width: 1000px) {
         width: 100%;

@@ -23,6 +23,7 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+  color: #5c197e;
 
   @media (max-width: 599px) {
     min-height: calc(100vh - 56px);
@@ -120,7 +121,7 @@
   width: 500px;
   background: radial-gradient(
     118.88% 606.86% at 0% 0%,
-    rgba(36, 48, 219, 0.15) 0%,
+    rgba(255, 255, 255, 0.55) 30%,
     rgba(36, 197, 219, 0) 100%
   );
   backdrop-filter: blur(31px);

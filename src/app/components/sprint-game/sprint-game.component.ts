@@ -79,12 +79,17 @@ export class SprintGameComponent implements OnInit {
 
   @HostListener('document:keyup', ['$event'])
   public handleKeyboardEvent(event: KeyboardEvent): void {
-    if (event.key === 'ArrowLeft') {
+    if (event.code === 'ArrowLeft') {
       this.checkWord(false);
-    } else if (event.key === 'ArrowRight') {
+    } else if (event.code === 'ArrowRight') {
       this.checkWord(true);
-    } else if (event.key === 'f') {
+    } else if (event.code === 'KeyF') {
       this.makeFullScreen();
+    } else if (event.code === 'Space') {
+      if (this.questions.length === 0) {
+        return;
+      }
+      this.playSound(this.questions[this.wordNumber].wordData);
     }
   }
 
@@ -116,11 +121,9 @@ export class SprintGameComponent implements OnInit {
   public playSound(word: Word): void {
     this.audioObj.src = `${environment.apiUrl}/${word.audio}`;
     this.audioObj.load();
-    try {
-      this.audioObj.play();
-    } catch (error) {
-      this.audioObj.pause();
-    }
+    this.audioObj.play().catch(() => {
+      // empty
+    });
   }
 
   public checkWord(userAnswer?: boolean): void {
@@ -163,7 +166,7 @@ export class SprintGameComponent implements OnInit {
     this.wordNumber = 0;
     this.score = 0;
     this.timer = 60;
-    this.rightNumbers;
+    this.rightNumbers = 0;
     this.ngOnInit();
   }
 
@@ -191,6 +194,14 @@ export class SprintGameComponent implements OnInit {
 
   private checkWordNumber(): void {
     const preAmountOfWords: number = 5;
+    if (
+      this.gameStateService.isOpenedFromMenu &&
+      this.wordNumber >= Number('20')
+    ) {
+      this.state = 'end';
+      this.questions = [];
+      return;
+    }
     // Если остается 4 слова и, то дополняем вопросами
     if (
       this.wordNumber >= this.questions.length - preAmountOfWords &&
@@ -238,7 +249,9 @@ export class SprintGameComponent implements OnInit {
     }
 
     if (!this.isMuteSound) {
-      this.audioObj.play();
+      this.audioObj.play().catch(() => {
+        // empty
+      });
     }
     this.clearWindowClass();
   }

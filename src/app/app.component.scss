@@ -6,7 +6,7 @@ main.main {
   padding-top: $headerHeight;
   min-height: calc(100vh - $footerHeight);
   background: center/cover;
-  background-image: url('../assets/bg/terry.jpg');
+  background-image: url('../assets/bg/monkey-bg.png');
   background-repeat: no-repeat;
   background-blend-mode: multiply;
   background-attachment: fixed;
@@ -312,4 +312,10 @@ main.main {
   column-gap: 15px;
   flex-wrap: wrap;
   row-gap: 15px;
+}
+
+button,
+a,
+a > span {
+  text-transform: capitalize;
 }
