@@ -16,11 +16,16 @@ main.main {
   }
 
   @media (max-width: 600px) {
+    padding-top: 56px;
     min-height: calc(100vh - 214px);
   }
 
   @media (max-width: 454px) {
     min-height: calc(100vh - 225px);
+  }
+
+  @media (max-width: 339px) {
+    min-height: calc(100vh - 286px);
   }
 }
 
@@ -219,6 +224,10 @@ main.main {
     height: 225px;
   }
 
+  @media (max-width: 339px) {
+    height: 286px;
+  }
+
   .footer__tool-bar {
     width: 100%;
     height: 100%;
@@ -318,4 +327,13 @@ button,
 a,
 a > span {
   text-transform: capitalize;
+}
+
+.footer-link {
+  display: flex;
+  column-gap: 5px;
+
+  img {
+    width: 30px;
+  }
 }

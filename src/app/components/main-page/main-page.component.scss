@@ -27,7 +27,6 @@
     position: relative;
     justify-content: flex-start;
   }
-
 }
 
 .left-column {
@@ -119,7 +118,6 @@
   li {
     text-align: left;
     list-style-type: circle;
-    text-transform: capitalize;
     font-weight: 300;
     margin: 0;
     @media(max-width: 1200px) {

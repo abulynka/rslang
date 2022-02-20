@@ -13,12 +13,21 @@
   height: 100%;
   z-index: 10;
 
+  @media (max-width: 599px) {
+    min-height: calc(100vh - 56px);
+  }
+
   &__list {
     width: 80%;
     line-height: 24px;
     color: #5b5b5b;
     text-shadow: 1px 1px 1px white;
     padding-top: 30px;
+
+    @media (max-width: 460px) {
+      padding-top: 0;
+      width: 100%;
+    }
 
     & > li {
       list-style: circle;
@@ -40,16 +49,36 @@
     border: 3px solid #8865d8;
     border-radius: 30px;
 
-    h2, h3 {
-      text-align: center;
+    @media (max-width: 1049px) {
+      width: 70%;
+    }
+
+    @media (max-width: 749px) {
+      width: 95%;
+    }
+
+    @media (max-width: 460px) {
+      row-gap: 10px;
     }
 
     h2 {
       font-weight: 600;
+      font-size: 2.5rem;
+    }
+
+    p {
+      font-size: 1.75rem;
+      line-height: 28px;
+      text-align: center;
+
+      @media (max-width: 460px) {
+        font-size: 1rem;
+      }
     }
 
     .start-game__buttons {
       @include fl;
+      flex-wrap: wrap;
 
       button {
         margin: 5px;

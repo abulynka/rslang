@@ -41,7 +41,7 @@
             </a>
           </mat-menu>
         </li>
-        <li class="navbar-item navbar-item-1024" *ngIf="isAuthUser">
+        <li class="navbar-item navbar-item-1024">
           <a
             (click)="setGameState()"
             routerLink="/audiocall"
@@ -50,7 +50,7 @@
             <span>аудиовызов</span>
           </a>
         </li>
-        <li class="navbar-item navbar-item-1024" *ngIf="isAuthUser">
+        <li class="navbar-item navbar-item-1024">
           <a
             (click)="setGameState()"
             routerLink="/sprint-game"
@@ -64,16 +64,10 @@
             статистика
           </button>
           <mat-menu class="dropdown" #statistics="matMenu">
-            <a
-              routerLink="/short-statistic"
-              mat-menu-item
-              class="navbar-item menu-item"
+            <a routerLink="/short-statistic" mat-menu-item class="menu-item"
               >краткосрочная</a
             >
-            <a
-              routerLink="/long-statistic"
-              mat-menu-item
-              class="navbar-item menu-item"
+            <a routerLink="/long-statistic" mat-menu-item class="menu-item"
               >долгосрочная</a
             >
           </mat-menu>
@@ -155,26 +149,30 @@
       <ul class="github-links-container">
         <li>
           <a
-            class="navbar-link"
+            class="navbar-link footer-link"
             href="https://github.com/abulynka"
             target="_blank"
-            >abulynka</a
+          >
+            <img src="../assets/svg/github-white.svg" alt="github" />
+            <p>abulynka</p></a
           >
         </li>
         <li>
           <a
-            class="navbar-link"
+            class="navbar-link footer-link"
             href="https://github.com/cheerfulperson"
             target="_blank"
-            >cheerfulperson</a
+            ><img src="../assets/svg/github-white.svg" alt="github" />
+            <p>cheerfulperson</p></a
           >
         </li>
         <li>
           <a
-            class="navbar-link"
+            class="navbar-link footer-link"
             href="https://github.com/YuliyaBondar"
             target="_blank"
-            >YuliyaBondar</a
+            ><img src="../assets/svg/github-white.svg" alt="github" />
+            <p>YuliyaBondar</p></a
           >
         </li>
       </ul>
