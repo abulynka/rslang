@@ -157,7 +157,6 @@ export class AudiocallGameComponent implements OnInit {
       ...this.questions[this.wordNumber].answer,
     };
     this.answers.push(wordAnswer);
-
     if (!answer) {
       item.style.background = 'red';
       this.answerBullets[this.wordNumber] = 'red';
@@ -356,6 +355,9 @@ export class AudiocallGameComponent implements OnInit {
   }
 
   private renderQuestion(): void {
+    if (!this.questions[this.wordNumber]) {
+      return;
+    }
     this.randomWordsArr = this.getRandomWords(this.questions[this.wordNumber]);
     this.playSound(this.questions[this.wordNumber].answer.audio);
     const rulesContainer: HTMLElement = document.querySelector(
