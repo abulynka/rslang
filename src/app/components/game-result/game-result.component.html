@@ -6,11 +6,6 @@
         Результаты
         <!-- <span class="score">{{ score }}</span> -->
       </h2>
-      <img
-        src="../../../assets/svg/close.svg"
-        alt="close"
-        (click)="reastartGame()"
-      />
     </div>
     <!-- <div class="sprint-result__frame">
       <div class="sprint-result__line" *ngFor="let answer of answers">
@@ -70,5 +65,8 @@
         </div>
       </div>
     </div>
+    <button mat-raised-button color="primary" (click)="reastartGame()">
+      Начать заново
+    </button>
   </article>
 </article>

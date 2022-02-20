@@ -1,27 +1,55 @@
-# Rslang
+## Описание библиотек, фреймворков, технологий, которые были задействованы в процессе разработки приложения, их преимущества и недостатки
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.1.3.
+1. typescript:
 
-## Development server
+  +: выявление ошибок на этапе написания кода
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+  -: увеличение сложности написания кода
 
-## Code scaffolding
+2. angular:
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+  +: ускорение разработки
 
-## Build
+  -: из-за того, что никто из команды не был знаком с этой технологией - пришлось потратить много времени на ее изучение
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+3. bootstrap:
 
-## Running unit tests
+  +: скорость верстки
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+  -: получаются типовые компоненты
 
-## Running end-to-end tests
+4. angular/material
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+  +: скорость верстки, интеграция с ангуляром
 
-## Further help
+  -: получаются типовые компоненты
+  
+5. angular/localize
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+  +: возможность адаптировать компоненты к любому языку
+
+  -: относительно высокая сложность для относительно небольшого проекта
+  
+6. swimlane/ngx-charts
+
+  +: легкость и простота использования графиков, большой выбор видов графиков
+
+  -: было потрачено относительно много времени на проблему с производительностью процессора при получении данных из метода
+  
+7. ng-bootstrap:
+
+  +: скорость верстки, интеграция с ангуляром
+
+  -: получаются типовые компоненты
+  
+8. rxjs
+
+  +: интересный способ решения проблемы с асинхронными операциями и потоками
+
+  -: сложность в понимании работы библиотеки
+  
+9. eslint
+
+  +: однообразие кода разных разработчиков, что облегчает понимание чужого кода
+
+  -: субъективно слишком строгие правила были использованы

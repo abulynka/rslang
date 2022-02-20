@@ -52,6 +52,11 @@ export class AudiocallGameComponent implements OnInit {
     const fiveIndex: number = 5;
     if (event.key === 'f') {
       this.makeFullScreen();
+    } else if (event.code === 'Space') {
+      if (this.questions.length === 0) {
+        return;
+      }
+      this.playSound(this.questions[this.wordNumber].answer.audio);
     }
     if (rulesContainer.style.display === 'none') {
       if (this.digitsIsActive) {
