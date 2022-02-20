@@ -7,7 +7,12 @@
       уровень сложности.
     </h3>
     <div class="start-game__buttons">
-      <button *ngFor="let i of [1, 2, 3, 4, 5, 6]" (click)="startGame(i - 1)">
+      <button
+        mat-raised-button
+        color="primary"
+        *ngFor="let i of [1, 2, 3, 4, 5, 6]"
+        (click)="startGame(i - 1)"
+      >
         <span>{{ i }}</span>
       </button>
     </div>

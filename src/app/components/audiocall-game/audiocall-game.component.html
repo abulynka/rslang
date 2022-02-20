@@ -1,4 +1,17 @@
 <section class="audio-call-section">
+  <article class="button-container">
+    <button mat-icon-button (click)="toggleVolume()">
+      <mat-icon class="icon-display" *ngIf="isMuteSound">volume_off</mat-icon>
+      <mat-icon class="icon-display" *ngIf="!isMuteSound">volume_up</mat-icon>
+    </button>
+    <button mat-icon-button (click)="makeFullScreen()">
+      <mat-icon class="icon-display" *ngIf="!isFullScreen">fullscreen</mat-icon>
+      <mat-icon class="icon-display" *ngIf="isFullScreen"
+        >fullscreen_exit</mat-icon
+      >
+    </button>
+  </article>
+
   <div class="rules-container">
     <h2>Аудиовызов</h2>
     <p>
@@ -7,9 +20,11 @@
     </p>
     <div class="group-btn-container">
       <button
+        mat-raised-button
         gameName="Аудиовызов"
         type="button"
-        class="btn btn-primary btn-group-num"
+        class="tn-group-num"
+        color="primary"
         *ngFor="let num of [0, 1, 2, 3, 4, 5]"
         (click)="startGame(num)"
       >
@@ -74,6 +89,8 @@
       </button>
     </div>
     <button
+      mat-raised-button
+      color="accent"
       type="button"
       class="btn btn-warning btn-unknown"
       (click)="skipQuestion()"
@@ -81,6 +98,8 @@
       Не знаю
     </button>
     <button
+      mat-raised-button
+      color="accent"
       type="button"
       class="btn btn-warning btn-next"
       (click)="nextQuestion()"

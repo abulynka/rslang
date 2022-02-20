@@ -22,6 +22,9 @@ export class AudiocallGameComponent implements OnInit {
   public url: string = environment.apiUrl;
   public isCorrect: boolean = false;
   public totalAmount: number = this.questions.length;
+  public isFullScreen: boolean = false;
+  public isMuteSound: boolean = true;
+  public assetsURL: string = '../../../assets';
   private group: string = '0';
   private page: string = '0';
   private audioObj: HTMLAudioElement = new Audio();
@@ -47,6 +50,9 @@ export class AudiocallGameComponent implements OnInit {
     const threeIndex: number = 3;
     const fourIndex: number = 4;
     const fiveIndex: number = 5;
+    if (event.key === 'f') {
+      this.makeFullScreen();
+    }
     if (rulesContainer.style.display === 'none') {
       if (this.digitsIsActive) {
         switch (event.key) {
@@ -114,13 +120,24 @@ export class AudiocallGameComponent implements OnInit {
     this.initWords();
   }
 
+  public makeFullScreen(): void {
+    this.isFullScreen = !this.isFullScreen;
+    let elem: Element = document.documentElement;
+    if (this.isFullScreen) elem.requestFullscreen.call(elem);
+    else document.exitFullscreen();
+  }
+
+  public toggleVolume(): void {
+    this.isMuteSound = !this.isMuteSound;
+  }
+
   public playSound(audioSrc: string): void {
+    this.audioObj.src = `${this.url}/${audioSrc}`;
+    this.audioObj.load();
     try {
-      this.audioObj.src = `${this.url}/${audioSrc}`;
-      this.audioObj.load();
       this.audioObj.play();
-    } catch {
-      // empty
+    } catch (error) {
+      this.audioObj.pause();
     }
   }
 
@@ -155,11 +172,16 @@ export class AudiocallGameComponent implements OnInit {
         }
       });
       this.wrongAnswers.push(this.questions[this.wordNumber].answer);
+      this.audioObj.src = `${this.assetsURL}/sounds/mistake.mp3`;
     } else {
       this.answerBullets[this.wordNumber] = 'green';
       this.isCorrect = true;
       item.style.background = 'green';
       this.correctAnswers.push(this.questions[this.wordNumber].answer);
+      this.audioObj.src = `${this.assetsURL}/sounds/good.mp3`;
+    }
+    if (!this.isMuteSound) {
+      this.audioObj.play();
     }
     this.userProgressService.checkWord(
       { answer: this.isCorrect, ...this.words[this.wordNumber] } as Answer,

@@ -17,12 +17,16 @@
   @include flex;
   position: relative;
   flex-direction: column;
-  height: 100vh;
+  min-height: calc(100vh - 64px);
   background-image: url(../../../assets/mountains.png);
   background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+
+  @media (max-width: 599px) {
+    min-height: calc(100vh - 56px);
+  }
 }
 
 @keyframes clock {
@@ -107,15 +111,21 @@
   }
 }
 .sprint-game__window {
+  padding-top: 10px;
   $border: 2px solid #c0c0c0;
   position: relative;
   display: flex;
   flex-direction: column;
   height: 500px;
   width: 500px;
-  border: $border;
-  background: white;
-  border-radius: 10px;
+  background: radial-gradient(
+    118.88% 606.86% at 0% 0%,
+    rgba(36, 48, 219, 0.15) 0%,
+    rgba(36, 197, 219, 0) 100%
+  );
+  backdrop-filter: blur(31px);
+  border: 3px solid #8865d8;
+  border-radius: 30px;
 
   .sprint-game__image {
     @keyframes animal {
@@ -184,7 +194,7 @@
     p {
       font-size: 1.5em;
       text-align: center;
-      color: gray;
+      color: #5c197e;
     }
 
     .sprint-game__word {
