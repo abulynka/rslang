@@ -27,7 +27,7 @@ export class AppComponent implements DoCheck {
   public userName: string = '';
   public lastName: string = '';
   public shellColor: string = 'primary';
-  public bgUrl: string = '../assets/bg/terry.jpg';
+  public bgUrl: string = '../assets/bg/unsplesh.jfif';
 
   public aboutUsArray: Array<Pick<AboutUsCard, 'name' | 'gitHub'>> = [
     {
@@ -75,7 +75,12 @@ export class AppComponent implements DoCheck {
   public logOut(): void {
     this.authService.deleteUserData();
     this.isAuthUser = false;
-    this.router.navigateByUrl('');
+    this.router.navigateByUrl('').then();
+
+    this.shellColor = 'primary';
+    this.bgUrl = '../assets/bg/unsplesh.jfif';
+    this.lastName = '';
+    this.isSettingsSetted = false;
   }
 
   public setGameState(): void {
@@ -150,7 +155,3 @@ export class AppComponent implements DoCheck {
       });
   }
 }
-
-// this.menuLink.forEach(n => n.addEventListener('click', () => {
-// this.closeMenuList();
-// }));
