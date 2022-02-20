@@ -64,7 +64,8 @@ export class UserSettingsComponent implements OnInit {
       if (data.optional) {
         this.userData.lastName = data.optional.lastName || '';
         this.userData.bio = data.optional.bio || '';
-        this.userData.bgUrl = data.optional.bgUrl || '';
+        this.userData.bgUrl =
+          data.optional.bgUrl || '../../../assets/bg/unsplesh.jfif';
         this.imageLink = data.optional.image || '';
         this.toppings.setValue(data.optional.shellColor || 'primary');
       }
@@ -124,15 +125,21 @@ export class UserSettingsComponent implements OnInit {
 
   public setUserSettings(): void {
     const settingsOptional: UserSettingsOptional = {};
-    Object.entries(this.userData).forEach(
-      (entry: Array<string | undefined>) => {
-        if (!entry[0]) return;
-        if (entry[1] !== '') {
-          settingsOptional[entry[0]] = entry[1];
+    this.settingsService.getUserSettings().subscribe((data: UserSettings) => {
+      const optional: UserSettingsOptional = data.optional || {};
+      Object.entries(this.userData).forEach(
+        (entry: Array<string | undefined>) => {
+          const key: string = <string>entry[0];
+          if (!this.userData[key] && optional[key]) {
+            settingsOptional[key] = optional[key] || '';
+          }
+          if (entry[1] !== '') {
+            settingsOptional[key] = entry[1];
+          }
         }
-      }
-    );
-    this.settingsService.updateUserSettings(settingsOptional);
+      );
+      this.settingsService.updateUserSettings(settingsOptional);
+    });
   }
 
   public deleteAccaunt(): void {

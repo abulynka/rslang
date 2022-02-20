@@ -4,7 +4,6 @@ import { Directive, HostListener, EventEmitter, Output } from '@angular/core';
   selector: '[appDragAndDrop]',
 })
 export class DragAndDropDirective {
-  // public constructor() { }
   @Output() public dropFile: EventEmitter<FileList> = new EventEmitter();
   @HostListener('dragover', ['$event']) public onDragOver(e: DragEvent): void {
     e.preventDefault();

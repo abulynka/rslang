@@ -8,6 +8,7 @@ import {
   UserWordOptional,
   Word,
   WordHistoryUnit,
+  WordHistoryValue,
 } from '../interfaces/interfaces';
 import { AuthService } from './auth.service';
 import { HttpService } from './http.service';
@@ -45,22 +46,26 @@ const checkDates = (history?: WordHistoryUnit): boolean => {
 const getWinRate = (
   history?: WordHistoryUnit,
   isPerADay: boolean = false
-): number | undefined => {
+): boolean[] | undefined => {
   if (!history) return;
   const currentDate: number = getCurrentDate();
-  const keys: string[] = Object.keys(history || {});
-  return (
-    keys.filter((key: string) => {
-      const answer: boolean = history[key].isRight;
-      if (isPerADay && Number(key) > currentDate && answer) {
-        return answer;
-      }
-      if (!isPerADay && answer) {
-        return answer;
-      }
+  const keys: string[] = Object.keys(history || {}).filter((key: string) => {
+    if (!isPerADay) {
+      return true;
+    }
+    if (isPerADay && Number(key) > currentDate) {
+      return true;
+    } else {
       return false;
-    }).length / (keys.length || 1)
-  );
+    }
+  });
+  return Object.entries(history)
+    .filter((entry: [string, WordHistoryValue]) => {
+      return keys.includes(entry[0]) ? true : false;
+    })
+    .map((value: [string, WordHistoryValue]) => {
+      return value[1].isRight;
+    });
 };
 
 const getDayOfTheFirstMeeating = (
@@ -91,9 +96,9 @@ export class UserStatisticsService {
   public audioWinRate: number = 0;
   public commonWinRate: number = 0;
 
-  private sprintWinRateArr: number[] = [];
-  private audioWinRateArr: number[] = [];
-  private commonWinRateArr: number[] = [];
+  private sprintWinRateArr: boolean[] = [];
+  private audioWinRateArr: boolean[] = [];
+  private commonWinRateArr: boolean[] = [];
   public constructor(
     private wordsService: WordsService,
     private http: HttpService,
@@ -220,40 +225,45 @@ export class UserStatisticsService {
         this.fillWinRatesArrays(userWord);
       }
     });
+    this.updateWinRate();
   }
 
   private fillWinRatesArrays(userWord: UserWord): void {
     const optional: UserWordOptional = userWord.optional;
-    const sprintRate: number | undefined = getWinRate(optional.sprintHistory);
-    const audioRate: number | undefined = getWinRate(optional.gameCallhistory);
-    const sprintRatePerDay: number | undefined = getWinRate(
+    const sprintRate: boolean[] | undefined = getWinRate(
+      optional.sprintHistory
+    );
+    const audioRate: boolean[] | undefined = getWinRate(
+      optional.gameCallhistory
+    );
+    const sprintRatePerDay: boolean[] | undefined = getWinRate(
       optional.sprintHistory,
       true
     );
-    const audioRatePerDay: number | undefined = getWinRate(
+    const audioRatePerDay: boolean[] | undefined = getWinRate(
       optional.gameCallhistory,
       true
     );
-    if (sprintRate !== undefined) this.sprintWinRateArr.push(sprintRate);
-    if (audioRate !== undefined) this.audioWinRateArr.push(audioRate);
+    if (sprintRate !== undefined) this.sprintWinRateArr.push(...sprintRate);
+    if (audioRate !== undefined) this.audioWinRateArr.push(...audioRate);
     if (sprintRatePerDay !== undefined)
-      this.commonWinRateArr.push(sprintRatePerDay);
+      this.commonWinRateArr.push(...sprintRatePerDay);
     if (audioRatePerDay !== undefined)
-      this.commonWinRateArr.push(audioRatePerDay);
-    this.updateWinRate();
+      this.commonWinRateArr.push(...audioRatePerDay);
   }
 
   private updateWinRate(): void {
     const factor: number = 100;
-    const getAverage = (arr: number[]): number => {
+    const getAverage = (arr: boolean[]): number => {
       if (arr.length === 0) return 0;
-      const rate: number =
-        Number(
-          (
-            arr.reduce((a: number, b: number): number => a + b) / arr.length
-          ).toFixed(2)
-        ) * factor;
-      return Number.isNaN(rate) ? 0 : rate;
+      let rightsAnswers: number = 0;
+      arr.forEach((value: boolean) => {
+        if (value) {
+          rightsAnswers += 1;
+        }
+      });
+      const rate: number = rightsAnswers / arr.length;
+      return Number(rate.toFixed(2)) * factor;
     };
     this.sprintWinRate = getAverage(this.sprintWinRateArr);
     this.audioWinRate = getAverage(this.audioWinRateArr);

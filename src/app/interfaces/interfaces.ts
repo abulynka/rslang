@@ -61,11 +61,12 @@ export interface UserWord {
   optional: UserWordOptional;
 }
 
+export interface WordHistoryValue {
+  isRight: boolean;
+  gameName: string;
+}
 export interface WordHistoryUnit {
-  [key: string]: {
-    isRight: boolean;
-    gameName: string;
-  };
+  [key: string]: WordHistoryValue;
 }
 
 export interface UserWordOptional {
