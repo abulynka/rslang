@@ -188,10 +188,7 @@ export class AudiocallGameComponent implements OnInit {
     if (!this.isMuteSound) {
       this.audioObj.play();
     }
-    this.userProgressService.checkWord(
-      { answer: this.isCorrect, ...this.words[this.wordNumber] } as Answer,
-      'audiocall'
-    );
+    this.userProgressService.checkWord(wordAnswer, 'audiocall');
     circles.forEach((circle: Element, index: number) => {
       const classCircle: string = this.answerBullets[index];
       if (classCircle) circle.classList.add(classCircle);
@@ -218,6 +215,13 @@ export class AudiocallGameComponent implements OnInit {
       btn.classList.add('disabled');
     });
     this.wrongAnswers.push(this.questions[this.wordNumber].answer);
+    this.userProgressService.checkWord(
+      {
+        answer: false,
+        ...this.questions[this.wordNumber].answer,
+      },
+      'audiocall'
+    );
     circles.forEach((circle: Element, index: number) => {
       const classCircle: string = this.answerBullets[index];
       if (classCircle) circle.classList.add(classCircle);

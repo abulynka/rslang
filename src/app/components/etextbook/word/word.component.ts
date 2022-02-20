@@ -137,12 +137,10 @@ export class WordComponent {
   }
 
   public makeLearned(): void {
-    this.userProgress
-      .makeTheWordLearned(this._word.id)
-      .subscribe(() => {
-        this.makeLearnedUI();
-        this.makeWordLearnedEvent.emit(this._word);
-      });
+    this.userProgress.makeTheWordLearned(this._word.id).subscribe(() => {
+      this.makeLearnedUI();
+      this.makeWordLearnedEvent.emit(this._word);
+    });
   }
 
   private makeDifficultUI(disable: boolean = true): void {
