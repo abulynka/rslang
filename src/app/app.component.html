@@ -90,20 +90,21 @@
 
       <ul class="navbar-list">
         <li class="user-info" *ngIf="isAuthUser">
-          <p class="user-info__name">{{ userName }} {{ lastName }}</p>
-          <button
-            class="user-info__menu"
-            mat-fab
-            matBadge="S"
-            matBadgeColor="accent"
-            routerLink="settings"
-          >
-            <img
-              class="user-info__img"
-              src="{{ userImageUrl || '../assets/user.png' }}"
-              alt="user"
-            />
-          </button>
+          <div class="user-info__container menu-item" routerLink="settings">
+            <p class="user-info__name">{{ userName }} {{ lastName }}</p>
+            <button
+              class="user-info__menu"
+              mat-fab
+              matBadge="S"
+              matBadgeColor="accent"
+            >
+              <img
+                class="user-info__img"
+                src="{{ userImageUrl || '../assets/user.png' }}"
+                alt="user"
+              />
+            </button>
+          </div>
           <button
             type="button"
             class="btn btn-outline-warning menu-item"
