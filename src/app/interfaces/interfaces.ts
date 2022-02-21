@@ -72,6 +72,7 @@ export interface WordHistoryUnit {
 export interface UserWordOptional {
   countOfAnswersInRow: number;
   isLearned: boolean;
+  new: string;
   sprintHistory?: WordHistoryUnit;
   gameCallhistory?: WordHistoryUnit;
 }
