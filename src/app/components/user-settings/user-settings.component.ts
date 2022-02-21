@@ -48,6 +48,7 @@ export class UserSettingsComponent implements OnInit {
   );
   public nameControl: FormControl = new FormControl(this.userName, [
     Validators.minLength(Number('3')),
+    Validators.maxLength(Number('12')),
     Validators.pattern(/^[A-Za-zА-я]{3,}$/i),
   ]);
 

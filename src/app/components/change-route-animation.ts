@@ -9,10 +9,25 @@ import {
   AnimationTriggerMetadata,
 } from '@angular/animations';
 
+interface StyleInterface {
+  [key: string]: number | string;
+}
+const getStyles = (): StyleInterface => {
+  const height: number = window.innerHeight;
+  if (height < Number('720')) {
+    return {
+      position: 'relative',
+      opacity: 1,
+      minHeight: '600px',
+      marginTop: '56px',
+    };
+  }
+  return { position: 'relative', opacity: 1 };
+};
 export const routeChangeAnimation: AnimationTriggerMetadata[] = [
   trigger('routeChangeAnimation', [
     transition('signin <=> signup', [
-      style({ position: 'relative', opacity: 1 }),
+      style(getStyles()),
       query(':enter, :leave', [
         style({
           position: 'absolute',
@@ -20,7 +35,6 @@ export const routeChangeAnimation: AnimationTriggerMetadata[] = [
           left: 0,
           width: '100%',
           height: '100%',
-          opacity: 1,
         }),
       ]),
       query(':enter', [style({ opacity: 0 })]),

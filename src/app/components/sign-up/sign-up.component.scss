@@ -8,7 +8,10 @@
   width: 100%;
   height: 100%;
 
-  
+  @media all and (max-height: 720px) {
+    position: relative;
+    min-height: 600px;
+  }
 }
 
 .from-section {

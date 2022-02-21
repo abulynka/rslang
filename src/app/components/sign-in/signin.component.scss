@@ -8,9 +8,15 @@
   width: 100%;
   height: 100%;
 
+  @media all and (max-height: 720px) {
+    position: relative;
+    min-height: 600px;
+  }
+
   .from-section__link {
     margin: 5px auto;
   }
+
 }
 
 .from-section {
@@ -53,6 +59,6 @@
   white-space: normal;
 }
 
-.form-label{
+.form-label {
   color: #00b7ff;
 }
