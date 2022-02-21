@@ -8,6 +8,9 @@ import { HttpService } from '../../../services/http.service';
   styleUrls: ['./audio.component.scss'],
 })
 export class AudioComponent implements OnInit, OnDestroy {
+  private static audiosGlobal: HTMLAudioElement[] = [];
+  private static listGlobal: HTMLElement = {} as HTMLElement;
+
   @Input() public word: Word = {} as Word;
 
   private audio: HTMLAudioElement = new Audio();
@@ -18,7 +21,7 @@ export class AudioComponent implements OnInit, OnDestroy {
     this.audioMeaning,
     this.audioExample,
   ];
-  private isPlayingAudio: boolean = false;
+  private list: HTMLElement = {} as HTMLElement;
 
   public constructor(
     private element: ElementRef,
@@ -26,24 +29,23 @@ export class AudioComponent implements OnInit, OnDestroy {
   ) {}
 
   public async onClick(): Promise<void> {
-    const list: HTMLElement = this.element.nativeElement.querySelector('i');
-    if (this.isPlayingAudio) {
-      this.audios.forEach((audio: HTMLAudioElement) => {
-        list.classList.remove('fa-pause');
-        list.classList.add('fa-play');
-        this.isPlayingAudio = false;
+    if (AudioComponent.audiosGlobal.length > 0) {
+      AudioComponent.audiosGlobal.forEach((audio: HTMLAudioElement) => {
         audio.pause();
         audio.currentTime = 0;
       });
-    } else {
-      list.classList.remove('fa-play');
-      list.classList.add('fa-pause');
-      this.isPlayingAudio = true;
-      try {
-        await this.audio.play();
-      } catch (event) {
-        // empty
+
+      AudioComponent.listGlobal.classList.remove('fa-pause');
+      AudioComponent.listGlobal.classList.add('fa-play');
+
+      if (AudioComponent.audiosGlobal === this.audios) {
+        AudioComponent.audiosGlobal = [];
+      } else {
+        AudioComponent.audiosGlobal = this.audios;
+        await this.playAudio();
       }
+    } else {
+      await this.playAudio();
     }
   }
 
@@ -54,7 +56,7 @@ export class AudioComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    const list: HTMLElement = this.element.nativeElement.querySelector('i');
+    this.list = this.element.nativeElement.querySelector('i');
 
     this.audio.src = this.httpService.getUrl(this.word.audio);
     this.audioMeaning.src = this.httpService.getUrl(this.word.audioMeaning);
@@ -75,8 +77,20 @@ export class AudioComponent implements OnInit, OnDestroy {
       }
     });
     this.audioExample.addEventListener('ended', async () => {
-      list.classList.remove('fa-pause');
-      list.classList.add('fa-play');
+      this.list.classList.remove('fa-pause');
+      this.list.classList.add('fa-play');
     });
+  }
+
+  private async playAudio(): Promise<void> {
+    this.list.classList.remove('fa-play');
+    this.list.classList.add('fa-pause');
+    AudioComponent.audiosGlobal = this.audios;
+    AudioComponent.listGlobal = this.list;
+    try {
+      await this.audio.play();
+    } catch (event) {
+      // empty
+    }
   }
 }
