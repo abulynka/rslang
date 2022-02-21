@@ -75,7 +75,7 @@ export class ShortStatisticComponent implements OnInit {
     this.statisticsService.getUserWords(() => {
       this.sprint[0].value = this.statisticsService.newWordsAmount.sprint;
       this.audio[0].value = this.statisticsService.newWordsAmount.gameCall;
-      this.words[0].value = this.statisticsService.newWordsAmount.common();
+      this.words[0].value = this.statisticsService.newWordsAmount.common;
       this.setSeriesOfAnswers();
       this.setAmountOfNewWords();
       this.updateWinRate();

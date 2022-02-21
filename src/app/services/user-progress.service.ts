@@ -233,6 +233,7 @@ export class UserProgressService {
     return this.userWordsService.insert(userId, wordId, {
       difficulty: this.difficulty.easy,
       optional: {
+        new: Date.now().toString(),
         countOfAnswersInRow: 0,
         isLearned: false,
       },
@@ -295,6 +296,7 @@ export class UserProgressService {
     const newUserWord: UserWord = {
       difficulty: isLearned ? this.difficulty.easy : userWord.difficulty,
       optional: {
+        new: userWord.optional.new || Date.now().toString(),
         countOfAnswersInRow: answersInRow,
         isLearned: isLearned,
         ...this.getWordHistory(answer.answer, userWord),
@@ -312,6 +314,7 @@ export class UserProgressService {
       .insert(this.auth.getCurrentUserId(), wordId, {
         difficulty: this.difficulty.easy,
         optional: {
+          new: answer.userWord?.optional.new || Date.now().toString(),
           countOfAnswersInRow: answer.answer ? 1 : 0,
           isLearned: false,
           ...this.getWordHistory(answer.answer),
