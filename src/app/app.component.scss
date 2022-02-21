@@ -10,7 +10,6 @@ main.main {
   background-repeat: no-repeat;
   background-blend-mode: multiply;
   background-attachment: fixed;
-
   @media (max-width: 855px) {
     min-height: calc(100vh - 180px);
   }

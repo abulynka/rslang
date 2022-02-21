@@ -48,6 +48,7 @@ export class UserSettingsComponent implements OnInit {
   );
   public nameControl: FormControl = new FormControl(this.userName, [
     Validators.minLength(Number('3')),
+    Validators.maxLength(Number('12')),
     Validators.pattern(/^[A-Za-zА-я]{3,}$/i),
   ]);
 
@@ -67,6 +68,7 @@ export class UserSettingsComponent implements OnInit {
         this.userData.bgUrl =
           data.optional.bgUrl || '../../../assets/bg/unsplesh.jfif';
         this.imageLink = data.optional.image || '';
+        this.userData.shellColor = data.optional.shellColor || 'primary';
         this.toppings.setValue(data.optional.shellColor || 'primary');
       }
     });
@@ -86,8 +88,8 @@ export class UserSettingsComponent implements OnInit {
     fileReader.readAsDataURL(files[0]);
 
     fileReader.onload = (): void => {
-      // '1000000' - 1 mb
-      if (imageSize < Number('100000')) {
+      // '70000' - 70 kb
+      if (imageSize < Number('70000')) {
         this.imageLink = String(fileReader.result);
         this.isRangeLimit = false;
       } else {

@@ -9,6 +9,9 @@
         placeholder="Иван"
         autocomplete="off"
       />
+      <mat-error *ngIf="nameControl.hasError('maxlength')">
+        Имя <strong>не более 12 символов</strong>
+      </mat-error>
       <mat-error *ngIf="nameControl.hasError('required')">
         Имя <strong>необходимо</strong>
       </mat-error>

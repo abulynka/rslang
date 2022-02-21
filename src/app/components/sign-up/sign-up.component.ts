@@ -23,6 +23,7 @@ export class SignUpComponent {
     name: new FormControl('', [
       Validators.required,
       Validators.minLength(Number('3')),
+      Validators.maxLength(Number('12')),
       Validators.pattern(/^[A-Za-zА-я]{3,}$/i),
     ]),
     email: new FormControl('', [
