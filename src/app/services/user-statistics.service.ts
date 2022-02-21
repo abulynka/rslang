@@ -17,8 +17,7 @@ import { WordsService } from './words.service';
 class NewAmount {
   public sprint: number = 0;
   public gameCall: number = 0;
-  public common = (average: number = 1): number =>
-    (this.sprint + this.gameCall) / average;
+  public common: number = 0;
 }
 
 const getCurrentDate = (): number => {
@@ -166,6 +165,9 @@ export class UserStatisticsService {
         return words.filter((word: Word): boolean => {
           if (!word.userWord) return false;
           const optional: UserWordOptional = word.userWord.optional;
+          if (Number(optional.new) > getCurrentDate()) {
+            return true;
+          }
           if (
             checkDates(optional.sprintHistory) ||
             checkDates(optional.gameCallhistory)
@@ -184,12 +186,15 @@ export class UserStatisticsService {
 
     this.userWords.forEach((data: Word) => {
       const userWord: UserWord = <UserWord>data.userWord;
+      const newWord: number = Number(userWord.optional.new) || 0;
       const wordFirstMeating: number | undefined = getDayOfTheFirstMeeating(
         userWord.optional.sprintHistory,
         userWord.optional.gameCallhistory
       );
-      if (wordFirstMeating) {
-        const formattedData: string = formattingDate(wordFirstMeating);
+      if (wordFirstMeating || newWord) {
+        const formattedData: string = formattingDate(
+          wordFirstMeating || newWord
+        );
         const mapValue: number | undefined = wordDates.get(formattedData);
         wordDates.set(formattedData, mapValue ? mapValue + 1 : 1);
       }
@@ -276,6 +281,9 @@ export class UserStatisticsService {
     }
     if (getWordFirstDate(userWord.optional.gameCallhistory) > currentDate) {
       this.newWordsAmount.gameCall += 1;
+    }
+    if (Number(userWord.optional.new) > currentDate) {
+      this.newWordsAmount.common += 1;
     }
   }
 
