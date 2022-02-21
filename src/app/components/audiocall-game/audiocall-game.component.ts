@@ -79,7 +79,7 @@ export class AudiocallGameComponent implements OnInit {
         }
       }
       if (this.wordNumber < this.totalAmount && event.key === 'Enter') {
-        if (answerContainer.style.display === 'flex') {
+        if (answerContainer && answerContainer.style.display === 'flex') {
           this.nextQuestion();
         } else {
           this.skipQuestion();
@@ -145,13 +145,15 @@ export class AudiocallGameComponent implements OnInit {
   }
 
   public chooseWord(item: HTMLElement): void {
+    if (!this.questions[this.wordNumber]) {
+      return;
+    }
     this.renderAnswer();
     const answerBtns: NodeListOf<HTMLElement> =
       document.querySelectorAll('.answer-btn');
     const circles: NodeListOf<HTMLElement> =
       document.querySelectorAll('.circle');
     answerBtns.forEach((btn: HTMLElement) => btn.classList.add('disabled'));
-
     const answer: boolean =
       (<string>item.textContent).trim() ===
       this.questions[this.wordNumber].answer.wordTranslate;
@@ -196,6 +198,9 @@ export class AudiocallGameComponent implements OnInit {
   }
 
   public skipQuestion(): void {
+    if (!this.questions[this.wordNumber]) {
+      return;
+    }
     this.renderAnswer();
     const answerBtns: NodeListOf<HTMLElement> =
       document.querySelectorAll('.answer-btn');
@@ -253,11 +258,11 @@ export class AudiocallGameComponent implements OnInit {
       sound.style.display = 'block';
       btnNext.style.display = 'none';
       btnUnknown.style.display = 'flex';
+      this.checkWordNumber();
     } else {
       this.state = 'end';
       this.digitsIsActive = false;
     }
-    this.checkWordNumber();
   }
 
   public restartGame(): void {
@@ -298,15 +303,17 @@ export class AudiocallGameComponent implements OnInit {
   private initWords(): void {
     const otherAmount: number = 4;
     this.wordsService
-      .getWords(
-        this.group,
-        this.gamesService.page,
-        this.gamesService.isOpenedFromMenu
-      )
+      .getWords(this.group, this.page, this.gamesService.isOpenedFromMenu)
       .subscribe((words: Word[]) => {
-        this.words = words;
-        this.totalAmount = this.words.length;
-        this.questions = new Array(this.totalAmount)
+        if (words.length === 0) return;
+        const number: number = Number('20') - this.questions.length;
+        let newWords: Word[] = words;
+        if (number < Number('20')) {
+          newWords = newWords.slice(0, number + 1);
+        }
+        this.words = newWords;
+        this.totalAmount += this.words.length;
+        const newQuestions: QuestionAudioCall[] = new Array(this.words.length)
           .fill(0)
           .map((_: number, index: number) => {
             const uniqueArray: Word[] = this.unique(
@@ -335,6 +342,11 @@ export class AudiocallGameComponent implements OnInit {
             };
             return randomWordsObj;
           });
+        if (this.gamesService.isOpenedFromMenu) {
+          this.questions = newQuestions;
+        } else {
+          this.questions = this.questions.concat(newQuestions);
+        }
         this.renderQuestion();
       });
   }
@@ -358,13 +370,25 @@ export class AudiocallGameComponent implements OnInit {
 
   private checkWordNumber(): void {
     const preAmountOfWords: number = 5;
+    if (
+      (this.gamesService.isOpenedFromMenu ||
+        this.totalAmount === Number('20')) &&
+      this.wordNumber >= Number('20')
+    ) {
+      this.state = 'end';
+      this.questions = [];
+      return;
+    }
     // Если остается 4 слова и, то дополняем вопросами
     if (
       this.wordNumber >= this.questions.length - preAmountOfWords &&
-      this.page !== '0'
+      this.page !== '0' &&
+      this.totalAmount !== Number('20')
     ) {
       this.page = (parseInt(this.page) - 1).toString();
       this.initWords();
+    } else if (this.questions.length === 0) {
+      this.state = 'end';
     }
   }
 

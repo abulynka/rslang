@@ -174,7 +174,12 @@ export class SprintGameComponent implements OnInit {
     this.wordsService
       .getWords(this.group, this.page, this.gameStateService.isOpenedFromMenu)
       .subscribe((words: Word[]) => {
-        this.questions = this.questions.concat(getQuestions(words));
+        const number: number = Number('20') - this.questions.length;
+        let newWords: Word[] = words;
+        if (number < Number('20')) {
+          newWords = newWords.slice(0, number + 1);
+        }
+        this.questions = this.questions.concat(getQuestions(newWords));
         if (this.timer.toString() === '60') {
           this.setTimer();
         }
@@ -205,7 +210,8 @@ export class SprintGameComponent implements OnInit {
     // Если остается 4 слова и, то дополняем вопросами
     if (
       this.wordNumber >= this.questions.length - preAmountOfWords &&
-      this.page !== '0'
+      this.page !== '0' &&
+      this.questions.length !== Number('20')
     ) {
       this.page = (parseInt(this.page) - 1).toString();
       this.getWords();
