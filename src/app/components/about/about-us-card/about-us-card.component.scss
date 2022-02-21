@@ -1,6 +1,7 @@
 .card {
   width: 400px !important;
   color: black;
+  overflow: hidden;
 
   @media (max-width: 469px) {
     width: 300px !important;
