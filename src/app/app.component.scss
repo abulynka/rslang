@@ -137,11 +137,22 @@ main.main {
     margin: 0 10px;
   }
 
+  .user-info__container {
+    display: flex;
+    align-items: center;
+  }
+
   .user-info__name {
     font-size: 1em;
     color: white;
     font-weight: 500;
     margin: 0;
+    width: 157px;
+    white-space: nowrap;
+    overflow: hidden;
+    padding: 5px;
+    text-overflow: ellipsis;
+    cursor: pointer;
   }
 
   .user-info__img {
