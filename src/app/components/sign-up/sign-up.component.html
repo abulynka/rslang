@@ -1,0 +1,113 @@
+<section class="sign-up-section">
+  <form class="from-section" [formGroup]="formGroup">
+    <mat-form-field class="form-field" appearance="fill">
+      <mat-label>Имя</mat-label>
+      <input
+        type="name"
+        matInput
+        formControlName="name"
+        placeholder="Иван"
+        autocomplete="off"
+      />
+      <mat-error *ngIf="nameControl.hasError('maxlength')">
+        Имя <strong>не более 12 символов</strong>
+      </mat-error>
+      <mat-error *ngIf="nameControl.hasError('required')">
+        Имя <strong>необходимо</strong>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field
+      class="form-field"
+      appearance="fill"
+      [ngClass]="{
+        'form-field-wrong': emailControl.hasError('email')
+      }"
+    >
+      <mat-label>Email</mat-label>
+      <input
+        type="email"
+        matInput
+        formControlName="email"
+        placeholder="name@domain.com"
+        autocomplete="off"
+      />
+      <mat-error
+        *ngIf="
+          (emailControl.hasError('email') ||
+            emailControl.hasError('pattern')) &&
+          !emailControl.hasError('required')
+        "
+      >
+        Пожалуйста, введите действительный адрес электронной почты
+      </mat-error>
+      <mat-error *ngIf="emailControl.hasError('required')">
+        Email <strong>необходим</strong>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field
+      class="form-field"
+      appearance="fill"
+      [ngClass]="{
+        'form-field-wrong': passwordControl.hasError('pattern')
+      }"
+    >
+      <mat-label>Пароль</mat-label>
+      <input
+        type="password"
+        matInput
+        [type]="hide ? 'password' : 'text'"
+        formControlName="password"
+        autocomplete="off"
+      />
+      <button
+        mat-icon-button
+        matSuffix
+        (click)="hide = !hide"
+        [attr.aria-label]="'Hide password'"
+        [attr.aria-pressed]="hide"
+      >
+        <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+      <mat-error
+        *ngIf="
+          (passwordControl.hasError('password') ||
+            passwordControl.hasError('pattern')) &&
+          !passwordControl.hasError('required')
+        "
+      >
+        Пожалуйста, введите пароль длинной более 8 символов
+      </mat-error>
+      <mat-error *ngIf="passwordControl.hasError('required')">
+        Пароль <strong>необходим</strong>
+      </mat-error>
+    </mat-form-field>
+    <p [hidden]="!isUserExist" class="badge bg-danger">
+      Ошибка: Пользователь с таким аккаунтом уже существует!
+    </p>
+    <div>
+      <p>
+        Уже есть аккаунта?
+        <a routerLink="/signin" class="button" class="button link-primary"
+          >Войти</a
+        >.
+      </p>
+    </div>
+    <div class="load-section">
+      <button
+        [disabled]="
+          passwordControl.invalid || emailControl.invalid || nameControl.invalid
+        "
+        type="submit"
+        class="btn btn-primary"
+        (click)="send()"
+      >
+        Зарегистрироваться
+      </button>
+      <div
+        [hidden]="!isSent"
+        class="spinner-border text-primary"
+        role="status"
+      ></div>
+    </div>
+  </form>
+</section>

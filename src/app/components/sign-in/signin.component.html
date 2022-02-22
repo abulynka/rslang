@@ -1,0 +1,80 @@
+<section class="sign-in-section">
+  <form class="from-section">
+    <mat-icon class="from-section__icon">person</mat-icon>
+    <mat-form-field class="form-field" appearance="fill">
+      <mat-label>Email</mat-label>
+      <input
+        type="email"
+        matInput
+        [formControl]="emailControl"
+        placeholder="name@domain.com"
+      />
+      <mat-error
+        *ngIf="
+          (emailControl.hasError('email') ||
+            emailControl.hasError('pattern')) &&
+          !emailControl.hasError('required')
+        "
+      >
+        Пожалуйста, введите действительный адрес электронной почты
+      </mat-error>
+      <mat-error *ngIf="emailControl.hasError('required')">
+        Email <strong>необходим</strong>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="form-field" appearance="fill">
+      <mat-label>Введите свой пароль</mat-label>
+      <input
+        matInput
+        [type]="hide ? 'password' : 'text'"
+        autocomplete="off"
+        [formControl]="pswControl"
+      />
+      <button
+        mat-icon-button
+        matSuffix
+        (click)="hide = !hide"
+        [attr.aria-label]="'Hide password'"
+        [attr.aria-pressed]="hide"
+      >
+        <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+      <mat-error
+        *ngIf="
+          (pswControl.hasError('password') || pswControl.hasError('pattern')) &&
+          !pswControl.hasError('required')
+        "
+      >
+        Пожалуйста, введите пароль длинной более 8 символов
+      </mat-error>
+      <mat-error *ngIf="pswControl.hasError('required')">
+        Пароль <strong>необходим</strong>
+      </mat-error>
+    </mat-form-field>
+
+    <span [hidden]="!isError" class="badge bg-danger">Ошибка: {{ error }}</span>
+    <div class="from-section__link">
+      <p>
+        Нет аккаунта?
+        <a routerLink="/signup" class="button" class="button link-primary"
+          >Регистрация</a
+        >.
+      </p>
+    </div>
+    <div class="load-section">
+      <button
+        [disabled]="emailControl.invalid || pswControl.invalid"
+        type="submit"
+        class="btn btn-primary"
+        (click)="send()"
+      >
+        Войти
+      </button>
+      <div
+        [hidden]="!isSent"
+        class="spinner-border text-primary"
+        role="status"
+      ></div>
+    </div>
+  </form>
+</section>

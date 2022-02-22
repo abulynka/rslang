@@ -1,0 +1,12 @@
+.chapter {
+  display: flex;
+  width: 100%;
+
+  &__button {
+    margin-right: 10px;
+  }
+
+  &__paginator {
+    width: 100%;
+  }
+}

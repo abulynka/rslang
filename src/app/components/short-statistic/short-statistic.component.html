@@ -1,0 +1,37 @@
+<section class="short-stat">
+  <h1 class="short-stat__title">Краткосрочная статистика</h1>
+  <section class="short-stat__content">
+    <article
+      class="short-stat__graph"
+      *ngFor="
+        let game of [
+          { name: 'Спринт', data: sprint },
+          { name: 'Аудиовызов', data: audio },
+          { name: 'По словам', data: words }
+        ]
+      "
+    >
+      <h3 class="short-stat__graph-title">{{ game.name }}</h3>
+      <div class="short-stat__loader" *ngIf="!isLoaded">
+        <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+        <h3>{{ joke }}!</h3>
+      </div>
+      <div class="short-stat__graph-content" *ngIf="isLoaded">
+        <ngx-charts-bar-vertical
+          [view]="size"
+          [results]="game.data"
+          [xAxisLabel]="''"
+          [yAxisLabel]="''"
+          [showXAxisLabel]="false"
+          [showYAxisLabel]="false"
+          [xAxis]="false"
+          [yAxis]="true"
+          [noBarWhenZero]="false"
+          [gradient]="gradient"
+          [yScaleMin]="0"
+        >
+        </ngx-charts-bar-vertical>
+      </div>
+    </article>
+  </section>
+</section>

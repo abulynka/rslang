@@ -1,0 +1,44 @@
+.card {
+  width: 400px !important;
+  color: black;
+  overflow: hidden;
+
+  @media (max-width: 469px) {
+    width: 300px !important;
+  }
+
+  &__body {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+
+    @media (max-width: 469px) {
+      padding: 10px;
+    }
+
+    &-title {
+      display: flex;
+      justify-content: center;
+    }
+
+    &-position {
+      display: flex;
+      justify-content: center;
+    }
+
+    &-github {
+      display: flex;
+      width: 100%;
+      justify-content: center;
+      align-content: center;
+      align-items: center;
+
+      &-img {
+        display: flex;
+        width: 30px;
+        height: 30px;
+        margin: 0 10px;
+      }
+    }
+  }
+}

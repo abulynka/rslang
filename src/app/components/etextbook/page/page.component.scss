@@ -1,0 +1,13 @@
+.page {
+  &_disable {
+    pointer-events: none;
+    opacity: 0.9;
+    user-select: none;
+  }
+
+  &__words {
+    &-item {
+      margin: 0 10px;
+    }
+  }
+}

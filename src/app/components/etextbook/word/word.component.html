@@ -1,0 +1,54 @@
+<section class="word" data-id="{{ word.id }}">
+  <div class="word__image">
+    <img
+      class="word__image-item"
+      src="{{ this.httpService.getUrl(word.image) }}"
+      alt="{{ word.word }}"
+    />
+  </div>
+  <div class="word__content word_color-{{ word.group }}">
+    <div class="word__content-title">
+      <span class="word__content-title-main">{{ word.word }}</span
+      >({{ word.transcription }}) - {{ word.wordTranslate }}
+      <app-audio class="word__play" [word]="word"></app-audio>
+    </div>
+    <div class="word__content-meaning" [innerHTML]="word.textMeaning"></div>
+    <div
+      class="word__content-meaning-translate"
+      [innerHTML]="word.textMeaningTranslate"
+    ></div>
+    <div class="word__content-example" [innerHTML]="word.textExample"></div>
+    <div
+      class="word__content-example-translate"
+      [innerHTML]="word.textExampleTranslate"
+    ></div>
+  </div>
+  <div #wordControls *ngIf="isAuthorized()" class="word__controls">
+    <button
+      [disabled]="isDisabledDifficult"
+      (click)="clickDifficult()"
+      class="word__controls-button"
+      title="{{ difficultTitle }}"
+      difficult
+    >
+      <i class="fa fa-graduation-cap" aria-hidden="true"></i>
+    </button>
+    <button
+      [disabled]="isDisabledLearned"
+      (click)="makeLearned()"
+      class="word__controls-button"
+      title="Отметить как изученное"
+      learned
+    >
+      <i class="fa fa-check-circle" aria-hidden="true"></i>
+    </button>
+    <button
+      (click)="openStatistics()"
+      class="word__controls-button"
+      title="Статистика по слову"
+      learned
+    >
+      <i class="fa fa-area-chart" aria-hidden="true"></i>
+    </button>
+  </div>
+</section>

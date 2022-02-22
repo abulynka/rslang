@@ -1,0 +1,68 @@
+<div class="etextbook">
+  <div class="etextbook__main">
+    <div class="etextbook__title">
+      <h2>Учебник</h2>
+    </div>
+
+    <div class="etextbook__container">
+      <div class="etextbook__buttons">
+        <mat-form-field
+          class="etextbook__buttons-item etextbook__buttons-chapter"
+          appearance="fill"
+        >
+          <mat-label>Глава</mat-label>
+          <mat-select [(value)]="selectedChapter">
+            <mat-option
+              (onSelectionChange)="changeChapterEvent($event)"
+              *ngFor="let chapter of chapters"
+              [value]="chapter['index']"
+              class="etextbook__word_color-{{ chapter['index'] }}"
+            >
+              {{ chapter['name'] }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <button
+          mat-flat-button
+          class="etextbook__buttons-item etextbook__buttons-game"
+          (click)="startAudioGame()"
+          [disabled]="disableGames"
+        >
+          аудиовызов
+        </button>
+        <button
+          mat-flat-button
+          class="etextbook__buttons-item etextbook__buttons-game"
+          (click)="startSprintGame()"
+          [disabled]="disableGames"
+        >
+          спринт
+        </button>
+
+        <mat-paginator
+          *ngIf="selectedChapter !== 6"
+          class="etextbook__buttons-item etextbook__buttons-pages"
+          [length]="30 * 20"
+          [pageSizeOptions]="[20]"
+          [showFirstLastButtons]="true"
+          (page)="changePageEvent($event)"
+          title="Выбрать страницу"
+          [pageIndex]="selectedPage"
+        ></mat-paginator>
+
+        <mat-paginator
+          *ngIf="isAuthorized() && selectedChapter === 6"
+          class="etextbook__buttons-item etextbook__buttons-pages"
+          [length]="1"
+          [pageSizeOptions]="[3600]"
+          [showFirstLastButtons]="false"
+          aria-label="Выбрать страницу"
+          title="Выбрать страницу"
+          [pageIndex]="0"
+        ></mat-paginator>
+      </div>
+      <app-chapter (pageIsLearned)="pageIsLearned($event)"></app-chapter>
+    </div>
+  </div>
+</div>

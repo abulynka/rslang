@@ -1,0 +1,54 @@
+<section class="long-stat">
+  <h1 class="long-stat__title">
+    долгосрочная статистика за весь период изучения
+  </h1>
+  <section class="long-stat__content">
+    <article class="long-stat__graph">
+      <h3 class="long-stat__graph-title">новые слова за каждый день</h3>
+      <div class="long-stat__graph-content">
+        <ngx-charts-line-chart
+          [view]="size"
+          [results]="newWordsPerEveryDay"
+          [xAxisLabel]="''"
+          [yAxisLabel]="''"
+          [showXAxisLabel]="true"
+          [showYAxisLabel]="false"
+          [xAxis]="true"
+          [yAxis]="true"
+          [gradient]="gradient"
+          *ngIf="isLoaded"
+        >
+        </ngx-charts-line-chart>
+        <mat-progress-spinner
+          mode="indeterminate"
+          *ngIf="!isLoaded"
+        ></mat-progress-spinner>
+      </div>
+    </article>
+
+    <article class="long-stat__graph">
+      <h3 class="long-stat__graph-title">новые слова за весь период</h3>
+      <div class="long-stat__graph-content">
+        <ngx-charts-bar-vertical
+          [view]="size"
+          [results]="newWordsPerEveryDayIntegral"
+          [xAxisLabel]="''"
+          [yAxisLabel]="''"
+          [showXAxisLabel]="true"
+          [showYAxisLabel]="false"
+          [xAxis]="true"
+          [yAxis]="true"
+          [noBarWhenZero]="false"
+          [legend]="true"
+          [gradient]="gradient"
+          *ngIf="isLoaded"
+        >
+        </ngx-charts-bar-vertical>
+        <mat-progress-spinner
+          mode="indeterminate"
+          *ngIf="!isLoaded"
+        ></mat-progress-spinner>
+      </div>
+    </article>
+  </section>
+</section>

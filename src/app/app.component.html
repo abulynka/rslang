@@ -1,0 +1,188 @@
+<header class="header">
+  <mat-toolbar
+    [color]="shellColor"
+    class="mat-header"
+    (click)="closeMenuList($event)"
+  >
+    <img
+      routerLink="/"
+      class="logo navbar-item menu-item"
+      src="https://leon-center.by/sub/images/language.svg"
+      alt="icon"
+    />
+    <nav class="navbar">
+      <ul class="navbar-list">
+        <li class="navbar-item">
+          <a class="menu-item navbar-link" routerLink="/">главная</a>
+        </li>
+        <li class="navbar-item">
+          <a class="menu-item navbar-link" routerLink="etextbook">учебник</a>
+        </li>
+        <li class="navbar-item games-item">
+          <button class="btn nav-games-btn" [matMenuTriggerFor]="menu">
+            мини-игры
+          </button>
+          <mat-menu #menu="matMenu">
+            <a
+              (click)="setGameState()"
+              mat-menu-item
+              routerLink="/audiocall"
+              class="menu-item"
+            >
+              <span>аудиовызов</span>
+            </a>
+            <a
+              (click)="setGameState()"
+              mat-menu-item
+              routerLink="/sprint-game"
+              class="menu-item"
+            >
+              <span>спринт</span>
+            </a>
+          </mat-menu>
+        </li>
+        <li class="navbar-item navbar-item-1024">
+          <a
+            (click)="setGameState()"
+            routerLink="/audiocall"
+            class="menu-item navbar-link"
+          >
+            <span>аудиовызов</span>
+          </a>
+        </li>
+        <li class="navbar-item navbar-item-1024">
+          <a
+            (click)="setGameState()"
+            routerLink="/sprint-game"
+            class="menu-item navbar-link"
+          >
+            <span>спринт</span>
+          </a>
+        </li>
+        <li class="navbar-item statistics-item" *ngIf="isAuthUser">
+          <button class="btn statistics-btn" [matMenuTriggerFor]="statistics">
+            статистика
+          </button>
+          <mat-menu class="dropdown" #statistics="matMenu">
+            <a routerLink="/short-statistic" mat-menu-item class="menu-item"
+              >краткосрочная</a
+            >
+            <a routerLink="/long-statistic" mat-menu-item class="menu-item"
+              >долгосрочная</a
+            >
+          </mat-menu>
+        </li>
+        <li class="navbar-item navbar-item-1024" *ngIf="isAuthUser">
+          <a
+            routerLink="/short-statistic"
+            class="navbar-item menu-item navbar-link"
+            >краткосрочная</a
+          >
+        </li>
+        <li class="navbar-item navbar-item-1024" *ngIf="isAuthUser">
+          <a
+            routerLink="/long-statistic"
+            class="navbar-item menu-item navbar-link"
+            >долгосрочная</a
+          >
+        </li>
+      </ul>
+
+      <ul class="navbar-list">
+        <li class="user-info" *ngIf="isAuthUser">
+          <div class="user-info__container menu-item" routerLink="settings">
+            <p class="user-info__name">{{ userName }} {{ lastName }}</p>
+            <button
+              class="user-info__menu"
+              mat-fab
+              matBadge="S"
+              matBadgeColor="accent"
+            >
+              <img
+                class="user-info__img"
+                src="{{ userImageUrl || '../assets/user.png' }}"
+                alt="user"
+              />
+            </button>
+          </div>
+          <button
+            type="button"
+            class="btn btn-outline-warning menu-item"
+            (click)="logOut()"
+          >
+            выйти
+          </button>
+        </li>
+        <li class="navbar-item" *ngIf="!isAuthUser">
+          <button
+            class="mat-button menu-item"
+            mat-raised-button
+            routerLink="signin"
+          >
+            <mat-icon>login</mat-icon>
+            <span>войти</span>
+          </button>
+        </li>
+        <li class="navbar-item">
+          <a routerLink="about-us" class="menu-item navbar-link">О команде</a>
+        </li>
+      </ul>
+    </nav>
+    <button mat-icon-button class="burger-icon" (click)="adaptiveMenu()">
+      <mat-icon>menu</mat-icon>
+    </button>
+  </mat-toolbar>
+</header>
+
+<main
+  class="main"
+  [style.background-image]="'url(/assets/' + bgUrl + ')'"
+  [@routeChangeAnimation]="getRouteAnimationState(outlet)"
+>
+  <router-outlet #outlet="outlet"></router-outlet>
+</main>
+
+<footer class="footer" *ngIf="!isFooterHidden">
+  <mat-toolbar class="footer__tool-bar" [color]="shellColor">
+    <div class="authors">
+      <p>© Jet Squad:</p>
+      <ul class="github-links-container">
+        <li>
+          <a
+            class="navbar-link footer-link"
+            href="https://github.com/abulynka"
+            target="_blank"
+          >
+            <img src="../assets/svg/github-white.svg" alt="github" />
+            <p>abulynka</p></a
+          >
+        </li>
+        <li>
+          <a
+            class="navbar-link footer-link"
+            href="https://github.com/cheerfulperson"
+            target="_blank"
+            ><img src="../assets/svg/github-white.svg" alt="github" />
+            <p>cheerfulperson</p></a
+          >
+        </li>
+        <li>
+          <a
+            class="navbar-link footer-link"
+            href="https://github.com/YuliyaBondar"
+            target="_blank"
+            ><img src="../assets/svg/github-white.svg" alt="github" />
+            <p>YuliyaBondar</p></a
+          >
+        </li>
+      </ul>
+    </div>
+    <p>2022</p>
+    <a href="https://rs.school/js/"
+      ><img
+        class="footer__svg"
+        src="https://raw.githubusercontent.com/YuliyaBondar/christmas-data/main/assets/svg/rss.svg"
+        alt="rs_school_js"
+    /></a>
+  </mat-toolbar>
+</footer>

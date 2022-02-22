@@ -1,0 +1,127 @@
+<section class="audio-call-section">
+  <article class="button-container">
+    <button mat-icon-button (click)="toggleVolume()">
+      <mat-icon class="icon-display" *ngIf="isMuteSound">volume_off</mat-icon>
+      <mat-icon class="icon-display" *ngIf="!isMuteSound">volume_up</mat-icon>
+    </button>
+    <button mat-icon-button (click)="makeFullScreen()">
+      <mat-icon class="icon-display" *ngIf="!isFullScreen">fullscreen</mat-icon>
+      <mat-icon class="icon-display" *ngIf="isFullScreen"
+        >fullscreen_exit</mat-icon
+      >
+    </button>
+  </article>
+
+  <div class="rules-container">
+    <h2>Аудиовызов</h2>
+    <p>
+      Ниже выбери уровень сложности. Затем выбери из предложенных вариантов
+      ответа правильный перевод слова, который услышишь
+    </p>
+    <ul class="rules-container__list">
+      <li>Используй цифровые клавиши от 1 до 5 для выбора ответа</li>
+      <li>Используй пробел для повтроного звучания слова</li>
+      <li>
+        Используй клавишу Enter для перехода к следующему вопросу или если не
+        знаешь слово
+      </li>
+    </ul>
+    <div class="group-btn-container">
+      <button
+        mat-raised-button
+        gameName="Аудиовызов"
+        type="button"
+        class="tn-group-num"
+        color="primary"
+        *ngFor="let num of [0, 1, 2, 3, 4, 5]"
+        (click)="startGame(num)"
+      >
+        {{ num + 1 }}
+      </button>
+    </div>
+  </div>
+
+  <div class="question-container">
+    <div class="circle-container">
+      <span class="circle" *ngFor="let num of questions"></span>
+    </div>
+    <img
+      class="sound"
+      src="../../../assets/svg/1486564396-audio_81506.svg"
+      alt="sound"
+      *ngIf="questions[0]"
+      (click)="playSound(questions[wordNumber].answer.audio)"
+    />
+
+    <div class="answer-container" *ngIf="questions[0] && questions[wordNumber]">
+      <img
+        class="correct-img"
+        src="{{ url + '/' + questions[wordNumber].answer.image }}"
+        alt="image"
+      />
+      <div class="answer-right-column">
+        <div class="correct-word">
+          <img
+            class="small-svg"
+            src="../../../assets/svg/volume-audio-svgrepo-com.svg"
+            alt="image"
+            (click)="playSound(questions[wordNumber].answer.audio)"
+          />
+          <p class="answer-word">{{ questions[wordNumber].answer.word }}</p>
+          <p>{{ questions[wordNumber].answer.transcription }}</p>
+        </div>
+        <div class="english-example">
+          <img
+            class="small-svg"
+            src="../../../assets/svg/volume-audio-svgrepo-com.svg"
+            alt="image"
+            (click)="playSound(questions[wordNumber].answer.audioExample)"
+          />
+          <p class="text-example"></p>
+        </div>
+        <div class="russian-example">
+          <p>{{ questions[wordNumber].answer.textExampleTranslate }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="audio-call-btn-container" *ngIf="randomWordsArr[0]">
+      <button
+        type="button"
+        class="btn btn-primary btn-lg answer-btn"
+        *ngFor="let randomWord of randomWordsArr"
+        #button1
+        (click)="chooseWord(button1)"
+      >
+        {{ randomWord.wordTranslate }}
+      </button>
+    </div>
+    <button
+      mat-raised-button
+      color="accent"
+      type="button"
+      class="btn btn-warning btn-unknown"
+      (click)="skipQuestion()"
+    >
+      Не знаю
+    </button>
+    <button
+      mat-raised-button
+      color="accent"
+      type="button"
+      class="btn btn-warning btn-next"
+      (click)="nextQuestion()"
+    >
+      →
+    </button>
+  </div>
+
+  <app-game-result
+    (clicked)="restartGame()"
+    [gameName]="'audioGame'"
+    [answers]="answers"
+    [wrongAnswers]="wrongAnswers"
+    [correctAnswers]="correctAnswers"
+    *ngIf="state === 'end'"
+  ></app-game-result>
+</section>

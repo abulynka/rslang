@@ -1,0 +1,28 @@
+<article class="start-game">
+  <article class="start-game__window">
+    <h2>{{ gameName }}</h2>
+    <p>
+      Тренирует навык быстрого перевода с английского языка на русский. Вам
+      нужно выбрать соответствует ли перевод предложенному слову. Ниже выберите
+      уровень сложности.
+    </p>
+    <ul class="start-game__list">
+      <li>Используй стрелки "Влево" и "Вправо" для выбора ответа</li>
+      <li>Используй пробел для звучания слова</li>
+      <li>
+        Используй клавишу Enter для перехода к следующему вопросу или если не
+        знаешь слово
+      </li>
+    </ul>
+    <div class="start-game__buttons">
+      <button
+        mat-raised-button
+        color="primary"
+        *ngFor="let i of [1, 2, 3, 4, 5, 6]"
+        (click)="startGame(i - 1)"
+      >
+        <span>{{ i }}</span>
+      </button>
+    </div>
+  </article>
+</article>
